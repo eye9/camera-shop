@@ -3,10 +3,12 @@ type RatingElementProps = {
   reviewCount: number;
 };
 
+const MAX_STARS = 5;
+
 export function RatingElement({ rating, reviewCount }: RatingElementProps) {
   return (
     <div className="rate product-card__rate">
-      {[1, 2, 3, 4, 5].map((_, i) => {
+      {Array.from({length: MAX_STARS}).map((_, i) => {
         let link = '#icon-full-star';
         if (i + 1 > rating) {
           link = '#icon-star';
