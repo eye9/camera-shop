@@ -4,8 +4,13 @@ import { CardsList } from './cards-list';
 import { CatalogSort } from './catalog-sort';
 import { CatalogFilter } from './catalog-filter';
 import { BreadcrumbsElement } from './breadcrumbs-element';
+import { useState } from 'react';
+
+const CARDS_PER_PAGE = 9;
 
 export function MainCatalog() {
+  const [currentPage, setPage] = useState(1);
+  const pagesCount = Math.floor(products.length / CARDS_PER_PAGE) + (products.length % CARDS_PER_PAGE > 0 ? 1 : 0);
   return (
     <div className="page-content">
       <BreadcrumbsElement />
@@ -16,8 +21,13 @@ export function MainCatalog() {
             <CatalogFilter />
             <div className="catalog__content">
               <CatalogSort />
-              <CardsList products={products}/>
-              <PaginatorElement />
+              <CardsList
+                products={products.slice(
+                  (currentPage - 1) * CARDS_PER_PAGE,
+                  currentPage * CARDS_PER_PAGE
+                )}
+              />
+              <PaginatorElement onPageChange={setPage} pagesCount={pagesCount} currentPage={currentPage}/>
             </div>
           </div>
         </div>
