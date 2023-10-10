@@ -1,15 +1,18 @@
 import { Autoplay, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
+import { Link } from 'react-router-dom';
+import { AppRoutes } from '../../const';
+import { useAppSelector } from '../../hooks/hooks';
+import { selectPromo } from '../../store/selectors';
+
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import './swiper.css';
-import { promo } from './mock';
-import { Link } from 'react-router-dom';
-import { AppRoutes } from '../../const';
 
 export function BannerElement() {
+  const promo = useAppSelector(selectPromo);
   return (
     <Swiper
       slidesPerView={1}

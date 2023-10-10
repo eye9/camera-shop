@@ -1,5 +1,7 @@
 export const APIRoutes = {
   Products: '/cameras',
+  Promo: '/promo',
+
 } as const;
 
 export const AppRoutes = {
