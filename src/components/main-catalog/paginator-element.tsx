@@ -1,5 +1,6 @@
 import { Dispatch, MouseEventHandler, SetStateAction, useState } from 'react';
 import cn from 'classnames';
+import { Link } from 'react-router-dom';
 
 type PaginatorElementProps = {
   pagesCount: number;
@@ -13,9 +14,9 @@ export function PaginatorElement({
   onPageChange,
 }: PaginatorElementProps) {
   const [activePage, setActivePage] = useState(currentPage);
-  const pages = Array.from({ length: pagesCount }, (_, k) => k + 1);
   const [firstPage, setFirstPage] = useState(currentPage);
   const lastPage = Math.min(firstPage + 2, pagesCount);
+  const pages = Array.from({ length: pagesCount }, (_, k) => k + 1);
   const shownPages = pages.slice(firstPage - 1, lastPage);
 
   function backButtonClickHandler():
@@ -53,26 +54,29 @@ export function PaginatorElement({
           ''
         ) : (
           <li className="pagination__item">
-            <a
+            <Link
+              to={firstPage === 2 ? '' : `/?page=${firstPage - 1}`}
               className="pagination__link pagination__link--text"
               onClick={backButtonClickHandler()}
             >
               Назад
-            </a>
+            </Link>
           </li>
         )}
         {shownPages.map((page) => {
           const key = `page-${page}`;
+          const queryParam = page === 1 ? '' : `/?page=${page}`;
           return (
             <li className="pagination__item" key={key}>
-              <a
+              <Link
+                to={queryParam}
                 onClick={pageButtonClickHandler(page)}
                 className={cn('pagination__link', {
                   'pagination__link--active': activePage === page,
                 })}
               >
                 {page}
-              </a>
+              </Link>
             </li>
           );
         })}
@@ -80,12 +84,13 @@ export function PaginatorElement({
           ''
         ) : (
           <li className="pagination__item">
-            <a
+            <Link
+              to={`/?page=${firstPage + 3}`}
               className="pagination__link pagination__link--text"
               onClick={nextButtonClickHandler()}
             >
               Далее
-            </a>
+            </Link>
           </li>
         )}
       </ul>
