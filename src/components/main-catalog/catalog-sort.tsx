@@ -6,7 +6,7 @@ export function CatalogSort() {
           <p className="title title--h5">Сортировать:</p>
           <div className="catalog-sort__type">
             <div className="catalog-sort__btn-text">
-              <input type="radio" id="sortPrice" name="sort" defaultChecked />
+              <input type="radio" id="sortPrice" name="sort" />
               <label htmlFor="sortPrice">по цене</label>
             </div>
             <div className="catalog-sort__btn-text">
@@ -20,7 +20,6 @@ export function CatalogSort() {
                 type="radio"
                 id="up"
                 name="sort-icon"
-                defaultChecked
                 aria-label="По возрастанию"
               />
               <label htmlFor="up">
