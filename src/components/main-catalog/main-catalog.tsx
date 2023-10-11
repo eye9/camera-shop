@@ -2,7 +2,7 @@ import { PaginatorElement } from './paginator-element';
 import { CardsList } from './cards-list';
 import { CatalogSort } from './catalog-sort';
 import { CatalogFilter } from './catalog-filter';
-import { BreadcrumbsElement } from './breadcrumbs-element';
+import { BreadcrumbsElement } from '../breadcrumbs-element/breadcrumbs-element';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { selectProducts } from '../../store/selectors';

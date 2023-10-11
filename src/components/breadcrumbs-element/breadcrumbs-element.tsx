@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { AppRoutes } from '../../const';
 
 type BreadcrumbsElementProps = {
-  productName: string | undefined;
+  productName?: string;
 };
 
 export function BreadcrumbsElement({ productName }: BreadcrumbsElementProps) {

@@ -1,5 +1,7 @@
+import { Link } from 'react-router-dom';
 import { Product } from '../../types/product';
 import { RatingElement } from './rating-element';
+import { AppRoutes } from '../../const';
 
 export type ProductCardProps = {
   product: Product;
@@ -28,7 +30,10 @@ export function ProductCard({ product }: ProductCardProps) {
         </picture>
       </div>
       <div className="product-card__info">
-        <RatingElement rating={product.rating} reviewCount={product.reviewCount}/>
+        <RatingElement
+          rating={product.rating}
+          reviewCount={product.reviewCount}
+        />
         <p className="product-card__title">{product.name}</p>
         <p className="product-card__price">
           <span className="visually-hidden">Цена:</span>
@@ -36,7 +41,7 @@ export function ProductCard({ product }: ProductCardProps) {
         </p>
       </div>
       <div className="product-card__buttons">
-        <a
+        {/* <a
           className="btn btn--purple-border product-card__btn product-card__btn--in-cart"
           href="#"
         >
@@ -44,10 +49,16 @@ export function ProductCard({ product }: ProductCardProps) {
             <use xlinkHref="#icon-basket" />
           </svg>
           В корзине
-        </a>
-        <a className="btn btn--transparent" href="#">
+        </a> */}
+        <button className="btn btn--purple product-card__btn" type="button">
+          Купить
+        </button>
+        <Link
+          className="btn btn--transparent"
+          to={`${AppRoutes.Product}/${product.id}`}
+        >
           Подробнее
-        </a>
+        </Link>
       </div>
     </div>
   );
