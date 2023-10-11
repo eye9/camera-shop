@@ -7,4 +7,5 @@ export const APIRoutes = {
 export const AppRoutes = {
   Main: '/',
   Product: '/product',
+  Any: '*',
 } as const;
