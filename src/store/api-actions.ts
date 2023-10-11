@@ -1,9 +1,14 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state';
 import { AxiosInstance } from 'axios';
-import { Products, PromoProduct } from '../types/product';
+import { Product, Products, Promos } from '../types/product';
 import { APIRoutes } from '../const';
-import { loadProducts, loadPromo, setDataLoadingStatus } from './actions';
+import {
+  loadProduct,
+  loadProducts,
+  loadPromo,
+  setDataLoadingStatus,
+} from './actions';
 
 export const fetchProductsAction = createAsyncThunk<
   void,
@@ -20,6 +25,21 @@ export const fetchProductsAction = createAsyncThunk<
   dispatch(loadProducts(data));
 });
 
+export const fetchProductAction = createAsyncThunk<
+  void,
+  string,
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>('product/fetch', async (id, { dispatch, extra: api }) => {
+  dispatch(setDataLoadingStatus(true));
+  const { data } = await api.get<Product>(`${APIRoutes.Products}/${id}`);
+  dispatch(setDataLoadingStatus(false));
+  dispatch(loadProduct(data));
+});
+
 export const fetchPromoAction = createAsyncThunk<
   void,
   undefined,
@@ -30,7 +50,7 @@ export const fetchPromoAction = createAsyncThunk<
   }
 >('products/fetchPromo', async (_arg, { dispatch, extra: api }) => {
   dispatch(setDataLoadingStatus(true));
-  const { data } = await api.get<PromoProduct>(APIRoutes.Promo);
+  const { data } = await api.get<Promos>(APIRoutes.Promo);
   dispatch(setDataLoadingStatus(false));
   dispatch(loadPromo(data));
 });
