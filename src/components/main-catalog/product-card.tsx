@@ -2,27 +2,29 @@ import { Link } from 'react-router-dom';
 import { Product } from '../../types/product';
 import { RatingElement } from './rating-element';
 import { AppRoutes } from '../../const';
+import cn from 'classnames';
 
 export type ProductCardProps = {
   product: Product;
+  activeClass?: string;
 };
 
 function formatPrice(price: number) {
   return price.toLocaleString();
 }
 
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ product, activeClass }: ProductCardProps) {
   return (
-    <div className="product-card" key={product.id}>
+    <div className={cn('product-card', activeClass)} key={product.id}>
       <div className="product-card__img">
         <picture>
           <source
             type="image/webp"
-            srcSet={`${product.previewImgWebp}, ${product.previewImgWebp2x} 2x`}
+            srcSet={`/${product.previewImgWebp}, /${product.previewImgWebp2x} 2x`}
           />
           <img
-            src={`${product.previewImg}`}
-            srcSet={`${product.previewImg} 2x`}
+            src={`/${product.previewImg}`}
+            srcSet={`/${product.previewImg} 2x`}
             width={280}
             height={240}
             alt={product.name}
