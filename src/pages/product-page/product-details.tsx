@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch } from '../../hooks/hooks';
 import { RatingElement } from '../../components/main-catalog/rating-element';
 import cn from 'classnames';
 import { addToBusket } from '../../store/actions';
 import { ProductProps } from './product-page';
+import { useSearchParams } from 'react-router-dom';
 
 const PageTabs = {
   Features: 'features',
@@ -11,9 +12,22 @@ const PageTabs = {
 } as const;
 
 export function ProductDetails({ product }: ProductProps) {
-  const [activeTab, setActiveTab] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [activeTab, setActiveTab] = useState(searchParams.get('tab') || PageTabs.Description);
   const dispatch = useAppDispatch();
-  // setActiveTab(PageTabs.Description);
+
+  useEffect(() => setSearchParams({ tab: PageTabs.Description }), []);
+
+  function activateFeatureTab() {
+    setActiveTab(PageTabs.Features);
+    setSearchParams({ tab: PageTabs.Features });
+  }
+
+  function activateDescriptionTab() {
+    setSearchParams({ tab: PageTabs.Description });
+    setActiveTab(PageTabs.Description);
+  }
+
   return (
     <div className="page-content__section">
       <section className="product">
@@ -57,20 +71,19 @@ export function ProductDetails({ product }: ProductProps) {
               <div className="tabs__controls product__tabs-controls">
                 <button
                   className={cn('tabs__control', {
-                    'is-active':
-                      activeTab === PageTabs.Features,
+                    'is-active': activeTab === PageTabs.Features,
                   })}
                   type="button"
-                  onClick={() => setActiveTab(PageTabs.Features)}
+                  onClick={activateFeatureTab}
                 >
                   Характеристики
                 </button>
                 <button
                   className={cn('tabs__control', {
-                    'is-active': activeTab === PageTabs.Description || activeTab === '',
+                    'is-active': activeTab !== PageTabs.Features,
                   })}
                   type="button"
-                  onClick={() => setActiveTab(PageTabs.Description)}
+                  onClick={activateDescriptionTab}
                 >
                   Описание
                 </button>
@@ -102,8 +115,7 @@ export function ProductDetails({ product }: ProductProps) {
                 </div>
                 <div
                   className={cn('tabs__element', {
-                    'is-active':
-                      activeTab === PageTabs.Description || activeTab === '',
+                    'is-active': activeTab !== PageTabs.Features,
                   })}
                 >
                   <div className="product__tabs-text">

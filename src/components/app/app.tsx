@@ -9,7 +9,7 @@ import { NotFound } from '../../pages/not-found';
 export function App() {
   return (
     <HelmetProvider>
-      <BrowserRouter>
+      <BrowserRouter basename="/">
         <ScrollToTop />
         <Routes>
           <Route path={AppRoutes.Main} element={<MainPage />} />
