@@ -9,6 +9,8 @@ import { BreadcrumbsElement } from '../components/breadcrumbs-element/breadcrumb
 import { Product } from '../types/product';
 import { RatingElement } from '../components/main-catalog/rating-element';
 import cn from 'classnames';
+import { addToBusket } from '../store/actions';
+import { AddItemModal } from '../components/add-item-modal/add-item-modal';
 
 type ProductProps = {
   product: Product;
@@ -21,6 +23,7 @@ const PageTabs = {
 
 function ProductDetails({ product }: ProductProps) {
   const [activeTab, setActiveTab] = useState('');
+  const dispatch = useAppDispatch();
   // setActiveTab(PageTabs.Description);
 
   return (
@@ -52,7 +55,11 @@ function ProductDetails({ product }: ProductProps) {
               <span className="visually-hidden">Цена:</span>
               {product.price.toLocaleString()} ₽
             </p>
-            <button className="btn btn--purple" type="button">
+            <button
+              className="btn btn--purple"
+              type="button"
+              onClick={() => dispatch(addToBusket(product))}
+            >
               <svg width={24} height={16} aria-hidden="true">
                 <use xlinkHref="#icon-add-basket" />
               </svg>
@@ -62,7 +69,8 @@ function ProductDetails({ product }: ProductProps) {
               <div className="tabs__controls product__tabs-controls">
                 <button
                   className={cn('tabs__control', {
-                    'is-active': activeTab === PageTabs.Description || activeTab === '',
+                    'is-active':
+                      activeTab === PageTabs.Description || activeTab === '',
                   })}
                   type="button"
                   onClick={() => setActiveTab(PageTabs.Description)}
@@ -106,7 +114,8 @@ function ProductDetails({ product }: ProductProps) {
                 </div>
                 <div
                   className={cn('tabs__element', {
-                    'is-active': activeTab === PageTabs.Description || activeTab === '',
+                    'is-active':
+                      activeTab === PageTabs.Description || activeTab === '',
                   })}
                 >
                   <div className="product__tabs-text">
@@ -705,6 +714,7 @@ export function ProductPage() {
             </section>
           </div>
         </div>
+        <AddItemModal />
       </main>
       <a className="up-btn" href="#header">
         <svg width={12} height={18} aria-hidden="true">

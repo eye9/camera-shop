@@ -1,6 +1,9 @@
 import cn from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { selectAddBusketStatus, selectCurrentBusketItem } from '../../store/selectors';
+import {
+  selectAddBusketStatus,
+  selectCurrentBusketItem,
+} from '../../store/selectors';
 import { closeModal } from '../../store/actions';
 
 export function AddItemModal() {
@@ -23,34 +26,30 @@ export function AddItemModal() {
               <picture>
                 <source
                   type="image/webp"
-                  srcSet={`${item?.previewImgWebp}, ${item?.previewImgWebp2x} 2x"`}
+                  srcSet={`/${item?.previewImgWebp}, /${item?.previewImgWebp2x} 2x"`}
                 />
                 <img
-                  src={item?.previewImg}
-                  srcSet={`${item?.previewImg2x} 2x"`}
+                  src={`/${item.previewImg}`}
+                  srcSet={`/${item.previewImg2x} 2x`}
                   width={140}
                   height={120}
-                  alt={item?.name}
+                  alt={item.name}
                 />
               </picture>
             </div>
             <div className="basket-item__description">
-              <p className="basket-item__title">{item?.name}</p>
+              <p className="basket-item__title">{item.name}</p>
               <ul className="basket-item__list">
                 <li className="basket-item__list-item">
                   <span className="basket-item__article">Артикул:</span>{' '}
-                  <span className="basket-item__number">
-                    {item?.vendorCode}
-                  </span>
+                  <span className="basket-item__number">{item.vendorCode}</span>
                 </li>
                 <li className="basket-item__list-item">{item?.type} камера</li>
-                <li className="basket-item__list-item">
-                  {item?.level} уровень
-                </li>
+                <li className="basket-item__list-item">{item.level} уровень</li>
               </ul>
               <p className="basket-item__price">
                 <span className="visually-hidden">Цена:</span>
-                {item?.price.toLocaleString()} ₽
+                {item.price.toLocaleString()} ₽
               </p>
             </div>
           </div>
