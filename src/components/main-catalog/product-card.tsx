@@ -3,6 +3,8 @@ import { Product } from '../../types/product';
 import { RatingElement } from './rating-element';
 import { AppRoutes } from '../../const';
 import cn from 'classnames';
+import { useAppDispatch } from '../../hooks/hooks';
+import { addToBusket } from '../../store/actions';
 
 export type ProductCardProps = {
   product: Product;
@@ -14,6 +16,7 @@ function formatPrice(price: number) {
 }
 
 export function ProductCard({ product, activeClass }: ProductCardProps) {
+  const dispatch = useAppDispatch();
   return (
     <div className={cn('product-card', activeClass)} key={product.id}>
       <div className="product-card__img">
@@ -52,7 +55,7 @@ export function ProductCard({ product, activeClass }: ProductCardProps) {
           </svg>
           В корзине
         </a> */}
-        <button className="btn btn--purple product-card__btn" type="button">
+        <button className="btn btn--purple product-card__btn" type="button" onClick={() => dispatch(addToBusket(product))}>
           Купить
         </button>
         <Link

@@ -16,7 +16,9 @@ export function MainCatalog() {
   const [currentPage, setPage] = useState(Number(query.get('page')) || 1);
 
   const products = useAppSelector(selectProducts);
-  const pagesCount = Math.floor(products.length / CARDS_PER_PAGE) + (products.length % CARDS_PER_PAGE > 0 ? 1 : 0);
+  const pagesCount =
+    Math.floor(products.length / CARDS_PER_PAGE) +
+    (products.length % CARDS_PER_PAGE > 0 ? 1 : 0);
 
   return (
     <div className="page-content">
@@ -34,7 +36,11 @@ export function MainCatalog() {
                   currentPage * CARDS_PER_PAGE
                 )}
               />
-              <PaginatorElement onPageChange={setPage} pagesCount={pagesCount} currentPage={currentPage}/>
+              <PaginatorElement
+                onPageChange={setPage}
+                pagesCount={pagesCount}
+                currentPage={currentPage}
+              />
             </div>
           </div>
         </div>

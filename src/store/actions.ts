@@ -1,6 +1,8 @@
 import { createAction } from '@reduxjs/toolkit';
 import { Product, Products, Promos } from '../types/product';
 
+export const closeModal = createAction('window/closeModal');
+export const addToBusket = createAction<Product>('products/addToBasket');
 export const loadProducts = createAction<Products>('products/load');
 export const loadProduct = createAction<Product>('products/loadOne');
 export const loadPromo = createAction<Promos>('products/loadPromo');
