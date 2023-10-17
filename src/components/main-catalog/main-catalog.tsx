@@ -4,16 +4,15 @@ import { CatalogSort } from './catalog-sort';
 import { CatalogFilter } from './catalog-filter';
 import { BreadcrumbsElement } from '../breadcrumbs-element/breadcrumbs-element';
 import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { selectProducts } from '../../store/selectors';
 import { useAppSelector } from '../../hooks/hooks';
 
 const CARDS_PER_PAGE = 9;
 
 export function MainCatalog() {
-  const { search } = useLocation();
-  const query = new URLSearchParams(search);
-  const [currentPage, setPage] = useState(Number(query.get('page')) || 1);
+  const [search] = useSearchParams();
+  const [currentPage, setPage] = useState(Number(search.get('page')) || 1);
 
   const products = useAppSelector(selectProducts);
   const pagesCount =
