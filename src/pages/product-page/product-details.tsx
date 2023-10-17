@@ -3,7 +3,12 @@ import { useAppDispatch } from '../../hooks/hooks';
 import { RatingElement } from '../../components/main-catalog/rating-element';
 import cn from 'classnames';
 import { addToBusket } from '../../store/actions';
-import { ProductProps, PageTabs } from './product-page';
+import { ProductProps } from './product-page';
+
+const PageTabs = {
+  Features: 'features',
+  Description: 'description',
+} as const;
 
 export function ProductDetails({ product }: ProductProps) {
   const [activeTab, setActiveTab] = useState('');

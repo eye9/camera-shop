@@ -1,0 +1,7 @@
+.product-similar .product-card.is-active {
+  transition: translate 300ms ease-in-out;
+}
+
+.slider-controls {
+  z-index: 100;
+}
