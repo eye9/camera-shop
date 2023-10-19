@@ -1,16 +1,30 @@
 import { useEffect, useState } from 'react';
-import { Reviews } from '../../types/review';
+import { Review, Reviews } from '../../types/review';
 import { ReviewCard } from './review-card';
 
-const INIT_REVIEWS = 3;
+const INIT_REVIEWS_COUNT = 3;
 const READY_TO_LOAD_PX = 0;
 
 export type ProductReviewsProps = {
   reviews: Reviews;
 };
 
+function reviewSorter(a: Review, b: Review): number {
+  const dateA = new Date(a.createAt);
+  const dateB = new Date(b.createAt);
+
+  if (dateA < dateB) {
+    return -1;
+  } else if (dateA > dateB) {
+    return 1;
+  }
+
+  return 0;
+}
+
 export function ProductReviews({ reviews }: ProductReviewsProps) {
-  const [reviewsShown, setReviewsShown] = useState(INIT_REVIEWS);
+  const [reviewsShown, setReviewsShown] = useState(INIT_REVIEWS_COUNT);
+  const sortedReviews = reviews.slice().sort(reviewSorter);
 
   useEffect(() => {
     const handleDocumentScroll = () => {
@@ -19,7 +33,7 @@ export function ProductReviews({ reviews }: ProductReviewsProps) {
         window.innerHeight + window.scrollY >=
           document.body.offsetHeight - READY_TO_LOAD_PX
       ) {
-        setReviewsShown(reviewsShown + INIT_REVIEWS);
+        setReviewsShown(reviewsShown + INIT_REVIEWS_COUNT);
       }
     };
 
@@ -38,7 +52,7 @@ export function ProductReviews({ reviews }: ProductReviewsProps) {
           </button>
         </div>
         <ul className="review-block__list">
-          {reviews.slice(0, reviewsShown).map((review) => (
+          {sortedReviews.slice(0, reviewsShown).map((review) => (
             <ReviewCard review={review} key={review.id} />
           ))}
         </ul>
@@ -47,7 +61,7 @@ export function ProductReviews({ reviews }: ProductReviewsProps) {
             <button
               className="btn btn--purple"
               type="button"
-              onClick={() => setReviewsShown(reviewsShown + INIT_REVIEWS)}
+              onClick={() => setReviewsShown(reviewsShown + INIT_REVIEWS_COUNT)}
             >
               Показать больше отзывов
             </button>
