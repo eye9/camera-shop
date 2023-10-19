@@ -1,7 +1,15 @@
-.product-similar .product-card.is-active {
-  transition: translate 300ms ease-in-out;
+html {
+  scroll-behavior: smooth;
 }
 
 .slider-controls {
   z-index: 100;
+}
+
+.slider-controls:active {
+  pointer-events: all;
+}
+
+.product-similar .product-card.is-active {
+  width: 100%;
 }
