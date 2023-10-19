@@ -1,10 +1,11 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { addToBusket, closeModal, loadProduct, loadProducts, loadPromo, setDataLoadingStatus } from './actions';
+import { addToBusket, closeModal, loadProduct, loadProductReviews, loadProducts, loadPromo, setDataLoadingStatus } from './actions';
 import { State } from '../types/state';
 
 const initialState: State = {
   products: [],
   currentProduct: null,
+  productReviews: [],
   currentBusketItem: null,
   isAddBusketVisible: false,
   promo: [],
@@ -25,6 +26,9 @@ export const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(loadProduct, (state, action) => {
       state.currentProduct = action.payload;
+    })
+    .addCase(loadProductReviews, (state, action) => {
+      state.productReviews = action.payload;
     })
     .addCase(loadPromo, (state, action) => {
       state.promo = action.payload;

@@ -3,7 +3,7 @@ import { Reviews } from '../../types/review';
 import { ReviewCard } from './review-card';
 
 const INIT_REVIEWS = 3;
-const READY_TO_LOAD_PX = 100;
+const READY_TO_LOAD_PX = 0;
 
 export type ProductReviewsProps = {
   reviews: Reviews;

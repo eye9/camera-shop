@@ -3,48 +3,45 @@ import { FooterElement } from '../../components/footer-element/footer-element';
 import { HeaderElement } from '../../components/header-element/header-element';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { selectProduct } from '../../store/selectors';
-import { fetchProductAction } from '../../store/api-actions';
+import { selectDataStatus, selectProduct, selectProductReviews } from '../../store/selectors';
+import { fetchProductAction, fetchReviewsAction } from '../../store/api-actions';
 import { BreadcrumbsElement } from '../../components/breadcrumbs-element/breadcrumbs-element';
 import { Product } from '../../types/product';
 import { AddItemModal } from '../../components/add-item-modal/add-item-modal';
 import { ProductDetails } from './product-details';
 import { SimilarProducts } from './similar-products';
 import { ProductReviews } from './product-reviews';
-import { reviews } from '../../mock';
+import { NotFound } from '../not-found';
+import { LoadingElement } from '../../components/loading-element';
 
 export type ProductProps = {
   product: Product;
 };
 
 export function ProductPage() {
-  // const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  // const isDataLoading = useAppSelector(selectDataStatus);
   const { id } = useParams();
+  const isDataLoading = useAppSelector(selectDataStatus);
   const product = useAppSelector(selectProduct);
+  const reviews = useAppSelector(selectProductReviews);
 
   useEffect(() => {
     let shouldUpdate = true;
     if (id && shouldUpdate) {
       dispatch(fetchProductAction(id));
+      dispatch(fetchReviewsAction(id));
     }
     return () => {
       shouldUpdate = false;
     };
   }, [dispatch, id]);
 
-  // if (!id) {
-  //   return <NotFound />;
-  // }
+  if (!id) {
+    return <NotFound />;
+  }
 
-  // if (isDataLoading || !product) {
-  //   return <LoadingElement />;
-  // }
-
-  // DELETE this guard
-  if (!product) {
-    return '';
+  if (isDataLoading || !product) {
+    return <LoadingElement />;
   }
 
   return (

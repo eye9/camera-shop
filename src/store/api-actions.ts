@@ -5,10 +5,12 @@ import { Product, Products, Promos } from '../types/product';
 import { APIRoutes } from '../const';
 import {
   loadProduct,
+  loadProductReviews,
   loadProducts,
   loadPromo,
   setDataLoadingStatus,
 } from './actions';
+import { Reviews } from '../types/review';
 
 export const fetchProductsAction = createAsyncThunk<
   void,
@@ -38,6 +40,21 @@ export const fetchProductAction = createAsyncThunk<
   const { data } = await api.get<Product>(`${APIRoutes.Products}/${id}`);
   dispatch(setDataLoadingStatus(false));
   dispatch(loadProduct(data));
+});
+
+export const fetchReviewsAction = createAsyncThunk<
+  void,
+  string,
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>('products/fetchReviews', async (id, { dispatch, extra: api }) => {
+  dispatch(setDataLoadingStatus(true));
+  const { data } = await api.get<Reviews>(`${APIRoutes.Products}/${id}/reviews`);
+  dispatch(setDataLoadingStatus(false));
+  dispatch(loadProductReviews(data));
 });
 
 export const fetchPromoAction = createAsyncThunk<
