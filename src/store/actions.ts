@@ -3,10 +3,11 @@ import { Product, Products, Promos } from '../types/product';
 import { Reviews } from '../types/review';
 
 export const closeModal = createAction('window/closeModal');
-export const addToBusket = createAction<Product>('products/addToBasket');
+export const addToBusket = createAction<Product>('product/addToBasket');
 export const loadProducts = createAction<Products>('products/load');
-export const loadProductReviews = createAction<Reviews>('products/loadReviews');
-export const loadProduct = createAction<Product>('products/loadOne');
-export const loadPromo = createAction<Promos>('products/loadPromo');
-export const setDataLoadingStatus = createAction<boolean>('products/setLoadingStatus');
+export const loadSimilarProducts = createAction<Products>('product/loadSimilar');
+export const loadProductReviews = createAction<Reviews>('product/loadReviews');
+export const loadProduct = createAction<Product>('product/load');
+export const loadPromo = createAction<Promos>('promo/load');
+export const setDataLoadingStatus = createAction<boolean>('data/setLoadingStatus');
 

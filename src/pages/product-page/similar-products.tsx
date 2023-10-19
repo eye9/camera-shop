@@ -1,13 +1,17 @@
 import { useRef, useState } from 'react';
 import { ProductCard } from '../../components/main-catalog/product-card';
-import { similarProducts } from '../../mock';
+import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
+import { Products } from '../../types/product';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 import './similar-products.css';
-import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 
-export function SimilarProducts() {
+export type SimilarProductsProps = {
+  products: Products;
+}
+
+export function SimilarProducts({products: similarProducts} : SimilarProductsProps) {
   const ITEMS_PER_PAGE = 3;
   const [page, setPage] = useState(1);
   const sw = useSwiper();
@@ -43,42 +47,6 @@ export function SimilarProducts() {
     <section className="product-similar">
       <div className="container">
         <h2 className="title title--h3">Похожие товары</h2>
-        {/* <div className="product-similar__slider">
-          <div className="product-similar__slider-list">
-            {similarProducts.map((item, i) => (
-              <div style={{ translate: `${-100 * (page - 1)}%` }} key={item.id}>
-                <ProductCard
-                  product={item}
-                  // activeClass={'is-active'}
-                  activeClass={isInVisibleRange(i) ? 'is-active' : ''}
-                  key={item.id}
-                />
-              </div>
-            ))}
-          </div>
-          <button
-            className="slider-controls slider-controls--prev"
-            type="button"
-            aria-label="Предыдущий слайд"
-            disabled={isFirstPage()}
-            onClick={prevPage}
-          >
-            <svg width={7} height={12} aria-hidden="true">
-              <use xlinkHref="#icon-arrow" />
-            </svg>
-          </button>
-          <button
-            className="slider-controls slider-controls--next"
-            type="button"
-            aria-label="Следующий слайд"
-            disabled={isLastPage()}
-            onClick={nextPage}
-          >
-            <svg width={7} height={12} aria-hidden="true">
-              <use xlinkHref="#icon-arrow" />
-            </svg>
-          </button>
-        </div> */}
         <div className="product-similar__slider-list">
           <Swiper
             onSwiper={(swiper) => {

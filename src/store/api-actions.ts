@@ -8,6 +8,7 @@ import {
   loadProductReviews,
   loadProducts,
   loadPromo,
+  loadSimilarProducts,
   setDataLoadingStatus,
 } from './actions';
 import { Reviews } from '../types/review';
@@ -40,6 +41,21 @@ export const fetchProductAction = createAsyncThunk<
   const { data } = await api.get<Product>(`${APIRoutes.Products}/${id}`);
   dispatch(setDataLoadingStatus(false));
   dispatch(loadProduct(data));
+});
+
+export const fetchSimilarProductsAction = createAsyncThunk<
+  void,
+  string,
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>('products/fetchSimilar', async (id, { dispatch, extra: api }) => {
+  dispatch(setDataLoadingStatus(true));
+  const { data } = await api.get<Products>(`${APIRoutes.Products}/${id}/similar`);
+  dispatch(setDataLoadingStatus(false));
+  dispatch(loadSimilarProducts(data));
 });
 
 export const fetchReviewsAction = createAsyncThunk<

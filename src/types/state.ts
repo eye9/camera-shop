@@ -9,6 +9,7 @@ export type State = {
   currentBusketItem: Product | null;
   isAddBusketVisible: boolean;
   currentProduct: Product | null;
+  similarProducts: Products;
   productReviews: Reviews;
   promo: Promos;
   isDataLoading: boolean;

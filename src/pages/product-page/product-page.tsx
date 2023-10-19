@@ -3,8 +3,8 @@ import { FooterElement } from '../../components/footer-element/footer-element';
 import { HeaderElement } from '../../components/header-element/header-element';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { selectDataStatus, selectProduct, selectProductReviews } from '../../store/selectors';
-import { fetchProductAction, fetchReviewsAction } from '../../store/api-actions';
+import { selectDataStatus, selectProduct, selectProductReviews, selectSimilarProducts } from '../../store/selectors';
+import { fetchProductAction, fetchReviewsAction, fetchSimilarProductsAction } from '../../store/api-actions';
 import { BreadcrumbsElement } from '../../components/breadcrumbs-element/breadcrumbs-element';
 import { Product } from '../../types/product';
 import { AddItemModal } from '../../components/add-item-modal/add-item-modal';
@@ -23,12 +23,14 @@ export function ProductPage() {
   const { id } = useParams();
   const isDataLoading = useAppSelector(selectDataStatus);
   const product = useAppSelector(selectProduct);
+  const similarProducts = useAppSelector(selectSimilarProducts);
   const reviews = useAppSelector(selectProductReviews);
 
   useEffect(() => {
     let shouldUpdate = true;
     if (id && shouldUpdate) {
       dispatch(fetchProductAction(id));
+      dispatch(fetchSimilarProductsAction(id));
       dispatch(fetchReviewsAction(id));
     }
     return () => {
@@ -52,7 +54,7 @@ export function ProductPage() {
           <BreadcrumbsElement productName={product.name} />
           <ProductDetails product={product} />
           <div className="page-content__section">
-            <SimilarProducts />
+            <SimilarProducts products={similarProducts}/>
           </div>
           <div className="page-content__section">
             <ProductReviews reviews={reviews}/>
