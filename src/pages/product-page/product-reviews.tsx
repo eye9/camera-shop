@@ -44,6 +44,22 @@ export type ProductReviewsProps = {
 export function ProductReviews({ reviews }: ProductReviewsProps) {
   const [reviewsShown, setReviewsShown] = useState(INIT_REVIEWS);
 
+  useEffect(() => {
+    const handleDocumentScroll = () => {
+      if (
+        reviewsShown < reviews.length &&
+        window.innerHeight + window.scrollY >=
+          document.body.offsetHeight - READY_TO_LOAD_PX
+      ) {
+        setReviewsShown(reviewsShown + INIT_REVIEWS);
+      }
+    };
+
+    window.addEventListener('scroll', handleDocumentScroll);
+
+    return () => window.removeEventListener('scroll', handleDocumentScroll);
+  });
+
   return (
     <section className="review-block">
       <div className="container">
