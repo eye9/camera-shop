@@ -1,7 +1,7 @@
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { FooterElement } from '../../components/footer-element/footer-element';
 import { HeaderElement } from '../../components/header-element/header-element';
-import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { selectDataStatus, selectProduct, selectProductReviews, selectSimilarProducts } from '../../store/selectors';
 import { fetchProductAction, fetchReviewsAction, fetchSimilarProductsAction } from '../../store/api-actions';
@@ -13,6 +13,7 @@ import { SimilarProducts } from './similar-products';
 import { ProductReviews } from './product-reviews';
 import { NotFound } from '../not-found';
 import { LoadingElement } from '../../components/loading-element';
+import { AddReviewModal } from '../../components/add-review-modal/add-review-modal';
 
 export type ProductProps = {
   product: Product;
@@ -61,6 +62,7 @@ export function ProductPage() {
           </div>
         </div>
         <AddItemModal />
+        <AddReviewModal />
       </main>
       <a className="up-btn" href="#header">
         <svg width={12} height={18} aria-hidden="true">
