@@ -10,8 +10,9 @@ import {
   loadPromo,
   loadSimilarProducts,
   setDataLoadingStatus,
+  setReviewAdded,
 } from './actions';
-import { Reviews } from '../types/review';
+import { Review, Reviews } from '../types/review';
 
 export const fetchProductsAction = createAsyncThunk<
   void,
@@ -86,4 +87,17 @@ export const fetchPromoAction = createAsyncThunk<
   const { data } = await api.get<Promos>(APIRoutes.Promo);
   dispatch(setDataLoadingStatus(false));
   dispatch(loadPromo(data));
+});
+
+export const sendReviewAction = createAsyncThunk<
+  void,
+  Review,
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>('reviews/add', async (review, { dispatch, extra: api }) => {
+  await api.post<Review>(APIRoutes.Reviews, review);
+  dispatch(setReviewAdded(true));
 });

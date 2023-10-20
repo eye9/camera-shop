@@ -13,4 +13,5 @@ export type State = {
   productReviews: Reviews;
   promo: Promos;
   isDataLoading: boolean;
+  isReviewAdded: boolean;
 };

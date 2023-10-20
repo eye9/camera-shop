@@ -62,7 +62,7 @@ export function ProductPage() {
           </div>
         </div>
         <AddItemModal />
-        <AddReviewModal />
+        <AddReviewModal product={product} />
       </main>
       <a className="up-btn" href="#header">
         <svg width={12} height={18} aria-hidden="true">

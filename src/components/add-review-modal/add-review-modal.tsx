@@ -7,9 +7,21 @@ import {
   useState,
 } from 'react';
 import { useAppDispatch } from '../../hooks/hooks';
+import { sendReviewAction } from '../../store/api-actions';
+import { Product } from '../../types/product';
 
-export function AddReviewModal(): JSX.Element {
+type AddReviewModalProps = {
+  product: Product;
+};
+
+export function AddReviewModal({ product }: AddReviewModalProps): JSX.Element {
   const isVisible = true;
+  const isInvalidRating = true;
+  const isInvalidName = false;
+  const isInvalidAdvantage = true;
+  const isInvalidDisadvantage = true;
+  const isInvalidReview = true;
+
   const dispatch = useAppDispatch();
   const RateTitles = ['Ужасно', 'Плохо', 'Нормально', 'Хорошо', 'Отлично'];
   const [raiting, setRaiting] = useState(0);
@@ -20,9 +32,7 @@ export function AddReviewModal(): JSX.Element {
   const reviewRef = useRef<HTMLTextAreaElement | null>(null);
 
   const isValidTextField = (
-    field: MutableRefObject<
-      HTMLInputElement | HTMLTextAreaElement | null
-    >
+    field: MutableRefObject<HTMLInputElement | HTMLTextAreaElement | null>
   ): boolean =>
     field.current !== null &&
     field.current?.value.length !== undefined &&
@@ -43,8 +53,17 @@ export function AddReviewModal(): JSX.Element {
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     if (validateForm()) {
-      console.log(true);
-      // dispatch(sendReviewAction({}));
+      dispatch(
+        sendReviewAction({
+          rating: raiting,
+          cameraId: product.id,
+          userName: userNameRef.current?.value,
+          advantage: advantageRef.current?.value,
+          disadvantage: disadvantageRef.current?.value,
+          review: reviewRef.current?.value,
+        })
+      );
+
     }
   };
 
@@ -57,7 +76,11 @@ export function AddReviewModal(): JSX.Element {
           <div className="form-review">
             <form method="post" onSubmit={handleSubmit}>
               <div className="form-review__rate">
-                <fieldset className="rate form-review__item">
+                <fieldset
+                  className={cn('rate form-review__item', {
+                    'is-invalid': isInvalidRating,
+                  })}
+                >
                   <legend className="rate__caption">
                     Рейтинг
                     <svg width={9} height={9} aria-hidden="true">
@@ -93,7 +116,11 @@ export function AddReviewModal(): JSX.Element {
                   </div>
                   <p className="rate__message">Нужно оценить товар</p>
                 </fieldset>
-                <div className="custom-input form-review__item">
+                <div
+                  className={cn('custom-input form-review__item', {
+                    'is-invalid': isInvalidName,
+                  })}
+                >
                   <label>
                     <span className="custom-input__label">
                       Ваше имя
@@ -111,7 +138,11 @@ export function AddReviewModal(): JSX.Element {
                   </label>
                   <p className="custom-input__error">Нужно указать имя</p>
                 </div>
-                <div className="custom-input form-review__item">
+                <div
+                  className={cn('custom-input form-review__item', {
+                    'is-invalid': isInvalidAdvantage,
+                  })}
+                >
                   <label>
                     <span className="custom-input__label">
                       Достоинства
@@ -131,7 +162,11 @@ export function AddReviewModal(): JSX.Element {
                     Нужно указать достоинства
                   </p>
                 </div>
-                <div className="custom-input form-review__item">
+                <div
+                  className={cn('custom-input form-review__item', {
+                    'is-invalid': isInvalidDisadvantage,
+                  })}
+                >
                   <label>
                     <span className="custom-input__label">
                       Недостатки
@@ -151,7 +186,11 @@ export function AddReviewModal(): JSX.Element {
                     Нужно указать недостатки
                   </p>
                 </div>
-                <div className="custom-textarea form-review__item">
+                <div
+                  className={cn('custom-textarea form-review__item', {
+                    'is-invalid': isInvalidReview,
+                  })}
+                >
                   <label>
                     <span className="custom-textarea__label">
                       Комментарий
