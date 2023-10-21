@@ -1,8 +1,10 @@
 import cn from 'classnames';
 import {
   ChangeEvent,
+  Dispatch,
   FormEvent,
   MutableRefObject,
+  SetStateAction,
   useRef,
   useState,
 } from 'react';
@@ -15,39 +17,63 @@ type AddReviewModalProps = {
 };
 
 export function AddReviewModal({ product }: AddReviewModalProps): JSX.Element {
-  const isVisible = true;
-  const isInvalidRating = true;
-  const isInvalidName = false;
-  const isInvalidAdvantage = true;
-  const isInvalidDisadvantage = true;
-  const isInvalidReview = true;
-
   const dispatch = useAppDispatch();
+  const [isVisible, setVisible] = useState(true);
   const RateTitles = ['Ужасно', 'Плохо', 'Нормально', 'Хорошо', 'Отлично'];
-  const [raiting, setRaiting] = useState(0);
 
+  const [isValidRating, setRaitingValidity] = useState(true);
+  const [isValidName, setUserNameValidity] = useState(true);
+  const [isValidAdvantage, setAdvantageValidity] = useState(true);
+  const [isValidDisadvantage, setDisadvantageValidity] = useState(true);
+  const [isValidReview, setReviewValidity] = useState(true);
+
+  const [raiting, setRaiting] = useState(0);
   const userNameRef = useRef<HTMLInputElement | null>(null);
   const advantageRef = useRef<HTMLInputElement | null>(null);
   const disadvantageRef = useRef<HTMLInputElement | null>(null);
   const reviewRef = useRef<HTMLTextAreaElement | null>(null);
 
-  const isValidTextField = (
-    field: MutableRefObject<HTMLInputElement | HTMLTextAreaElement | null>
-  ): boolean =>
-    field.current !== null &&
-    field.current?.value.length !== undefined &&
-    field.current?.value.length > 1 &&
-    field.current?.value.length < 161;
+  function ValidateRaiting() {
+    if (raiting === 0) {
+      setRaitingValidity(false);
+    }
+  }
 
-  const validateForm = () =>
-    raiting > 0 &&
-    isValidTextField(userNameRef) &&
-    isValidTextField(advantageRef) &&
-    isValidTextField(disadvantageRef) &&
-    isValidTextField(reviewRef);
+  const ValidateTextField = (
+    field: MutableRefObject<HTMLInputElement | HTMLTextAreaElement | null>,
+    dispatchFn: Dispatch<SetStateAction<boolean>>
+  ): boolean => {
+    const isValid =
+      field.current !== null &&
+      field.current?.value.length > 1 &&
+      field.current?.value.length < 161;
+    if (isValid) {
+      dispatchFn(true);
+    } else {
+      dispatchFn(false);
+    }
+    return isValid;
+  };
+
+  const validateForm = () => {
+    ValidateRaiting();
+    ValidateTextField(userNameRef, setUserNameValidity);
+    ValidateTextField(advantageRef, setAdvantageValidity);
+    ValidateTextField(disadvantageRef, setDisadvantageValidity);
+    ValidateTextField(reviewRef, setReviewValidity);
+
+    return (
+      isValidRating &&
+      isValidName &&
+      isValidAdvantage &&
+      isValidDisadvantage &&
+      isValidReview
+    );
+  };
 
   const handleRaitingInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setRaiting(+e.target.value);
+    setRaitingValidity(true);
   };
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
@@ -63,7 +89,7 @@ export function AddReviewModal({ product }: AddReviewModalProps): JSX.Element {
           review: reviewRef.current?.value,
         })
       );
-
+      setVisible(false);
     }
   };
 
@@ -74,11 +100,11 @@ export function AddReviewModal({ product }: AddReviewModalProps): JSX.Element {
         <div className="modal__content">
           <p className="title title--h4">Оставить отзыв</p>
           <div className="form-review">
-            <form method="post" onSubmit={handleSubmit}>
+            <form method="post" onSubmit={handleSubmit} noValidate>
               <div className="form-review__rate">
                 <fieldset
                   className={cn('rate form-review__item', {
-                    'is-invalid': isInvalidRating,
+                    'is-invalid': !isValidRating,
                   })}
                 >
                   <legend className="rate__caption">
@@ -118,7 +144,7 @@ export function AddReviewModal({ product }: AddReviewModalProps): JSX.Element {
                 </fieldset>
                 <div
                   className={cn('custom-input form-review__item', {
-                    'is-invalid': isInvalidName,
+                    'is-invalid': !isValidName,
                   })}
                 >
                   <label>
@@ -140,7 +166,7 @@ export function AddReviewModal({ product }: AddReviewModalProps): JSX.Element {
                 </div>
                 <div
                   className={cn('custom-input form-review__item', {
-                    'is-invalid': isInvalidAdvantage,
+                    'is-invalid': !isValidAdvantage,
                   })}
                 >
                   <label>
@@ -164,7 +190,7 @@ export function AddReviewModal({ product }: AddReviewModalProps): JSX.Element {
                 </div>
                 <div
                   className={cn('custom-input form-review__item', {
-                    'is-invalid': isInvalidDisadvantage,
+                    'is-invalid': !isValidDisadvantage,
                   })}
                 >
                   <label>
@@ -188,7 +214,7 @@ export function AddReviewModal({ product }: AddReviewModalProps): JSX.Element {
                 </div>
                 <div
                   className={cn('custom-textarea form-review__item', {
-                    'is-invalid': isInvalidReview,
+                    'is-invalid': !isValidReview,
                   })}
                 >
                   <label>
@@ -201,7 +227,7 @@ export function AddReviewModal({ product }: AddReviewModalProps): JSX.Element {
                     <textarea
                       ref={reviewRef}
                       name="user-comment"
-                      minLength={5}
+                      minLength={2}
                       placeholder="Поделитесь своим опытом покупки"
                       defaultValue={''}
                     />
