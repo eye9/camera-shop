@@ -11,4 +11,5 @@ export const loadProduct = createAction<Product>('product/load');
 export const loadPromo = createAction<Promos>('promo/load');
 export const setDataLoadingStatus = createAction<boolean>('data/setLoadingStatus');
 export const setReviewAdded = createAction<boolean>('data/setReviewAdded');
+export const setReviewModalVisibleStatus = createAction<boolean>('data/setReviewModalVisibleStatus');
 

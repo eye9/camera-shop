@@ -8,9 +8,11 @@ import {
   useRef,
   useState,
 } from 'react';
-import { useAppDispatch } from '../../hooks/hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { sendReviewAction } from '../../store/api-actions';
 import { Product } from '../../types/product';
+import { selectReviewModalStatus } from '../../store/selectors';
+import { setReviewModalVisibleStatus } from '../../store/actions';
 
 type AddReviewModalProps = {
   product: Product;
@@ -18,7 +20,7 @@ type AddReviewModalProps = {
 
 export function AddReviewModal({ product }: AddReviewModalProps): JSX.Element {
   const dispatch = useAppDispatch();
-  const [isVisible, setVisible] = useState(true);
+  const isVisible = useAppSelector(selectReviewModalStatus);
   const RateTitles = ['Ужасно', 'Плохо', 'Нормально', 'Хорошо', 'Отлично'];
 
   const [isValidRating, setRaitingValidity] = useState(true);
@@ -45,13 +47,10 @@ export function AddReviewModal({ product }: AddReviewModalProps): JSX.Element {
   ): boolean => {
     const isValid =
       field.current !== null &&
-      field.current?.value.length > 1 &&
-      field.current?.value.length < 161;
-    if (isValid) {
-      dispatchFn(true);
-    } else {
-      dispatchFn(false);
-    }
+      field.current.value.length > 1 &&
+      field.current.value.length < 161;
+
+    dispatchFn(isValid);
     return isValid;
   };
 
@@ -89,7 +88,6 @@ export function AddReviewModal({ product }: AddReviewModalProps): JSX.Element {
           review: reviewRef.current?.value,
         })
       );
-      setVisible(false);
     }
   };
 
@@ -249,6 +247,7 @@ export function AddReviewModal({ product }: AddReviewModalProps): JSX.Element {
             className="cross-btn"
             type="button"
             aria-label="Закрыть попап"
+            onClick={() => dispatch(setReviewModalVisibleStatus(false))}
           >
             <svg width={10} height={10} aria-hidden="true">
               <use xlinkHref="#icon-close" />

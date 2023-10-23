@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { addToBusket, closeModal, loadProduct, loadProductReviews, loadProducts, loadPromo, loadSimilarProducts, setDataLoadingStatus, setReviewAdded } from './actions';
+import { addToBusket, closeModal, loadProduct, loadProductReviews, loadProducts, loadPromo, loadSimilarProducts, setDataLoadingStatus, setReviewAdded, setReviewModalVisibleStatus } from './actions';
 import { State } from '../types/state';
 
 const initialState: State = {
@@ -12,12 +12,16 @@ const initialState: State = {
   promo: [],
   isDataLoading: false,
   isReviewAdded: false,
+  isReviewModalVisible: false,
 };
 
 export const reducer = createReducer(initialState, (builder) => {
   builder
     .addCase(closeModal, (state) => {
       state.isAddBusketVisible = false;
+    })
+    .addCase(setReviewModalVisibleStatus, (state, action) => {
+      state.isReviewModalVisible = action.payload;
     })
     .addCase(addToBusket, (state, action) => {
       state.isAddBusketVisible = true;
@@ -43,5 +47,6 @@ export const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setReviewAdded, (state, action) => {
       state.isReviewAdded = action.payload;
+      state.isReviewModalVisible = false;
     });
 });

@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Review, Reviews } from '../../types/review';
 import { ReviewCard } from './review-card';
+import { useAppDispatch } from '../../hooks/hooks';
+import { setReviewModalVisibleStatus } from '../../store/actions';
 
 const INIT_REVIEWS_COUNT = 3;
 const READY_TO_LOAD_PX = 0;
@@ -25,6 +27,7 @@ function reviewSorter(a: Review, b: Review): number {
 export function ProductReviews({ reviews }: ProductReviewsProps) {
   const [reviewsShown, setReviewsShown] = useState(INIT_REVIEWS_COUNT);
   const sortedReviews = reviews.slice().sort(reviewSorter);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const handleDocumentScroll = () => {
@@ -47,7 +50,7 @@ export function ProductReviews({ reviews }: ProductReviewsProps) {
       <div className="container">
         <div className="page-content__headed">
           <h2 className="title title--h3">Отзывы</h2>
-          <button className="btn" type="button">
+          <button className="btn" type="button" onClick={() => dispatch(setReviewModalVisibleStatus(true))}>
             Оставить свой отзыв
           </button>
         </div>

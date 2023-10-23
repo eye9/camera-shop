@@ -14,4 +14,5 @@ export type State = {
   promo: Promos;
   isDataLoading: boolean;
   isReviewAdded: boolean;
+  isReviewModalVisible: boolean;
 };

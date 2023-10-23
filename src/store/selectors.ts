@@ -10,3 +10,4 @@ export const selectProduct = (state: State): Product | null => state.currentProd
 export const selectProductReviews = (state: State): Reviews => state.productReviews;
 export const selectPromo = (state: State): PromoProducts => state.promo;
 export const selectDataStatus = (state: State): boolean => state.isDataLoading;
+export const selectReviewModalStatus = (state: State): boolean => state.isReviewModalVisible;
