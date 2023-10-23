@@ -94,7 +94,7 @@ export function AddReviewModal({ product }: AddReviewModalProps): JSX.Element {
   return (
     <div className={cn('modal', { 'is-active': isVisible })}>
       <div className="modal__wrapper">
-        <div className="modal__overlay" />
+        <div className="modal__overlay" onClick={() => dispatch(setReviewModalVisibleStatus(false))}/>
         <div className="modal__content">
           <p className="title title--h4">Оставить отзыв</p>
           <div className="form-review">
