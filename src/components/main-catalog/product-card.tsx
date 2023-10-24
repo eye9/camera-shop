@@ -46,15 +46,6 @@ export function ProductCard({ product, activeClass }: ProductCardProps) {
         </p>
       </div>
       <div className="product-card__buttons">
-        {/* <a
-          className="btn btn--purple-border product-card__btn product-card__btn--in-cart"
-          href="#"
-        >
-          <svg width={16} height={16} aria-hidden="true">
-            <use xlinkHref="#icon-basket" />
-          </svg>
-          В корзине
-        </a> */}
         <button className="btn btn--purple product-card__btn" type="button" onClick={() => dispatch(addToBusket(product))}>
           Купить
         </button>

@@ -1,6 +1,6 @@
 export type Review = {
   id?: string;
-  createAt?: string;
+  createAt: string;
   cameraId: number;
   userName?: string;
   advantage?: string;

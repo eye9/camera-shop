@@ -4,12 +4,19 @@ import {
   selectAddBusketStatus,
   selectCurrentBusketItem,
 } from '../../store/selectors';
-import { closeModal } from '../../store/actions';
+import { setBusketModalVisibleStatus } from '../../store/actions';
+import { useEffect, useRef } from 'react';
 
 export function AddItemModal() {
   const dispatch = useAppDispatch();
+  const addButtonRef = useRef<HTMLButtonElement>(null);
+
   const item = useAppSelector(selectCurrentBusketItem);
   const isVisible = useAppSelector(selectAddBusketStatus);
+
+  useEffect(() => {
+    setTimeout(() => addButtonRef.current?.focus(), 500);
+  });
 
   if (!item) {
     return '';
@@ -18,7 +25,12 @@ export function AddItemModal() {
   return (
     <div className={cn('modal', { 'is-active': isVisible })}>
       <div className="modal__wrapper">
-        <div className="modal__overlay" />
+        <div
+          className="modal__overlay"
+          onClick={() => {
+            dispatch(setBusketModalVisibleStatus(false));
+          }}
+        />
         <div className="modal__content">
           <p className="title title--h4">Добавить товар в корзину</p>
           <div className="basket-item basket-item--short">
@@ -55,6 +67,7 @@ export function AddItemModal() {
           </div>
           <div className="modal__buttons">
             <button
+              ref={addButtonRef}
               className="btn btn--purple modal__btn modal__btn--fit-width"
               type="button"
             >
@@ -69,7 +82,7 @@ export function AddItemModal() {
             type="button"
             aria-label="Закрыть попап"
             onClick={() => {
-              dispatch(closeModal());
+              dispatch(setBusketModalVisibleStatus(false));
             }}
           >
             <svg width={10} height={10} aria-hidden="true">

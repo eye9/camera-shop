@@ -91,6 +91,7 @@ export function AddReviewModal({ product }: AddReviewModalProps): JSX.Element {
           advantage: advantageRef.current?.value,
           disadvantage: disadvantageRef.current?.value,
           review: reviewRef.current?.value,
+          createAt: Date.now().toString()
         })
       );
     }
