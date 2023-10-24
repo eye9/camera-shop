@@ -5,6 +5,7 @@ import {
   FormEvent,
   MutableRefObject,
   SetStateAction,
+  useEffect,
   useRef,
   useState,
 } from 'react';
@@ -34,6 +35,10 @@ export function AddReviewModal({ product }: AddReviewModalProps): JSX.Element {
   const advantageRef = useRef<HTMLInputElement | null>(null);
   const disadvantageRef = useRef<HTMLInputElement | null>(null);
   const reviewRef = useRef<HTMLTextAreaElement | null>(null);
+
+  useEffect(() => {
+    setTimeout(() => userNameRef.current?.focus(), 500);
+  });
 
   function ValidateRaiting() {
     if (raiting === 0) {
@@ -94,7 +99,10 @@ export function AddReviewModal({ product }: AddReviewModalProps): JSX.Element {
   return (
     <div className={cn('modal', { 'is-active': isVisible })}>
       <div className="modal__wrapper">
-        <div className="modal__overlay" onClick={() => dispatch(setReviewModalVisibleStatus(false))}/>
+        <div
+          className="modal__overlay"
+          onClick={() => dispatch(setReviewModalVisibleStatus(false))}
+        />
         <div className="modal__content">
           <p className="title title--h4">Оставить отзыв</p>
           <div className="form-review">
