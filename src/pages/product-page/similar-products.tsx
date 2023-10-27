@@ -9,9 +9,11 @@ import './similar-products.css';
 
 export type SimilarProductsProps = {
   products: Products;
-}
+};
 
-export function SimilarProducts({products: similarProducts} : SimilarProductsProps) {
+export function SimilarProducts({
+  products: similarProducts,
+}: SimilarProductsProps) {
   const ITEMS_PER_PAGE = 3;
   const [page, setPage] = useState(1);
   const sw = useSwiper();
@@ -47,18 +49,18 @@ export function SimilarProducts({products: similarProducts} : SimilarProductsPro
     <section className="product-similar">
       <div className="container">
         <h2 className="title title--h3">Похожие товары</h2>
-        <div className="product-similar__slider-list">
-          <Swiper
-            onSwiper={(swiper) => {
-              swiperRef.current = swiper;
-            }}
-            freeMode={false}
-            allowTouchMove={false}
-            slidesPerView={3}
-            spaceBetween={30}
-            className="mySwiper"
-          >
-            <div className="product-similar__slider">
+        <div className="product-similar__slider">
+          <div className="product-similar__slider-list">
+            <Swiper
+              onSwiper={(swiper) => {
+                swiperRef.current = swiper;
+              }}
+              freeMode={false}
+              allowTouchMove={false}
+              slidesPerView={3}
+              spaceBetween={30}
+              className="mySwiper"
+            >
               {similarProducts.map((item, i) => (
                 <SwiperSlide key={item.id}>
                   <ProductCard
@@ -69,31 +71,31 @@ export function SimilarProducts({products: similarProducts} : SimilarProductsPro
                   />
                 </SwiperSlide>
               ))}
-            </div>
-          </Swiper>
+            </Swiper>
+            <button
+              className="slider-controls slider-controls--prev"
+              type="button"
+              aria-label="Предыдущий слайд"
+              disabled={isFirstPage()}
+              onClick={prevPage}
+            >
+              <svg width={7} height={12} aria-hidden="true">
+                <use xlinkHref="#icon-arrow" />
+              </svg>
+            </button>
+            <button
+              className="slider-controls slider-controls--next"
+              type="button"
+              aria-label="Следующий слайд"
+              disabled={isLastPage()}
+              onClick={nextPage}
+            >
+              <svg width={7} height={12} aria-hidden="true">
+                <use xlinkHref="#icon-arrow" />
+              </svg>
+            </button>
+          </div>
         </div>
-        <button
-          className="slider-controls slider-controls--prev"
-          type="button"
-          aria-label="Предыдущий слайд"
-          disabled={isFirstPage()}
-          onClick={prevPage}
-        >
-          <svg width={7} height={12} aria-hidden="true">
-            <use xlinkHref="#icon-arrow" />
-          </svg>
-        </button>
-        <button
-          className="slider-controls slider-controls--next"
-          type="button"
-          aria-label="Следующий слайд"
-          disabled={isLastPage()}
-          onClick={nextPage}
-        >
-          <svg width={7} height={12} aria-hidden="true">
-            <use xlinkHref="#icon-arrow" />
-          </svg>
-        </button>
       </div>
     </section>
   );
