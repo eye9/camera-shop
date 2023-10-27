@@ -12,7 +12,7 @@ import {
   setDataLoadingStatus,
   setReviewAdded,
 } from './actions';
-import { Review, Reviews } from '../types/review';
+import { AddReview, Review, Reviews } from '../types/review';
 
 export const fetchProductsAction = createAsyncThunk<
   void,
@@ -54,7 +54,9 @@ export const fetchSimilarProductsAction = createAsyncThunk<
   }
 >('products/fetchSimilar', async (id, { dispatch, extra: api }) => {
   dispatch(setDataLoadingStatus(true));
-  const { data } = await api.get<Products>(`${APIRoutes.Products}/${id}/similar`);
+  const { data } = await api.get<Products>(
+    `${APIRoutes.Products}/${id}/similar`
+  );
   dispatch(setDataLoadingStatus(false));
   dispatch(loadSimilarProducts(data));
 });
@@ -69,7 +71,9 @@ export const fetchReviewsAction = createAsyncThunk<
   }
 >('products/fetchReviews', async (id, { dispatch, extra: api }) => {
   dispatch(setDataLoadingStatus(true));
-  const { data } = await api.get<Reviews>(`${APIRoutes.Products}/${id}/reviews`);
+  const { data } = await api.get<Reviews>(
+    `${APIRoutes.Products}/${id}/reviews`
+  );
   dispatch(setDataLoadingStatus(false));
   dispatch(loadProductReviews(data));
 });
@@ -91,7 +95,7 @@ export const fetchPromoAction = createAsyncThunk<
 
 export const sendReviewAction = createAsyncThunk<
   void,
-  Review,
+  AddReview,
   {
     dispatch: AppDispatch;
     state: State;
@@ -100,4 +104,5 @@ export const sendReviewAction = createAsyncThunk<
 >('reviews/add', async (review, { dispatch, extra: api }) => {
   await api.post<Review>(APIRoutes.Reviews, review);
   dispatch(setReviewAdded(true));
+  dispatch(fetchReviewsAction(String(review.cameraId)));
 });
