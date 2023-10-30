@@ -6,10 +6,14 @@ type RatingElementProps = {
 const MAX_STARS = 5;
 
 export function RatingElement({ rating, reviewCount }: RatingElementProps) {
+
   return (
     <div className="rate product-card__rate">
       {Array.from({ length: MAX_STARS }).map((_, i) => {
         let link = '#icon-full-star';
+        if (!rating) {
+          rating = 0;
+        }
         if (i + 1 > rating) {
           link = '#icon-star';
         }
@@ -40,6 +44,9 @@ export function GradeElement({ rating }: GradeElementProps) {
     <div className="rate review-card__rate">
       {Array.from({ length: MAX_STARS }).map((_, i) => {
         let link = '#icon-full-star';
+        if (!rating) {
+          rating = 0;
+        }
         if (i + 1 > rating) {
           link = '#icon-star';
         }
