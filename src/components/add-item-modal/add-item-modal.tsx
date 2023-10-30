@@ -19,7 +19,7 @@ export function AddItemModal() {
   });
 
   if (!item) {
-    return '';
+    return null;
   }
 
   return (

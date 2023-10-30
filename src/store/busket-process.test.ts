@@ -1,4 +1,3 @@
-import { Product } from '../types/product';
 import { makeFakeProduct } from '../utils/mocks';
 import { addToBusket, busketProcess, setBusketModalVisibleStatus } from './busket-process';
 

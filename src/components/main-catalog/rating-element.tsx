@@ -1,5 +1,5 @@
 type RatingElementProps = {
-  rating: number;
+  rating?: number;
   reviewCount: number;
 };
 
