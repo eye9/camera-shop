@@ -87,6 +87,4 @@ export const sendReviewAction = createAsyncThunk<
   }
 >('reviews/add', async (review, { extra: api }) => {
   await api.post<Review>(APIRoutes.Reviews, review);
-  // dispatch(setReviewAddedStatus(true));
-  // dispatch(fetchReviewsAction(String(review.cameraId)));
 });

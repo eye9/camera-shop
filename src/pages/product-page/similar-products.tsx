@@ -66,7 +66,6 @@ export function SimilarProducts({
                   <ProductCard
                     product={item}
                     activeClass={isInVisibleRange(i) ? 'is-active' : ''}
-                    // activeClass={'is-active'}
                     key={item.id}
                   />
                 </SwiperSlide>

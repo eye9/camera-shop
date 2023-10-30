@@ -74,6 +74,7 @@ export function AddReviewModal({ product }: AddReviewModalProps): JSX.Element {
       root.style.position = 'fixed';
       root.style.top = `-${scrollTop}px`;
       root.style.overflow = 'hidden';
+      root.style.scrollBehavior = 'auto';
       isOn = true;
     }
 
@@ -86,9 +87,8 @@ export function AddReviewModal({ product }: AddReviewModalProps): JSX.Element {
       root.style.position = '';
       root.style.top = '';
       root.style.overflow = '';
-      // document.documentElement.style.scrollBehavior = '';
       window.scroll(0, scrollTop);
-      // root.style.scrollBehavior = 'smooth;';
+      root.style.scrollBehavior = 'smooth';
       isOn = false;
     }
     if (isVisible) {
