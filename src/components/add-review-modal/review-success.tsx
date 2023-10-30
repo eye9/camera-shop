@@ -1,6 +1,10 @@
+import cn from 'classnames';
+import { useState } from 'react';
+
 export default function ReviewSuccess(): JSX.Element {
+  const [isActive, setActive] = useState(true);
   return (
-    <div className="modal is-active modal--narrow">
+    <div className={cn('modal modal--narrow', {'is-active': isActive})}>
       <div className="modal__wrapper">
         <div className="modal__overlay" />
         <div className="modal__content">
@@ -17,6 +21,7 @@ export default function ReviewSuccess(): JSX.Element {
             <button
               className="btn btn--purple modal__btn modal__btn--fit-width"
               type="button"
+              onClick={() => setActive(false)}
             >
               Вернуться к покупкам
             </button>
