@@ -39,3 +39,5 @@ export const reviewProcess = createSlice({
       });
   },
 });
+
+export const { setReviewModalVisibleStatus } = reviewProcess.actions;

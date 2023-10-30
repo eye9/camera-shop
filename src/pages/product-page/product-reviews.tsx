@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Review, Reviews } from '../../types/review';
 import { ReviewCard } from './review-card';
 import { useAppDispatch } from '../../hooks/hooks';
-import { setReviewModalVisibleStatus } from '../../store/actions';
+import { setReviewModalVisibleStatus } from '../../store/review-process';
 
 const INIT_REVIEWS_COUNT = 3;
 const READY_TO_LOAD_PX = 0;

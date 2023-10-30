@@ -13,7 +13,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { sendReviewAction } from '../../store/api-actions';
 import { Product } from '../../types/product';
 import { selectReviewModalStatus } from '../../store/selectors';
-import { setReviewModalVisibleStatus } from '../../store/actions';
+import { setReviewModalVisibleStatus } from '../../store/review-process';
 
 type AddReviewModalProps = {
   product: Product;
