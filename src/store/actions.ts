@@ -11,7 +11,7 @@ export const loadProductReviews = createAction<Reviews>('product/loadReviews');
 export const setReviewAddedStatus = createAction<boolean>('status/setReviewAdded');
 export const setReviewModalVisibleStatus = createAction<boolean>('status/setReviewModalVisibleStatus');
 
-export const setDataLoadingStatus = createAction<boolean>('status/setLoadingStatus');
+// export const setDataLoadingStatus = createAction<boolean>('status/setLoadingStatus');
 
-export const addToBusket = createAction<Product>('product/addToBasket');
-export const setBusketModalVisibleStatus = createAction<boolean>('status/setBusketModalVisibleStatus');
+// export const addToBusket = createAction<Product>('product/addToBasket');
+// export const setBusketModalVisibleStatus = createAction<boolean>('status/setBusketModalVisibleStatus');

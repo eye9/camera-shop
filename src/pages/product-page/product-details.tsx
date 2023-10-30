@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useAppDispatch } from '../../hooks/hooks';
 import { RatingElement } from '../../components/main-catalog/rating-element';
 import cn from 'classnames';
-import { addToBusket } from '../../store/actions';
+import { addToBusket } from '../../store/busket-process';
 import { ProductProps } from './product-page';
 import { useSearchParams } from 'react-router-dom';
 

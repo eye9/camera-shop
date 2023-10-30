@@ -4,7 +4,7 @@ import { RatingElement } from './rating-element';
 import { AppRoutes } from '../../const';
 import cn from 'classnames';
 import { useAppDispatch } from '../../hooks/hooks';
-import { addToBusket } from '../../store/actions';
+import { addToBusket } from '../../store/busket-process';
 
 export type ProductCardProps = {
   product: Product;

@@ -4,7 +4,7 @@ import {
   selectAddBusketStatus,
   selectCurrentBusketItem,
 } from '../../store/selectors';
-import { setBusketModalVisibleStatus } from '../../store/actions';
+import { setBusketModalVisibleStatus } from '../../store/busket-process';
 import { useEffect, useRef } from 'react';
 
 export function AddItemModal() {

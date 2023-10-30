@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../const';
 import { Product } from '../types/product';
 
@@ -15,6 +15,15 @@ const initialState: BusketProcess = {
 export const busketProcess = createSlice({
   name: NameSpace.Busket,
   initialState,
-  reducers: {},
-  extraReducers(builder) {},
+  reducers: {
+    addToBusket: (state, action: PayloadAction<Product>) => {
+      state.isAddBusketVisible = true;
+      state.currentBusketItem = action.payload;
+    },
+    setBusketModalVisibleStatus: (state, action: PayloadAction<boolean>) => {
+      state.isAddBusketVisible = action.payload;
+    }
+  },
 });
+
+export const { addToBusket, setBusketModalVisibleStatus } = busketProcess.actions;
