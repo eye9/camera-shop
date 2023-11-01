@@ -1,6 +1,6 @@
 import { GradeElement } from '../../components/main-catalog/rating-element';
 import { Review } from '../../types/review';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 
 export type ReviewCardProps = {

@@ -7,6 +7,7 @@ export const APIRoutes = {
 export const AppRoutes = {
   Main: '/',
   Product: '/product',
+  Busket: '/busket',
   Any: '*',
 } as const;
 
