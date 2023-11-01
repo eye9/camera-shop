@@ -1,3 +1,6 @@
+import { Link } from 'react-router-dom';
+import { AppRoutes } from '../../const';
+
 export function Busket() {
   return (
     <div className="page-content">
@@ -5,20 +8,20 @@ export function Busket() {
         <div className="container">
           <ul className="breadcrumbs__list">
             <li className="breadcrumbs__item">
-              <a className="breadcrumbs__link" href="index.html">
+              <Link className="breadcrumbs__link" to={AppRoutes.Main}>
                 Главная
                 <svg width={5} height={8} aria-hidden="true">
                   <use xlinkHref="#icon-arrow-mini" />
                 </svg>
-              </a>
+              </Link>
             </li>
             <li className="breadcrumbs__item">
-              <a className="breadcrumbs__link" href="catalog.html">
+              <Link className="breadcrumbs__link" to={AppRoutes.Main}>
                 Каталог
                 <svg width={5} height={8} aria-hidden="true">
                   <use xlinkHref="#icon-arrow-mini" />
                 </svg>
-              </a>
+              </Link>
             </li>
             <li className="breadcrumbs__item">
               <span className="breadcrumbs__link breadcrumbs__link--active">
