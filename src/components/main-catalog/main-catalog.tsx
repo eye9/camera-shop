@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { selectProducts } from '../../store/selectors';
 import { useAppSelector } from '../../hooks/hooks';
+import { Helmet } from 'react-helmet-async';
 
 const CARDS_PER_PAGE = 9;
 
@@ -21,6 +22,9 @@ export function MainCatalog() {
 
   return (
     <div className="page-content">
+      <Helmet>
+        <title>Каталог - Фотошоп</title>
+      </Helmet>
       <BreadcrumbsElement />
       <section className="catalog">
         <div className="container">

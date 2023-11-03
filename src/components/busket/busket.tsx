@@ -1,9 +1,13 @@
 import { Link } from 'react-router-dom';
 import { AppRoutes } from '../../const';
+import { Helmet } from 'react-helmet-async';
 
 export function Busket() {
   return (
     <div className="page-content">
+      <Helmet>
+        <title>Корзина - Фотошоп</title>
+      </Helmet>
       <div className="breadcrumbs">
         <div className="container">
           <ul className="breadcrumbs__list">
