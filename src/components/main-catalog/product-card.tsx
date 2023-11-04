@@ -17,6 +17,7 @@ function formatPrice(price: number) {
 
 export function ProductCard({ product, activeClass }: ProductCardProps) {
   const dispatch = useAppDispatch();
+
   return (
     <div className={cn('product-card', activeClass)} key={product.id}>
       <div className="product-card__img">
