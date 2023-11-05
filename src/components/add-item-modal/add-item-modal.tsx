@@ -1,11 +1,11 @@
 import cn from 'classnames';
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { useRef } from 'react';
+import { useAppDispatch, useAppSelector, useEscHandle, useFocus, useScrollDisabler } from '../../hooks/hooks';
 import {
   selectAddBusketStatus,
   selectCurrentBusketItem,
 } from '../../store/selectors';
 import { setBusketModalVisibleStatus } from '../../store/busket-process';
-import { useEffect, useRef } from 'react';
 
 export function AddItemModal() {
   const dispatch = useAppDispatch();
@@ -14,9 +14,9 @@ export function AddItemModal() {
   const item = useAppSelector(selectCurrentBusketItem);
   const isVisible = useAppSelector(selectAddBusketStatus);
 
-  useEffect(() => {
-    setTimeout(() => addButtonRef.current?.focus(), 500);
-  });
+  useFocus(addButtonRef.current);
+  useEscHandle(() => dispatch(setBusketModalVisibleStatus(false)));
+  useScrollDisabler(isVisible);
 
   if (!item) {
     return null;

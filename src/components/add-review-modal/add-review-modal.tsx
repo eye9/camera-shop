@@ -5,11 +5,10 @@ import {
   FormEvent,
   MutableRefObject,
   SetStateAction,
-  useEffect,
   useRef,
   useState,
 } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { useAppDispatch, useAppSelector, useEscHandle, useFocus, useScrollDisabler } from '../../hooks/hooks';
 import { sendReviewAction } from '../../store/api-actions';
 import { Product } from '../../types/product';
 import { selectReviewModalStatus } from '../../store/selectors';
@@ -36,66 +35,9 @@ export function AddReviewModal({ product }: AddReviewModalProps): JSX.Element {
   const disadvantageRef = useRef<HTMLInputElement | null>(null);
   const reviewRef = useRef<HTMLTextAreaElement | null>(null);
 
-  useEffect(() => {
-    setTimeout(() => userNameRef.current?.focus(), 500);
-  });
-
-  function getScrollbarSize() {
-    const doc = document.documentElement;
-    const dummyScroller = document.createElement('div');
-    dummyScroller.setAttribute(
-      'style',
-      'width:99px;height:99px;position:absolute;top:-9999px;overflow:scroll;'
-    );
-    doc.appendChild(dummyScroller);
-    const scrollbarSize = dummyScroller.offsetWidth - dummyScroller.clientWidth;
-    doc.removeChild(dummyScroller);
-    return scrollbarSize;
-  }
-
-  function hasScrollbar() {
-    return document.documentElement.scrollHeight > window.innerHeight;
-  }
-
-  useEffect(() => {
-    let isOn = false;
-    let scrollTop = 0;
-    function disableScroll() {
-      if (typeof document === 'undefined' || isOn) {
-        return;
-      }
-      const root = document.documentElement;
-      scrollTop = window.scrollY;
-      if (hasScrollbar()) {
-        root.style.width = `calc(100% - ${getScrollbarSize()}px)`;
-      } else {
-        root.style.width = '100%';
-      }
-      root.style.position = 'fixed';
-      root.style.top = `-${scrollTop}px`;
-      root.style.overflow = 'hidden';
-      root.style.scrollBehavior = 'auto';
-      isOn = true;
-    }
-
-    function enableScroll() {
-      if (typeof document === 'undefined' || !isOn) {
-        return;
-      }
-      const root = document.documentElement;
-      root.style.width = '';
-      root.style.position = '';
-      root.style.top = '';
-      root.style.overflow = '';
-      window.scroll(0, scrollTop);
-      root.style.scrollBehavior = 'smooth';
-      isOn = false;
-    }
-    if (isVisible) {
-      disableScroll();
-    }
-    return () => enableScroll();
-  }, [isVisible]);
+  useFocus(userNameRef.current);
+  useEscHandle(() => dispatch(setReviewModalVisibleStatus(false)));
+  useScrollDisabler(isVisible);
 
   function ValidateRaiting() {
     if (raiting === 0) {
