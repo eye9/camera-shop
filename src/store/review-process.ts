@@ -8,6 +8,7 @@ type ReviewProcess = {
   isDataLoading: boolean;
   isReviewAdded: boolean;
   isReviewModalVisible: boolean;
+  isSuccessModalVisible: boolean;
 };
 
 const initialState: ReviewProcess = {
@@ -15,6 +16,7 @@ const initialState: ReviewProcess = {
   isDataLoading: false,
   isReviewAdded: false,
   isReviewModalVisible: false,
+  isSuccessModalVisible: false,
 };
 
 export const reviewProcess = createSlice({
@@ -24,11 +26,16 @@ export const reviewProcess = createSlice({
     setReviewModalVisibleStatus: (state, action: PayloadAction<boolean>) => {
       state.isReviewModalVisible = action.payload;
     },
+    setSuccessModalVisibleStatus: (state, action: PayloadAction<boolean>) => {
+      state.isSuccessModalVisible = action.payload;
+    },
   },
   extraReducers(builder) {
     builder
       .addCase(sendReviewAction.fulfilled, (state) => {
         state.isReviewAdded = true;
+        state.isReviewModalVisible = false;
+        state.isSuccessModalVisible = true;
       })
       .addCase(fetchReviewsAction.pending, (state) => {
         state.isDataLoading = true;
@@ -40,4 +47,4 @@ export const reviewProcess = createSlice({
   },
 });
 
-export const { setReviewModalVisibleStatus } = reviewProcess.actions;
+export const { setReviewModalVisibleStatus, setSuccessModalVisibleStatus } = reviewProcess.actions;

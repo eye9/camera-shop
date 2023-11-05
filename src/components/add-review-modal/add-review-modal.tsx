@@ -8,7 +8,13 @@ import {
   useRef,
   useState,
 } from 'react';
-import { useAppDispatch, useAppSelector, useEscHandle, useFocus, useScrollDisabler } from '../../hooks/hooks';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useEscHandle,
+  useFocus,
+  useScrollDisabler,
+} from '../../hooks/hooks';
 import { sendReviewAction } from '../../store/api-actions';
 import { Product } from '../../types/product';
 import { selectReviewModalStatus } from '../../store/selectors';

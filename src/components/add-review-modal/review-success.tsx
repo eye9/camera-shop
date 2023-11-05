@@ -1,12 +1,28 @@
 import cn from 'classnames';
-import { useState } from 'react';
+import { useRef } from 'react';
+import {
+  useFocus,
+  useEscHandle,
+  useScrollDisabler,
+  useAppDispatch,
+} from '../../hooks/hooks';
+import { setSuccessModalVisibleStatus } from '../../store/review-process';
+import { useSelector } from 'react-redux';
+import { selectSuccessModalStatus } from '../../store/selectors';
 
 export default function ReviewSuccess(): JSX.Element {
-  const [isActive, setActive] = useState(true);
+  const isVisible = useSelector(selectSuccessModalStatus);
+  const closeButtonRef = useRef(null);
+  const dispatch = useAppDispatch();
+
+  useFocus(closeButtonRef.current);
+  useEscHandle(() => dispatch(setSuccessModalVisibleStatus(false)));
+  useScrollDisabler(isVisible);
+
   return (
-    <div className={cn('modal modal--narrow', {'is-active': isActive})}>
+    <div className={cn('modal modal--narrow', { 'is-active': isVisible })}>
       <div className="modal__wrapper">
-        <div className="modal__overlay" />
+        <div className="modal__overlay" onClick={() => dispatch(setSuccessModalVisibleStatus(false))}/>
         <div className="modal__content">
           <p className="title title--h4">Спасибо за отзыв</p>
           <svg
@@ -19,9 +35,10 @@ export default function ReviewSuccess(): JSX.Element {
           </svg>
           <div className="modal__buttons">
             <button
+              ref={closeButtonRef}
               className="btn btn--purple modal__btn modal__btn--fit-width"
               type="button"
-              onClick={() => setActive(false)}
+              onClick={() => dispatch(setSuccessModalVisibleStatus(false))}
             >
               Вернуться к покупкам
             </button>
@@ -30,6 +47,7 @@ export default function ReviewSuccess(): JSX.Element {
             className="cross-btn"
             type="button"
             aria-label="Закрыть попап"
+            onClick={() => dispatch(setSuccessModalVisibleStatus(false))}
           >
             <svg width={10} height={10} aria-hidden="true">
               <use xlinkHref="#icon-close" />

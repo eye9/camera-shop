@@ -14,3 +14,4 @@ export const selectDataStatus = (state: Pick<State, typeof NameSpace.Product>): 
 
 export const selectProductReviews = (state: Pick<State, typeof NameSpace.Review>): Reviews => state[NameSpace.Review].productReviews;
 export const selectReviewModalStatus = (state: Pick<State, typeof NameSpace.Review>): boolean => state[NameSpace.Review].isReviewModalVisible;
+export const selectSuccessModalStatus = (state: Pick<State, typeof NameSpace.Review>): boolean => state[NameSpace.Review].isSuccessModalVisible;

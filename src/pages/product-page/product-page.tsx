@@ -24,6 +24,7 @@ import { NotFound } from '../not-found';
 import { LoadingElement } from '../../components/loading-element';
 import { AddReviewModal } from '../../components/add-review-modal/add-review-modal';
 import { Helmet } from 'react-helmet-async';
+import ReviewSuccess from '../../components/add-review-modal/review-success';
 
 export type ProductProps = {
   product: Product;
@@ -76,6 +77,7 @@ export function ProductPage() {
         </div>
         <AddItemModal />
         <AddReviewModal product={product} />
+        <ReviewSuccess />
       </main>
       <a className="up-btn" href="#header">
         <svg width={12} height={18} aria-hidden="true">
