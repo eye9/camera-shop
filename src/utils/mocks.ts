@@ -1,6 +1,7 @@
-import { Product, PromoProduct } from '../types/product';
+import { Product, Products, PromoProduct, Promos } from '../types/product';
 import { system, name, datatype, lorem, commerce } from 'faker';
 import { Review } from '../types/review';
+import { State } from '../types/state';
 
 export const makeFakeReview = (): Review => ({
   id: datatype.string(),
@@ -37,4 +38,23 @@ export const makeFakeProduct = (): Product => ({
   price: +commerce.price(),
   rating: datatype.number(5),
   reviewCount: datatype.number(),
+});
+
+export const makeFakeStore = (initialState?: Partial<State>): State => ({
+  BUSKET: { currentBusketItem: null, isAddBusketVisible: false },
+  PRODUCT: {
+    currentProduct: makeFakeProduct(),
+    isDataLoading: false,
+    products: new Array(3).fill(makeFakeProduct()) as Products,
+    promo: new Array(3).fill(makeFakePromo()) as Promos,
+    similarProducts: new Array(3).fill(makeFakeProduct()) as Products,
+  },
+  REVIEW: {
+    isDataLoading: false,
+    isReviewAdded: false,
+    isReviewModalVisible: false,
+    isSuccessModalVisible: false,
+    productReviews: new Array(3).fill(makeFakeReview()) as Review[],
+  },
+  ...(initialState ?? {}),
 });

@@ -7,6 +7,8 @@ import { AppThunkDispatch, State } from '../types/state';
 import { createApi } from '../services/api';
 import { Action } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
+import { MemoryHistory, createMemoryHistory } from 'history';
+import HistoryRouter from '../components/history-router';
 
 export function withRouter(
   component: JSX.Element,
@@ -15,6 +17,18 @@ export function withRouter(
     <HelmetProvider>
       <BrowserRouter>{component}</BrowserRouter>
     </HelmetProvider>
+  );
+}
+
+export function withHistory(component: JSX.Element, history?: MemoryHistory) {
+  const memoryHistory = history ?? createMemoryHistory();
+
+  return (
+    <HistoryRouter history={memoryHistory}>
+      <HelmetProvider>
+        {component}
+      </HelmetProvider>
+    </HistoryRouter>
   );
 }
 
