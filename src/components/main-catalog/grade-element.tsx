@@ -10,9 +10,15 @@ export function GradeElement({ rating }: GradeElementProps) {
   return (
     <div className="rate review-card__rate">
       {linkNames.map((link, i) => {
-        const key = `star-${i}`;
+        const key = `${link}-${i}`;
         return (
-          <svg width={17} height={16} aria-hidden="true" key={key}>
+          <svg
+            width={17}
+            height={16}
+            aria-hidden="true"
+            key={key}
+            data-testid={link}
+          >
             <use xlinkHref={link} />
           </svg>
         );

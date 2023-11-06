@@ -63,6 +63,7 @@ describe('Selectors tests, review process', () => {
       isDataLoading: false,
       isReviewAdded: false,
       isReviewModalVisible: false,
+      isSuccessModalVisible: false,
     },
   };
 
