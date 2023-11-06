@@ -1,4 +1,4 @@
-import { GradeElement } from '../../components/main-catalog/rating-element';
+import { GradeElement } from '../../components/main-catalog/grade-element';
 import { Review } from '../../types/review';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
