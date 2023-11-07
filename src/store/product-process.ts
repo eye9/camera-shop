@@ -11,7 +11,7 @@ type ProductProcess = {
   promo: Promos;
 };
 
-const initialState: ProductProcess = {
+export const initialState: ProductProcess = {
   products: [],
   currentProduct: null,
   isDataLoading: false,
