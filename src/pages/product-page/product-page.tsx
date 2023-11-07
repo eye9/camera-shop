@@ -66,7 +66,7 @@ export function ProductPage() {
       <HeaderElement />
       <main>
         <div className="page-content">
-          <BreadcrumbsElement productName={product.name} />
+          <BreadcrumbsElement lastElement={product.name} />
           <ProductDetails product={product} />
           <div className="page-content__section">
             <SimilarProducts products={similarProducts} />
