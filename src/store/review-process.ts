@@ -11,7 +11,7 @@ type ReviewProcess = {
   isSuccessModalVisible: boolean;
 };
 
-const initialState: ReviewProcess = {
+export const initialState: ReviewProcess = {
   productReviews: [],
   isDataLoading: false,
   isReviewAdded: false,
