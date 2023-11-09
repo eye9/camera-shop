@@ -62,7 +62,7 @@ export function SimilarProducts({
               className="mySwiper"
             >
               {similarProducts.map((item, i) => (
-                <SwiperSlide key={item.id}>
+                <SwiperSlide key={item.id} data-testid="similarProductSlide">
                   <ProductCard
                     product={item}
                     activeClass={isInVisibleRange(i) ? 'is-active' : ''}

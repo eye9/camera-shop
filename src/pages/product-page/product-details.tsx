@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useAppDispatch } from '../../hooks/hooks';
 import { RatingElement } from '../../components/main-catalog/rating-element';
 import cn from 'classnames';
@@ -12,11 +12,9 @@ const PageTabs = {
 } as const;
 
 export function ProductDetails({ product }: ProductProps) {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams({ tab: PageTabs.Description });
   const [activeTab, setActiveTab] = useState(searchParams.get('tab') || PageTabs.Description);
   const dispatch = useAppDispatch();
-
-  useEffect(() => setSearchParams({ tab: PageTabs.Description }), []);
 
   function activateFeatureTab() {
     setActiveTab(PageTabs.Features);
