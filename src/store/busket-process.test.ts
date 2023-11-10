@@ -19,7 +19,6 @@ describe('Busket reducers', () => {
     const expected = true;
     const result = busketProcess.reducer(initialState, setBusketModalVisibleStatus(expected));
     expect(result.isAddBusketVisible).toEqual(expected);
-
   });
 
   it('should add product to busket and make busket visible', () => {
