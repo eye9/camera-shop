@@ -11,10 +11,13 @@ export function ReviewCard({ review }: ReviewCardProps) {
   dayjs.locale('ru-ru');
 
   return (
-    <li className="review-card">
+    <li className="review-card" data-testid="reviewCard">
       <div className="review-card__head">
         <p className="title title--h4">{review.userName}</p>
-        <time className="review-card__data" dateTime={dayjs(review.createAt).format('YYYY-MM-DD')}>
+        <time
+          className="review-card__data"
+          dateTime={dayjs(review.createAt).format('YYYY-MM-DD')}
+        >
           {dayjs(review.createAt).format('DD MMMM')}
         </time>
       </div>

@@ -56,7 +56,7 @@ export function ProductReviews({ reviews }: ProductReviewsProps) {
         </div>
         <ul className="review-block__list">
           {sortedReviews.slice(0, reviewsShown).map((review) => (
-            <ReviewCard review={review} key={review.id} />
+            <ReviewCard review={review} key={review.id}/>
           ))}
         </ul>
         {reviewsShown < reviews.length ? (
@@ -65,6 +65,7 @@ export function ProductReviews({ reviews }: ProductReviewsProps) {
               className="btn btn--purple"
               type="button"
               onClick={() => setReviewsShown(reviewsShown + INIT_REVIEWS_COUNT)}
+              data-testid="showMoreButton"
             >
               Показать больше отзывов
             </button>
