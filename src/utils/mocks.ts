@@ -2,6 +2,7 @@ import { Product, Products, PromoProduct, Promos } from '../types/product';
 import { system, name, datatype, lorem, commerce } from 'faker';
 import { Review } from '../types/review';
 import { State } from '../types/state';
+import { Action } from '@reduxjs/toolkit';
 
 export const makeFakeReview = (): Review => ({
   id: datatype.string(),
@@ -58,3 +59,5 @@ export const makeFakeStore = (initialState?: Partial<State>): State => ({
   },
   ...(initialState ?? {}),
 });
+
+export const extractActionsTypes = (actions: Action<string>[]) => actions.map(({ type }) => type);

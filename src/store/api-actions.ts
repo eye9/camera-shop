@@ -48,15 +48,14 @@ export const fetchSimilarProductsAction = createAsyncThunk<
   return data;
 });
 
-
 export const fetchPromoAction = createAsyncThunk<
-Promos,
-undefined,
-{
-  dispatch: AppDispatch;
-  state: State;
-  extra: AxiosInstance;
-}
+  Promos,
+  undefined,
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
 >('products/fetchPromo', async (_arg, { extra: api }) => {
   const { data } = await api.get<Promos>(APIRoutes.Promo);
   return data;
@@ -78,7 +77,7 @@ export const fetchReviewsAction = createAsyncThunk<
 });
 
 export const sendReviewAction = createAsyncThunk<
-  void,
+  Review,
   AddReview,
   {
     dispatch: AppDispatch;
@@ -86,5 +85,6 @@ export const sendReviewAction = createAsyncThunk<
     extra: AxiosInstance;
   }
 >('reviews/add', async (review, { extra: api }) => {
-  await api.post<Review>(APIRoutes.Reviews, review);
+  const { data } = await api.post<Review>(APIRoutes.Reviews, review);
+  return data;
 });
