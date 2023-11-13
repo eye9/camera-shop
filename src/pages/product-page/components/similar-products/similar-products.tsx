@@ -6,6 +6,7 @@ import { Products } from '../../../../types/product';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import './similar-products.css';
+import { ITEMS_PER_PAGE } from './const';
 
 export type SimilarProductsProps = {
   products: Products;
@@ -14,7 +15,6 @@ export type SimilarProductsProps = {
 export function SimilarProducts({
   products: similarProducts,
 }: SimilarProductsProps) {
-  const ITEMS_PER_PAGE = 3;
   const [page, setPage] = useState(1);
   const sw = useSwiper();
   const swiperRef = useRef(sw);

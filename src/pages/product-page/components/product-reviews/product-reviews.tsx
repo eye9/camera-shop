@@ -1,28 +1,14 @@
 import { useEffect, useState } from 'react';
-import { Review, Reviews } from '../../../../types/review';
+import { Reviews } from '../../../../types/review';
 import { ReviewCard } from '../../../../components/review-card/review-card';
 import { useAppDispatch } from '../../../../hooks/hooks';
 import { setReviewModalVisibleStatus } from '../../../../store/review-process';
-
-const INIT_REVIEWS_COUNT = 3;
-const READY_TO_LOAD_PX = 0;
+import { reviewSorter } from '../../../../utils/utils';
+import { INIT_REVIEWS_COUNT, READY_TO_LOAD_PX } from './const';
 
 export type ProductReviewsProps = {
   reviews: Reviews;
 };
-
-function reviewSorter(a: Review, b: Review): number {
-  const dateA = new Date(a.createAt);
-  const dateB = new Date(b.createAt);
-
-  if (dateA < dateB) {
-    return -1;
-  } else if (dateA > dateB) {
-    return 1;
-  }
-
-  return 0;
-}
 
 export function ProductReviews({ reviews }: ProductReviewsProps) {
   const [reviewsShown, setReviewsShown] = useState(INIT_REVIEWS_COUNT);
