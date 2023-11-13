@@ -3,6 +3,7 @@ import {
   ChangeEvent,
   Dispatch,
   FormEvent,
+  Fragment,
   MutableRefObject,
   SetStateAction,
   useRef,
@@ -131,28 +132,27 @@ export function AddReviewModal({ product }: AddReviewModalProps): JSX.Element {
                         { length: MAX_STARS },
                         (_, k) => MAX_STARS - k
                       ).map((i) => (
-                        <>
+                        <Fragment key={`fragment-${i}`}>
                           <input
                             className="visually-hidden"
                             id={`star-${i}`}
-                            key={`star-${i}`}
                             name="rate"
                             type="radio"
                             defaultValue={i}
                             onChange={handleRaitingInputChange}
                           />
                           <label
-                            key={`star-label-${i}`}
                             className="rate__label"
                             htmlFor={`star-${i}`}
                             title={ReviewRateTitles[i - 1]}
                           />
-                        </>
+                        </Fragment>
                       ))}
                     </div>
                     <div className="rate__progress">
                       <span className="rate__stars">{raiting}</span>{' '}
-                      <span>/</span> <span className="rate__all-stars">5</span>
+                      <span>/</span>{' '}
+                      <span className="rate__all-stars">{MAX_STARS}</span>
                     </div>
                   </div>
                   <p className="rate__message">Нужно оценить товар</p>
