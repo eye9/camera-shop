@@ -127,27 +127,28 @@ export function AddReviewModal({ product }: AddReviewModalProps): JSX.Element {
                   </legend>
                   <div className="rate__bar">
                     <div className="rate__group">
-                      {Array.from({ length: MAX_STARS }, (_, k) => k).map(
-                        (i) => (
-                          <>
-                            <input
-                              className="visually-hidden"
-                              id={`star-${i}`}
-                              key={`star-${i}`}
-                              name="rate"
-                              type="radio"
-                              defaultValue={i}
-                              onChange={handleRaitingInputChange}
-                            />
-                            <label
-                              key={`star-label-${i}`}
-                              className="rate__label"
-                              htmlFor={`star-${i}`}
-                              title={ReviewRateTitles[i - 1]}
-                            />
-                          </>
-                        )
-                      )}
+                      {Array.from(
+                        { length: MAX_STARS },
+                        (_, k) => MAX_STARS - k
+                      ).map((i) => (
+                        <>
+                          <input
+                            className="visually-hidden"
+                            id={`star-${i}`}
+                            key={`star-${i}`}
+                            name="rate"
+                            type="radio"
+                            defaultValue={i}
+                            onChange={handleRaitingInputChange}
+                          />
+                          <label
+                            key={`star-label-${i}`}
+                            className="rate__label"
+                            htmlFor={`star-${i}`}
+                            title={ReviewRateTitles[i - 1]}
+                          />
+                        </>
+                      ))}
                     </div>
                     <div className="rate__progress">
                       <span className="rate__stars">{raiting}</span>{' '}
