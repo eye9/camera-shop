@@ -1,6 +1,7 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, State } from '../types/state';
 import { useEffect } from 'react';
+import useScrollbarSize from 'react-scrollbar-size';
 
 export const useAppSelector: TypedUseSelectorHook<State> = useSelector;
 export const useAppDispatch = () => useDispatch<AppDispatch>();
@@ -16,34 +17,22 @@ export const useFocus = (element: HTMLElement | null) => {
   });
 };
 export const useScrollDisabler = (isVisible: boolean) => {
-  function getScrollbarSize() {
-    const doc = document.documentElement;
-    const dummyScroller = document.createElement('div');
-    dummyScroller.setAttribute(
-      'style',
-      'width:99px;height:99px;position:absolute;top:-9999px;overflow:scroll;'
-    );
-    doc.appendChild(dummyScroller);
-    const scrollbarSize = dummyScroller.offsetWidth - dummyScroller.clientWidth;
-    doc.removeChild(dummyScroller);
-    return scrollbarSize;
-  }
-
-  function hasScrollbar() {
-    return document.documentElement.scrollHeight > window.innerHeight;
-  }
+  const { width: scrollbarSize } = useScrollbarSize();
 
   useEffect(() => {
+    const root = document.documentElement;
     let isOn = false;
     let scrollTop = 0;
     function disableScroll() {
       if (typeof document === 'undefined' || isOn) {
         return;
       }
-      const root = document.documentElement;
+      function hasScrollbar() {
+        return root.scrollHeight > window.innerHeight;
+      }
       scrollTop = window.scrollY;
       if (hasScrollbar()) {
-        root.style.width = `calc(100% - ${getScrollbarSize()}px)`;
+        root.style.width = `calc(100% - ${scrollbarSize}px)`;
       } else {
         root.style.width = '100%';
       }
@@ -53,12 +42,10 @@ export const useScrollDisabler = (isVisible: boolean) => {
       root.style.scrollBehavior = 'auto';
       isOn = true;
     }
-
     function enableScroll() {
-      if (typeof document === 'undefined' || !isOn) {
+      if (!isOn) {
         return;
       }
-      const root = document.documentElement;
       root.style.width = '';
       root.style.position = '';
       root.style.top = '';
@@ -71,7 +58,7 @@ export const useScrollDisabler = (isVisible: boolean) => {
       disableScroll();
     }
     return () => enableScroll();
-  }, [isVisible]);
+  }, [isVisible, scrollbarSize]);
 };
 export const useEscHandle = (closeCallback: () => void) => {
   useEffect(() => {
