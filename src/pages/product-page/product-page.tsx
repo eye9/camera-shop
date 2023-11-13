@@ -24,7 +24,7 @@ import { NotFound } from '../not-found/not-found';
 import { LoadingElement } from '../../components/loading-element/loading-element';
 import { AddReviewModal } from '../../components/add-review-modal/add-review-modal';
 import { Helmet } from 'react-helmet-async';
-import ReviewSuccess from '../../components/add-review-modal/review-success';
+import ReviewSuccess from '../../components/review-success/review-success';
 
 export type ProductProps = {
   product: Product;

@@ -1,3 +1,8 @@
+export const MainCatalogSettings = {
+  CardsPerPage: 9,
+  MaxPagesVisible: 3
+} as const;
+
 export const APIRoutes = {
   Products: '/cameras',
   Promo: '/promo',
@@ -16,3 +21,10 @@ export const NameSpace = {
   Busket: 'BUSKET',
   Product: 'PRODUCT',
 } as const;
+
+export const ReviewFieldsLength = {
+  Min: 2,
+  Max: 160,
+} as const;
+
+export const ReviewRateTitles = ['Ужасно', 'Плохо', 'Нормально', 'Хорошо', 'Отлично'];

@@ -5,15 +5,12 @@ import { AppRoutes } from '../../const';
 import cn from 'classnames';
 import { useAppDispatch } from '../../hooks/hooks';
 import { addToBusket } from '../../store/busket-process';
+import { formatPrice } from '../../utils/utils';
 
 export type ProductCardProps = {
   product: Product;
   activeClass?: string;
 };
-
-function formatPrice(price: number) {
-  return price.toLocaleString();
-}
 
 export function ProductCard({ product, activeClass }: ProductCardProps) {
   const dispatch = useAppDispatch();

@@ -1,68 +1,14 @@
 import { Dispatch, MouseEventHandler, SetStateAction, useState } from 'react';
-import cn from 'classnames';
-import { Link } from 'react-router-dom';
-
-const MAX_PAGES_VISIBLE = 3;
+import { MainCatalogSettings } from '../../const';
+import { BackButton } from './components/back-button/back-button';
+import { PageButton } from './components/page-button/page-button';
+import { ForwardButton } from './components/forward-button/forward-button';
 
 type PaginatorElementProps = {
   pagesCount: number;
   currentPage: number;
   onPageChange: Dispatch<SetStateAction<number>>;
 };
-
-type ButtonProps = {
-  onClick: () => MouseEventHandler | undefined;
-  linkPage: number;
-};
-
-function BackButton({ onClick, linkPage }: ButtonProps): JSX.Element {
-  return (
-    <li className="pagination__item">
-      <Link
-        to={linkPage === 2 ? '' : `/?page=${linkPage - 1}`}
-        className="pagination__link pagination__link--text"
-        onClick={onClick()}
-      >
-        Назад
-      </Link>
-    </li>
-  );
-}
-function ForwardButton({ onClick, linkPage }: ButtonProps): JSX.Element {
-  return (
-    <li className="pagination__item">
-      <Link
-        to={`/?page=${linkPage}`}
-        className="pagination__link pagination__link--text"
-        onClick={onClick()}
-      >
-        Далее
-      </Link>
-    </li>
-  );
-}
-
-type PageButtonProps = ButtonProps & {
-  isActive: boolean;
-};
-
-function PageButton({ isActive, linkPage, onClick }: PageButtonProps): JSX.Element {
-  const queryPage = linkPage === 1 ? '' : `/?page=${linkPage}`;
-  return (
-    <li className="pagination__item">
-      <Link
-        to={queryPage}
-        onClick={onClick()}
-        className={cn('pagination__link', {
-          'pagination__link--active': isActive,
-        })}
-      >
-        {linkPage}
-      </Link>
-    </li>
-  );
-}
-
 export function PaginatorElement({
   pagesCount,
   currentPage,
@@ -70,7 +16,10 @@ export function PaginatorElement({
 }: PaginatorElementProps) {
   const [activePage, setActivePage] = useState(currentPage);
   const [firstPage, setFirstPage] = useState(currentPage);
-  const lastPage = Math.min(firstPage + MAX_PAGES_VISIBLE - 1, pagesCount);
+  const lastPage = Math.min(
+    firstPage + MainCatalogSettings.MaxPagesVisible - 1,
+    pagesCount
+  );
   const pages = Array.from({ length: pagesCount }, (_, k) => k + 1);
   const shownPages = pages.slice(firstPage - 1, lastPage);
 
@@ -121,7 +70,7 @@ export function PaginatorElement({
         {lastPage !== pagesCount && (
           <ForwardButton
             onClick={nextButtonClickHandler}
-            linkPage={firstPage + MAX_PAGES_VISIBLE}
+            linkPage={firstPage + MainCatalogSettings.MaxPagesVisible}
           />
         )}
       </ul>

@@ -1,36 +1,6 @@
-import { Link } from 'react-router-dom';
 import { AppRoutes } from '../../const';
-
-type BreadcrumbsElementProps = {
-  lastElement?: string;
-};
-type BreadcrumsLinkProps = {
-  title: string;
-  linkTo: string;
-};
-
-function BreadcrumsLink({ title, linkTo }: BreadcrumsLinkProps) {
-  return (
-    <li className="breadcrumbs__item">
-      <Link className="breadcrumbs__link" to={linkTo}>
-        {title}
-        <svg width={5} height={8} aria-hidden="true">
-          <use xlinkHref="#icon-arrow-mini" />
-        </svg>
-      </Link>
-    </li>
-  );
-}
-
-function BreadcrumsText({ title }: Omit<BreadcrumsLinkProps, 'linkTo'>) {
-  return (
-    <li className="breadcrumbs__item">
-      <span className="breadcrumbs__link breadcrumbs__link--active">
-        {title}
-      </span>
-    </li>
-  );
-}
+import { BreadcrumbsElementProps, BreadcrumsText } from './components/breadcrums-text/breadcrumbs-text';
+import { BreadcrumsLinkProps, BreadcrumsLink } from './components/breadcrums-link/breadcrums-link';
 
 export function BreadcrumbsElement({ lastElement }: BreadcrumbsElementProps) {
   const elements: BreadcrumsLinkProps[] = [

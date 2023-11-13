@@ -8,20 +8,22 @@ import { useSearchParams } from 'react-router-dom';
 import { selectProducts } from '../../store/selectors';
 import { useAppSelector } from '../../hooks/hooks';
 import { Helmet } from 'react-helmet-async';
+import { MainCatalogSettings } from '../../const';
 
-const CARDS_PER_PAGE = 9;
 const AppParams = {
   Page: 'page',
 } as const;
 
 export function MainCatalog() {
   const [search] = useSearchParams();
-  const [currentPage, setPage] = useState(Number(search.get(AppParams.Page)) || 1);
+  const [currentPage, setPage] = useState(
+    Number(search.get(AppParams.Page)) || 1
+  );
 
   const products = useAppSelector(selectProducts);
   const pagesCount =
-    Math.floor(products.length / CARDS_PER_PAGE) +
-    (products.length % CARDS_PER_PAGE > 0 ? 1 : 0);
+    Math.floor(products.length / MainCatalogSettings.CardsPerPage) +
+    (products.length % MainCatalogSettings.CardsPerPage > 0 ? 1 : 0);
 
   return (
     <div className="page-content">
@@ -38,8 +40,8 @@ export function MainCatalog() {
               <CatalogSort />
               <CardsList
                 products={products.slice(
-                  (currentPage - 1) * CARDS_PER_PAGE,
-                  currentPage * CARDS_PER_PAGE
+                  (currentPage - 1) * MainCatalogSettings.CardsPerPage,
+                  currentPage * MainCatalogSettings.CardsPerPage
                 )}
               />
               <PaginatorElement
