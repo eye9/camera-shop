@@ -19,6 +19,12 @@ import { sendReviewAction } from '../../store/api-actions';
 import { Product } from '../../types/product';
 import { selectReviewModalStatus } from '../../store/selectors';
 import { setReviewModalVisibleStatus } from '../../store/review-process';
+import { MAX_STARS } from '../main-catalog/rating-element-utils';
+
+const FieldLength = {
+  Min: 1,
+  Max: 161,
+} as const;
 
 type AddReviewModalProps = {
   product: Product;
@@ -57,8 +63,8 @@ export function AddReviewModal({ product }: AddReviewModalProps): JSX.Element {
   ): boolean => {
     const isValid =
       field.current !== null &&
-      field.current.value.length > 1 &&
-      field.current.value.length < 161;
+      field.current.value.length > FieldLength.Min &&
+      field.current.value.length < FieldLength.Max;
 
     dispatchFn(isValid);
     return isValid;
@@ -126,7 +132,7 @@ export function AddReviewModal({ product }: AddReviewModalProps): JSX.Element {
                   </legend>
                   <div className="rate__bar">
                     <div className="rate__group">
-                      {[5, 4, 3, 2, 1].map((i) => (
+                      {Array.from({length: MAX_STARS}, (_, k) => k).map((i) => (
                         <>
                           <input
                             className="visually-hidden"

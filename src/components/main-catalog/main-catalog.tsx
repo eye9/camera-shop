@@ -10,10 +10,13 @@ import { useAppSelector } from '../../hooks/hooks';
 import { Helmet } from 'react-helmet-async';
 
 const CARDS_PER_PAGE = 9;
+const AppParams = {
+  Page: 'page',
+} as const;
 
 export function MainCatalog() {
   const [search] = useSearchParams();
-  const [currentPage, setPage] = useState(Number(search.get('page')) || 1);
+  const [currentPage, setPage] = useState(Number(search.get(AppParams.Page)) || 1);
 
   const products = useAppSelector(selectProducts);
   const pagesCount =
