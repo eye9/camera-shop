@@ -1,5 +1,5 @@
-import { Products } from '../../types/product';
-import { ProductCard } from './product-card';
+import { Products } from '../../../../types/product';
+import { ProductCard } from '../../../product-card/product-card';
 
 type CardsListProps = {
   products: Products;

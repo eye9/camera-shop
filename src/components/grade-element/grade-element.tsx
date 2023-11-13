@@ -1,4 +1,4 @@
-import {RatingElementProps, generateLinkNames} from './rating-element-utils';
+import {RatingElementProps, generateLinkNames} from '../rating-element/rating-element-utils';
 
 type GradeElementProps = Omit<RatingElementProps, 'reviewCount'>;
 

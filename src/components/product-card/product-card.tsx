@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Product } from '../../types/product';
-import { RatingElement } from './rating-element';
+import { RatingElement } from '../rating-element/rating-element';
 import { AppRoutes } from '../../const';
 import cn from 'classnames';
 import { useAppDispatch } from '../../hooks/hooks';

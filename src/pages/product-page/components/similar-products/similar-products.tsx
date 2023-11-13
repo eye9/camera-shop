@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
-import { ProductCard } from '../../components/main-catalog/product-card';
+import { ProductCard } from '../../../../components/product-card/product-card';
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
-import { Products } from '../../types/product';
+import { Products } from '../../../../types/product';
 
 import 'swiper/css';
 import 'swiper/css/navigation';

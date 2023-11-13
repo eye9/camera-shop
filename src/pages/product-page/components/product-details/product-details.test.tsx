@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import { withRouter, withStore } from '../../utils/mock-component';
-import { makeFakeProduct } from '../../utils/mocks';
+import { withRouter, withStore } from '../../../../utils/mock-component';
+import { makeFakeProduct } from '../../../../utils/mocks';
 import { ProductDetails } from './product-details';
 
 describe('Component: Product Card', () => {

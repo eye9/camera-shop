@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import { withRouter, withStore } from '../../utils/mock-component';
-import { makeFakeReview } from '../../utils/mocks';
+import { withRouter, withStore } from '../../../../utils/mock-component';
+import { makeFakeReview } from '../../../../utils/mocks';
 import { ProductReviews } from './product-reviews';
 import userEvent from '@testing-library/user-event';
 

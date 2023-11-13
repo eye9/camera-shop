@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import { GradeElement } from './rating-element';
-import { MAX_STARS } from './rating-element-utils';
+import { GradeElement } from '../rating-element/rating-element';
+import { MAX_STARS } from '../rating-element/rating-element-utils';
 
 describe('Component: GradeElemr=ent', () => {
   it('should render component properly', () => {

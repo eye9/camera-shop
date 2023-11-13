@@ -8,7 +8,7 @@ import { createApi } from '../services/api';
 import { Action } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import { MemoryHistory, createMemoryHistory } from 'history';
-import HistoryRouter from '../components/history-router';
+import HistoryRouter from '../components/history-router/history-router';
 
 export function withRouter(
   component: JSX.Element,

@@ -17,11 +17,11 @@ import {
 import { BreadcrumbsElement } from '../../components/breadcrumbs-element/breadcrumbs-element';
 import { Product } from '../../types/product';
 import { AddItemModal } from '../../components/add-item-modal/add-item-modal';
-import { ProductDetails } from './product-details';
-import { SimilarProducts } from './similar-products';
-import { ProductReviews } from './product-reviews';
-import { NotFound } from '../not-found';
-import { LoadingElement } from '../../components/loading-element';
+import { ProductDetails } from './components/product-details/product-details';
+import { SimilarProducts } from './components/similar-products/similar-products';
+import { ProductReviews } from './components/product-reviews/product-reviews';
+import { NotFound } from '../not-found/not-found';
+import { LoadingElement } from '../../components/loading-element/loading-element';
 import { AddReviewModal } from '../../components/add-review-modal/add-review-modal';
 import { Helmet } from 'react-helmet-async';
 import ReviewSuccess from '../../components/add-review-modal/review-success';

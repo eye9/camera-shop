@@ -19,7 +19,7 @@ import { sendReviewAction } from '../../store/api-actions';
 import { Product } from '../../types/product';
 import { selectReviewModalStatus } from '../../store/selectors';
 import { setReviewModalVisibleStatus } from '../../store/review-process';
-import { MAX_STARS } from '../main-catalog/rating-element-utils';
+import { MAX_STARS } from '../rating-element/rating-element-utils';
 
 const FieldLength = {
   Min: 1,

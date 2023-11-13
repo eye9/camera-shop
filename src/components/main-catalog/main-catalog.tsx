@@ -1,7 +1,7 @@
-import { PaginatorElement } from './paginator-element';
-import { CardsList } from './cards-list';
-import { CatalogSort } from './catalog-sort';
-import { CatalogFilter } from './catalog-filter';
+import { PaginatorElement } from '../paginator-element/paginator-element';
+import { CardsList } from './components/card-list/cards-list';
+import { CatalogSort } from './components/catalog-sort/catalog-sort';
+import { CatalogFilter } from './components/catalog-filter/catalog-filter';
 import { BreadcrumbsElement } from '../breadcrumbs-element/breadcrumbs-element';
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';

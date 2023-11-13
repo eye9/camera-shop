@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { AppRoutes } from '../const';
+import { AppRoutes } from '../../const';
 import { Helmet } from 'react-helmet-async';
 
 export function NotFound() {
