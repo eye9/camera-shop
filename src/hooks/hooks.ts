@@ -7,9 +7,12 @@ export const useAppDispatch = () => useDispatch<AppDispatch>();
 
 export const useFocus = (element: HTMLElement | null) => {
   useEffect(() => {
+    let timeoutId: ReturnType<typeof setTimeout>;
     if (element) {
-      setTimeout(() => element.focus(), 500);
+      timeoutId = setTimeout(() => element.focus(), 500);
     }
+
+    return () => clearTimeout(timeoutId);
   });
 };
 export const useScrollDisabler = (isVisible: boolean) => {
