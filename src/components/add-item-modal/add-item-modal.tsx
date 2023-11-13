@@ -38,7 +38,7 @@ export function AddItemModal() {
               <picture>
                 <source
                   type="image/webp"
-                  srcSet={`/${item?.previewImgWebp}, /${item?.previewImgWebp2x} 2x"`}
+                  srcSet={`/${item?.previewImgWebp}, /${item?.previewImgWebp2x} 2x`}
                 />
                 <img
                   src={`/${item.previewImg}`}
