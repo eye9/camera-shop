@@ -8,9 +8,9 @@ export function reviewSorter(a: Review, b: Review): number {
   const dateA = new Date(a.createAt);
   const dateB = new Date(b.createAt);
 
-  if (dateA < dateB) {
+  if (dateA > dateB) {
     return -1;
-  } else if (dateA > dateB) {
+  } else if (dateA < dateB) {
     return 1;
   }
 
