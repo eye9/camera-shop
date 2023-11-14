@@ -13,5 +13,6 @@ export const selectPromo = (state: Pick<State, typeof NameSpace.Product>): Promo
 export const selectDataStatus = (state: Pick<State, typeof NameSpace.Product>): boolean => state[NameSpace.Product].isDataLoading;
 
 export const selectProductReviews = (state: Pick<State, typeof NameSpace.Review>): Reviews => state[NameSpace.Review].productReviews;
+export const selectReviewsDataStatus = (state: Pick<State, typeof NameSpace.Review>): boolean => state[NameSpace.Review].isDataLoading;
 export const selectReviewModalStatus = (state: Pick<State, typeof NameSpace.Review>): boolean => state[NameSpace.Review].isReviewModalVisible;
 export const selectSuccessModalStatus = (state: Pick<State, typeof NameSpace.Review>): boolean => state[NameSpace.Review].isSuccessModalVisible;

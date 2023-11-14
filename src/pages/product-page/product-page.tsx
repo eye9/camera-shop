@@ -50,12 +50,10 @@ export function ProductPage() {
     };
   }, [dispatch, id]);
 
-  if (!id || (!isDataLoading && !product)) {
-    return <NotFound />;
-  }
-
-  if (isDataLoading || !product) {
+  if (isDataLoading) {
     return <LoadingElement />;
+  } else if (!product) {
+    return <NotFound />;
   }
 
   return (
