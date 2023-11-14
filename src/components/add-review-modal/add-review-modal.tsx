@@ -51,6 +51,8 @@ export function AddReviewModal({ product }: AddReviewModalProps): JSX.Element {
     if (raiting === 0) {
       setRaitingValidity(false);
     }
+
+    return Boolean(raiting);
   }
 
   const ValidateTextField = (
@@ -66,21 +68,12 @@ export function AddReviewModal({ product }: AddReviewModalProps): JSX.Element {
     return isValid;
   };
 
-  const validateForm = () => {
-    ValidateRaiting();
-    ValidateTextField(userNameRef, setUserNameValidity);
-    ValidateTextField(advantageRef, setAdvantageValidity);
-    ValidateTextField(disadvantageRef, setDisadvantageValidity);
+  const validateForm = () =>
+    ValidateRaiting() &&
+    ValidateTextField(userNameRef, setUserNameValidity) &&
+    ValidateTextField(advantageRef, setAdvantageValidity) &&
+    ValidateTextField(disadvantageRef, setDisadvantageValidity) &&
     ValidateTextField(reviewRef, setReviewValidity);
-
-    return (
-      isValidRating &&
-      isValidName &&
-      isValidAdvantage &&
-      isValidDisadvantage &&
-      isValidReview
-    );
-  };
 
   const handleRaitingInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setRaiting(+e.target.value);
@@ -171,6 +164,7 @@ export function AddReviewModal({ product }: AddReviewModalProps): JSX.Element {
                     </span>
                     <input
                       ref={userNameRef}
+                      onChange={() => ValidateTextField(userNameRef, setUserNameValidity)}
                       type="text"
                       name="user-name"
                       placeholder="Введите ваше имя"
@@ -193,6 +187,7 @@ export function AddReviewModal({ product }: AddReviewModalProps): JSX.Element {
                     </span>
                     <input
                       ref={advantageRef}
+                      onChange={() => ValidateTextField(advantageRef, setAdvantageValidity)}
                       type="text"
                       name="user-plus"
                       placeholder="Основные преимущества товара"
@@ -217,6 +212,7 @@ export function AddReviewModal({ product }: AddReviewModalProps): JSX.Element {
                     </span>
                     <input
                       ref={disadvantageRef}
+                      onChange={() => ValidateTextField(disadvantageRef, setDisadvantageValidity)}
                       type="text"
                       name="user-minus"
                       placeholder="Главные недостатки товара"
@@ -241,6 +237,7 @@ export function AddReviewModal({ product }: AddReviewModalProps): JSX.Element {
                     </span>
                     <textarea
                       ref={reviewRef}
+                      onChange={() => ValidateTextField(reviewRef, setReviewValidity)}
                       name="user-comment"
                       minLength={2}
                       placeholder="Поделитесь своим опытом покупки"
