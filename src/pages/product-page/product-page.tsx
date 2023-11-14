@@ -50,7 +50,7 @@ export function ProductPage() {
     };
   }, [dispatch, id]);
 
-  if (!id) {
+  if (!id || (!isDataLoading && !product)) {
     return <NotFound />;
   }
 
