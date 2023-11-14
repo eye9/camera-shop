@@ -1,3 +1,7 @@
+:root {
+ --swiper-pagination-bullet-size: 16px;
+}
+
 .swiper-pagination {
   text-align: right;
   padding-right: 40px;
