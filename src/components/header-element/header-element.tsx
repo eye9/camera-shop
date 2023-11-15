@@ -1,7 +1,16 @@
 import { Link } from 'react-router-dom';
 import { AppRoutes } from '../../const';
+import { ChangeEvent, useState } from 'react';
+import cn from 'classnames';
+import { LETTERS_TO_OPEN_SEARCH } from './const';
 
 export function HeaderElement() {
+  const [isListOpened, setOpenedList] = useState(false);
+
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setOpenedList(e.target.value.length >= LETTERS_TO_OPEN_SEARCH);
+  };
+
   return (
     <header className="header" id="header">
       <div className="container">
@@ -22,23 +31,17 @@ export function HeaderElement() {
               </Link>
             </li>
             <li className="main-nav__item">
-              <a className="main-nav__link">
-                Гарантии
-              </a>
+              <a className="main-nav__link">Гарантии</a>
             </li>
             <li className="main-nav__item">
-              <a className="main-nav__link">
-                Доставка
-              </a>
+              <a className="main-nav__link">Доставка</a>
             </li>
             <li className="main-nav__item">
-              <a className="main-nav__link">
-                О компании
-              </a>
+              <a className="main-nav__link">О компании</a>
             </li>
           </ul>
         </nav>
-        <div className="form-search">
+        <div className={cn('form-search', { 'list-opened': isListOpened })}>
           <form>
             <label>
               <svg
@@ -50,13 +53,14 @@ export function HeaderElement() {
                 <use xlinkHref="#icon-lens" />
               </svg>
               <input
+                onChange={handleSearchChange}
                 className="form-search__input"
                 type="text"
                 autoComplete="off"
                 placeholder="Поиск по сайту"
               />
             </label>
-            <ul className="form-search__select-list">
+            <ul className="form-search__select-list scroller">
               <li className="form-search__select-item" tabIndex={0}>
                 Cannonball Pro MX 8i
               </li>
