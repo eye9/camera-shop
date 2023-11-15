@@ -1,3 +1,5 @@
+import { SortOrders } from '../components/main-catalog/const';
+import { Product } from '../types/product';
 import { Review } from '../types/review';
 
 export function formatPrice(price: number) {
@@ -16,3 +18,10 @@ export function reviewSorter(a: Review, b: Review): number {
 
   return 0;
 }
+
+export const priceSorter =
+  (sortOrder: SortOrders) => (a: Product, b: Product) =>
+    sortOrder === SortOrders.Asc ? a.price - b.price : b.price - a.price;
+export const popularitySorter =
+  (sortOrder: SortOrders) => (a: Product, b: Product) =>
+    sortOrder === SortOrders.Asc ? a.rating - b.rating : b.rating - a.rating;

@@ -9,18 +9,28 @@ import { selectProducts } from '../../store/selectors';
 import { useAppSelector } from '../../hooks/hooks';
 import { Helmet } from 'react-helmet-async';
 import { MainCatalogSettings } from '../../const';
-
-const AppParams = {
-  Page: 'page',
-} as const;
+import { AppParams, SortOrders, SortTypes } from './const';
+import { priceSorter, popularitySorter } from '../../utils/utils';
 
 export function MainCatalog() {
+  const products = useAppSelector(selectProducts);
   const [search] = useSearchParams();
   const [currentPage, setPage] = useState(
     Number(search.get(AppParams.Page)) || 1
   );
+  const sortType = search.get(AppParams.SortType);
+  const sortOrder = search.get(AppParams.SortOrder);
+  const isSorted = sortOrder === SortOrders.Asc || sortOrder === SortOrders.Desc;
 
-  const products = useAppSelector(selectProducts);
+  let sortedProducts = products;
+  if (isSorted) {
+    if (sortType === SortTypes.Price) {
+      sortedProducts = sortedProducts.slice().sort(priceSorter(sortOrder));
+    } else if (sortType === SortTypes.Popularity) {
+      sortedProducts = sortedProducts.slice().sort(popularitySorter(sortOrder));
+    }
+  }
+
   const pagesCount =
     Math.floor(products.length / MainCatalogSettings.CardsPerPage) +
     (products.length % MainCatalogSettings.CardsPerPage > 0 ? 1 : 0);
@@ -39,7 +49,7 @@ export function MainCatalog() {
             <div className="catalog__content">
               <CatalogSort />
               <CardsList
-                products={products.slice(
+                products={sortedProducts.slice(
                   (currentPage - 1) * MainCatalogSettings.CardsPerPage,
                   currentPage * MainCatalogSettings.CardsPerPage
                 )}

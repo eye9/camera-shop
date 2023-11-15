@@ -1,16 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-
-const SortTypes = {
-  Price: 'price',
-  Popularity: 'popular',
-} as const;
-
-const SortOrders = {
-  Any: 'any',
-  Asc: 'asc',
-  Desc: 'desc',
-} as const;
+import { SortTypes, SortOrders } from '../../const';
 
 export function CatalogSort() {
   const [filterType, setFilterType] = useState(SortTypes.Price as string);
