@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 const SortTypes = {
   Price: 'price',
@@ -6,13 +7,23 @@ const SortTypes = {
 } as const;
 
 const SortOrders = {
-  ASC: 'asc',
-  DESC: 'desc'
+  Any: 'any',
+  Asc: 'asc',
+  Desc: 'desc',
 } as const;
 
 export function CatalogSort() {
-  const [filterType, setFilter] = useState(SortTypes.Price as string);
-  const [filterOrder, setFilterOrder] = useState('');
+  const [filterType, setFilterType] = useState(SortTypes.Price as string);
+  const [filterOrder, setFilterOrder] = useState(SortOrders.Any as string);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    setSearchParams({
+      page: searchParams.get('page') || '',
+      sort: filterType,
+      order: filterOrder,
+    });
+  }, [filterType, filterOrder, setSearchParams, searchParams]);
 
   return (
     <div className="catalog-sort">
@@ -26,7 +37,9 @@ export function CatalogSort() {
                 id="sortPrice"
                 name="sort"
                 checked={filterType === SortTypes.Price}
-                onClick={() => setFilter(SortTypes.Price)}
+                onChange={() => {
+                  setFilterType(SortTypes.Price);
+                }}
               />
               <label htmlFor="sortPrice">по цене</label>
             </div>
@@ -36,7 +49,7 @@ export function CatalogSort() {
                 id="sortPopular"
                 name="sort"
                 checked={filterType === SortTypes.Popularity}
-                onClick={() => setFilter(SortTypes.Popularity)}
+                onChange={() => setFilterType(SortTypes.Popularity)}
               />
               <label htmlFor="sortPopular">по популярности</label>
             </div>
@@ -48,8 +61,8 @@ export function CatalogSort() {
                 id="up"
                 name="sort-icon"
                 aria-label="По возрастанию"
-                checked={filterOrder === SortOrders.ASC}
-                onClick={() => setFilterOrder(SortOrders.ASC)}
+                checked={filterOrder === SortOrders.Asc}
+                onChange={() => setFilterOrder(SortOrders.Asc)}
               />
               <label htmlFor="up">
                 <svg width={16} height={14} aria-hidden="true">
@@ -63,8 +76,8 @@ export function CatalogSort() {
                 id="down"
                 name="sort-icon"
                 aria-label="По убыванию"
-                checked={filterOrder === SortOrders.DESC}
-                onClick={() => setFilterOrder(SortOrders.DESC)}
+                checked={filterOrder === SortOrders.Desc}
+                onChange={() => setFilterOrder(SortOrders.Desc)}
               />
               <label htmlFor="down">
                 <svg width={16} height={14} aria-hidden="true">
