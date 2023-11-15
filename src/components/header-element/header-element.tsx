@@ -1,14 +1,21 @@
-import { Link } from 'react-router-dom';
-import { AppRoutes } from '../../const';
-import { ChangeEvent, useState } from 'react';
 import cn from 'classnames';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { ChangeEvent, useState, useRef } from 'react';
+import { AppRoutes } from '../../const';
 import { LETTERS_TO_OPEN_SEARCH } from './const';
+import { selectProducts } from '../../store/selectors';
+import { SearchItem } from './components/search-item';
 
 export function HeaderElement() {
   const [isListOpened, setOpenedList] = useState(false);
+  const [searchText, setSearchText] = useState('');
+  const searchRef = useRef(null);
+  const products = useSelector(selectProducts);
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setOpenedList(e.target.value.length >= LETTERS_TO_OPEN_SEARCH);
+    setSearchText(e.target.value);
   };
 
   return (
@@ -53,32 +60,33 @@ export function HeaderElement() {
                 <use xlinkHref="#icon-lens" />
               </svg>
               <input
+                ref={searchRef}
                 onChange={handleSearchChange}
                 className="form-search__input"
                 type="text"
                 autoComplete="off"
                 placeholder="Поиск по сайту"
+                value={searchText}
               />
             </label>
             <ul className="form-search__select-list scroller">
-              <li className="form-search__select-item" tabIndex={0}>
-                Cannonball Pro MX 8i
-              </li>
-              <li className="form-search__select-item" tabIndex={0}>
-                Cannonball Pro MX 7i
-              </li>
-              <li className="form-search__select-item" tabIndex={0}>
-                Cannonball Pro MX 6i
-              </li>
-              <li className="form-search__select-item" tabIndex={0}>
-                Cannonball Pro MX 5i
-              </li>
-              <li className="form-search__select-item" tabIndex={0}>
-                Cannonball Pro MX 4i
-              </li>
+              {isListOpened &&
+                searchRef.current !== null &&
+                products
+                  .filter((product) => product.name.match(searchText))
+                  .map((product) => (
+                    <SearchItem product={product} key={product.id} />
+                  ))}
             </ul>
           </form>
-          <button className="form-search__reset" type="reset">
+          <button
+            className="form-search__reset"
+            type="reset"
+            onClick={() => {
+              setSearchText('');
+              setOpenedList(false);
+            }}
+          >
             <svg width={10} height={10} aria-hidden="true">
               <use xlinkHref="#icon-close" />
             </svg>
