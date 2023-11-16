@@ -4,10 +4,10 @@ export const AppParams = {
   SortOrder: 'order',
 } as const;
 
-export const SortTypes = {
-  Price: 'price',
-  Popularity: 'popular',
-} as const;
+export enum SortTypes {
+  Price = 'price',
+  Popularity = 'popular',
+}
 
 export enum SortOrders {
   Any = 'any',

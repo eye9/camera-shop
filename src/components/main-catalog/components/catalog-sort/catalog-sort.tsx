@@ -1,19 +1,19 @@
-import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { SortTypes, SortOrders } from '../../const';
+import { useState, useEffect, useMemo } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { SortTypes, SortOrders, AppParams } from '../../const';
 
 export function CatalogSort() {
-  const [filterType, setFilterType] = useState(SortTypes.Price as string);
-  const [filterOrder, setFilterOrder] = useState(SortOrders.Any as string);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const queryParams = useMemo(() => new URLSearchParams(location.search), [location.search]);
+  const [sortType, setFilterType] = useState(queryParams.get(AppParams.SortType) || SortTypes.Price);
+  const [sortOrder, setFilterOrder] = useState(queryParams.get(AppParams.SortOrder) || SortOrders.Any);
 
   useEffect(() => {
-    setSearchParams({
-      page: searchParams.get('page') || '',
-      sort: filterType,
-      order: filterOrder,
-    });
-  }, [filterType, filterOrder, setSearchParams, searchParams]);
+    queryParams.set(AppParams.SortType, sortType);
+    queryParams.set(AppParams.SortOrder, sortOrder);
+    navigate({ search: queryParams.toString() });
+  }, [sortType, sortOrder, navigate, location.search, queryParams]);
 
   return (
     <div className="catalog-sort">
@@ -26,7 +26,7 @@ export function CatalogSort() {
                 type="radio"
                 id="sortPrice"
                 name="sort"
-                checked={filterType === SortTypes.Price}
+                checked={sortType === SortTypes.Price}
                 onChange={() => {
                   setFilterType(SortTypes.Price);
                 }}
@@ -38,7 +38,7 @@ export function CatalogSort() {
                 type="radio"
                 id="sortPopular"
                 name="sort"
-                checked={filterType === SortTypes.Popularity}
+                checked={sortType === SortTypes.Popularity}
                 onChange={() => setFilterType(SortTypes.Popularity)}
               />
               <label htmlFor="sortPopular">по популярности</label>
@@ -51,7 +51,7 @@ export function CatalogSort() {
                 id="up"
                 name="sort-icon"
                 aria-label="По возрастанию"
-                checked={filterOrder === SortOrders.Asc}
+                checked={sortOrder === SortOrders.Asc}
                 onChange={() => setFilterOrder(SortOrders.Asc)}
               />
               <label htmlFor="up">
@@ -66,7 +66,7 @@ export function CatalogSort() {
                 id="down"
                 name="sort-icon"
                 aria-label="По убыванию"
-                checked={filterOrder === SortOrders.Desc}
+                checked={sortOrder === SortOrders.Desc}
                 onChange={() => setFilterOrder(SortOrders.Desc)}
               />
               <label htmlFor="down">
