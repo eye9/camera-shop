@@ -86,12 +86,12 @@ export function CatalogFilter() {
     queryParams.get(AppParams.Category) || ''
   );
   const [levelFilter, setLevelFilter] = useState(
-    queryParams.get(AppParams.Level)?.split(',') || ([] as Array<string>)
+    queryParams.get(AppParams.Level)?.split(',') || ([] as FilterLevel[])
   );
   const [typeFilter, setTypeFilter] = useState(
-    queryParams.get(AppParams.Type)?.split(',') || ([] as Array<string>)
+    queryParams.get(AppParams.Type)?.split(',') || ([] as FilterType[])
   );
-
+  const disabledVideoTypes = [FilterType.Snapshot, FilterType.Film];
   useEffect(() => {
     queryParams.set(AppParams.Category, categoryFilter);
     queryParams.set(AppParams.Level, levelFilter.join());
@@ -126,14 +126,22 @@ export function CatalogFilter() {
   const handleCategoryFilterChange = (category: string) => {
     if (categoryFilter !== category) {
       setCategoryFilter(category);
+      if (category === FilterCategory.Video) {
+        setTypeFilter(
+          typeFilter.filter(
+            (filterName) =>
+              !disabledVideoTypes.includes(filterName as FilterType)
+          )
+        );
+      }
     } else {
       setCategoryFilter('');
     }
   };
 
-  const isFilterDisabled = (filterName: string) =>
+  const isFilterDisabled = (filterName: FilterType) =>
     categoryFilter === FilterCategory.Video &&
-    (filterName === FilterType.Snapshot || filterName === FilterType.Film);
+    disabledVideoTypes.includes(filterName);
 
   return (
     <div className="catalog__aside">
@@ -189,8 +197,8 @@ export function CatalogFilter() {
                   <input
                     type="checkbox"
                     name={item.name}
-                    disabled={isFilterDisabled(item.name)}
-                    checked={typeFilter.includes(item.name) && !isFilterDisabled(item.name)}
+                    disabled={isFilterDisabled(item.name as FilterType)}
+                    checked={typeFilter.includes(item.name)}
                     onChange={() => handleTypeFilterChange(item.name)}
                   />
                   <span className="custom-checkbox__icon" />
@@ -219,7 +227,11 @@ export function CatalogFilter() {
               </div>
             ))}
           </fieldset>
-          <button className="btn catalog-filter__reset-btn" type="reset" onClick={resetFilters}>
+          <button
+            className="btn catalog-filter__reset-btn"
+            type="reset"
+            onClick={resetFilters}
+          >
             Сбросить фильтры
           </button>
         </form>
