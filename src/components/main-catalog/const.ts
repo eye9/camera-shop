@@ -1,3 +1,5 @@
+import { FilterItem } from './types';
+
 export const AppParams = {
   Page: 'page',
   SortType: 'sort',
@@ -32,6 +34,58 @@ export enum FilterType {
 
 export enum FilterLevel {
   Zero = 'zero',
-  Amateur = 'non-professional',
+  Amateur = 'amateur',
   Professional = 'professional',
 }
+
+export const FilterCategories: FilterItem[] = [
+  {
+    label: 'Фотокамера',
+    name: FilterCategory.Photo,
+    dbName: 'Фотоаппарат'
+  },
+  {
+    label: 'Видеокамера',
+    dbName: 'Видеокамера',
+    name: FilterCategory.Video,
+  },
+];
+export const FilterTypes: FilterItem[] = [
+  {
+    label: 'Цифровая',
+    dbName: 'Цифровая',
+    name: FilterType.Digital,
+  },
+  {
+    label: 'Плёночная',
+    dbName: 'Плёночная',
+    name: FilterType.Film,
+  },
+  {
+    label: 'Моментальная',
+    dbName: 'Моментальная',
+    name: FilterType.Snapshot,
+  },
+  {
+    label: 'Коллекционная',
+    dbName: 'Коллекционная',
+    name: FilterType.Collectible,
+  },
+];
+export const FilterLevels: FilterItem[] = [
+  {
+    label: 'Нулевой',
+    dbName: 'Нулевой',
+    name: FilterLevel.Zero,
+  },
+  {
+    label: 'Любительский',
+    dbName: 'Любительский',
+    name: FilterLevel.Amateur,
+  },
+  {
+    label: 'Профессиональный',
+    dbName: 'Профессиональный',
+    name: FilterLevel.Professional,
+  },
+];

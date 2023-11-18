@@ -9,7 +9,14 @@ import { selectProducts } from '../../store/selectors';
 import { useAppSelector } from '../../hooks/hooks';
 import { Helmet } from 'react-helmet-async';
 import { MainCatalogSettings } from '../../const';
-import { AppParams, SortOrders, SortTypes } from './const';
+import {
+  AppParams,
+  FilterCategories,
+  FilterTypes,
+  FilterLevels,
+  SortOrders,
+  SortTypes,
+} from './const';
 import { priceSorter, popularitySorter } from '../../utils/utils';
 
 export function MainCatalog() {
@@ -20,9 +27,46 @@ export function MainCatalog() {
   );
   const sortType = search.get(AppParams.SortType);
   const sortOrder = search.get(AppParams.SortOrder);
-  const isSorted = sortOrder === SortOrders.Asc || sortOrder === SortOrders.Desc;
+  const isSorted =
+    sortOrder === SortOrders.Asc || sortOrder === SortOrders.Desc;
 
-  let sortedProducts = products;
+  let filteredProducts = products;
+  const productCategory = search.get(AppParams.Category)?.split(',');
+  const productType = search.get(AppParams.Type)?.split(',');
+  const productLevel = search.get(AppParams.Level)?.split(',');
+
+  const isFilteredCategory = productCategory && productCategory[0] !== '';
+  const isFilteredType = productType && productType[0] !== '';
+  const isFilteredLevel = productLevel && productLevel[0] !== '';
+
+  if (isFilteredCategory) {
+    const category = FilterCategories.filter((item) =>
+      productCategory.includes(item.name)
+    ).map((item) => item.dbName);
+    filteredProducts = filteredProducts.filter((product) =>
+      category.includes(product.category)
+    );
+  }
+
+  if (isFilteredType) {
+    const type = FilterTypes.filter((item) =>
+      productType.includes(item.name)
+    ).map((item) => item.dbName);
+    filteredProducts = filteredProducts.filter((product) =>
+      type.includes(product.type)
+    );
+  }
+
+  if (isFilteredLevel) {
+    const level = FilterLevels.filter((item) =>
+      productLevel.includes(item.name)
+    ).map((item) => item.dbName);
+    filteredProducts = filteredProducts.filter((product) =>
+      level.includes(product.level)
+    );
+  }
+
+  let sortedProducts = filteredProducts;
   if (isSorted) {
     if (sortType === SortTypes.Price) {
       sortedProducts = sortedProducts.slice().sort(priceSorter(sortOrder));
@@ -32,8 +76,8 @@ export function MainCatalog() {
   }
 
   const pagesCount =
-    Math.floor(products.length / MainCatalogSettings.CardsPerPage) +
-    (products.length % MainCatalogSettings.CardsPerPage > 0 ? 1 : 0);
+    Math.floor(sortedProducts.length / MainCatalogSettings.CardsPerPage) +
+    (sortedProducts.length % MainCatalogSettings.CardsPerPage > 0 ? 1 : 0);
 
   return (
     <div className="page-content">

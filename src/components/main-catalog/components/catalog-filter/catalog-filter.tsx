@@ -5,75 +5,10 @@ import {
   FilterCategory,
   FilterLevel,
   FilterType,
+  FilterCategories,
+  FilterLevels,
+  FilterTypes,
 } from '../../const';
-
-type FilterItem = {
-  label: string;
-  name: string;
-  isChecked?: boolean;
-  isDisabled?: boolean;
-};
-
-const filterCategories: FilterItem[] = [
-  {
-    label: 'Фотокамера',
-    name: FilterCategory.Photo,
-    isChecked: false,
-    isDisabled: false,
-  },
-  {
-    label: 'Видеокамера',
-    name: FilterCategory.Video,
-    isChecked: false,
-    isDisabled: false,
-  },
-];
-const filterTypes: FilterItem[] = [
-  {
-    label: 'Цифровая',
-    name: FilterType.Digital,
-    isChecked: false,
-    isDisabled: false,
-  },
-  {
-    label: 'Плёночная',
-    name: FilterType.Film,
-    isChecked: false,
-    isDisabled: false,
-  },
-  {
-    label: 'Моментальная',
-    name: FilterType.Snapshot,
-    isChecked: false,
-    isDisabled: false,
-  },
-  {
-    label: 'Коллекционная',
-    name: FilterType.Collectible,
-    isChecked: false,
-    isDisabled: false,
-  },
-];
-const filterLevels: FilterItem[] = [
-  {
-    label: 'Нулевой',
-    name: FilterLevel.Zero,
-    isChecked: false,
-    isDisabled: false,
-  },
-  {
-    label: 'Любительский',
-    name: FilterLevel.Amateur,
-    isChecked: false,
-    isDisabled: false,
-  },
-  {
-    label: 'Профессиональный',
-    name: FilterLevel.Professional,
-    isChecked: false,
-    isDisabled: false,
-  },
-];
 
 export function CatalogFilter() {
   const location = useLocation();
@@ -165,7 +100,7 @@ export function CatalogFilter() {
           </fieldset>
           <fieldset className="catalog-filter__block">
             <legend className="title title--h5">Категория</legend>
-            {filterCategories.map((item) => (
+            {FilterCategories.map((item) => (
               <div
                 className="custom-checkbox catalog-filter__item"
                 key={item.name}
@@ -188,7 +123,7 @@ export function CatalogFilter() {
           </fieldset>
           <fieldset className="catalog-filter__block">
             <legend className="title title--h5">Тип камеры</legend>
-            {filterTypes.map((item) => (
+            {FilterTypes.map((item) => (
               <div
                 className="custom-checkbox catalog-filter__item"
                 key={item.name}
@@ -209,7 +144,7 @@ export function CatalogFilter() {
           </fieldset>
           <fieldset className="catalog-filter__block">
             <legend className="title title--h5">Уровень</legend>
-            {filterLevels.map((item) => (
+            {FilterLevels.map((item) => (
               <div
                 className="custom-checkbox catalog-filter__item"
                 key={item.name}
