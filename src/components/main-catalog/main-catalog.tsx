@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useSearchParams } from 'react-router-dom';
 import { selectProducts } from '../../store/selectors';
@@ -21,23 +20,9 @@ import { priceSorter, popularitySorter } from '../../utils/utils';
 
 export function MainCatalog() {
   const products = useAppSelector(selectProducts);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const currentPage = Number(searchParams.get(AppParams.Page)) || 1;
-  const [pagesCount, setPages] = useState(0);
   let filteredProducts = products;
-  // console.log(currentPage, searchParams.get(AppParams.Page));
-
-  useEffect(() => {
-    const pages =
-      Math.floor(filteredProducts.length / MainCatalogSettings.CardsPerPage) +
-      (filteredProducts.length % MainCatalogSettings.CardsPerPage > 0 ? 1 : 0);
-    setPages(pages);
-  }, [filteredProducts]);
-
-  // useEffect(() => {
-  //   search.set(AppParams.Page, String(currentPage));
-  //   navigate({ search: search.toString() });
-  // }, [navigate, currentPage, search]);
 
   const sortType = searchParams.get(AppParams.SortType);
   const sortOrder = searchParams.get(AppParams.SortOrder);
@@ -98,6 +83,10 @@ export function MainCatalog() {
     }
   }
 
+  const pagesCount =
+    Math.floor(filteredProducts.length / MainCatalogSettings.CardsPerPage) +
+    (filteredProducts.length % MainCatalogSettings.CardsPerPage > 0 ? 1 : 0);
+
   return (
     <div className="page-content">
       <Helmet>
@@ -108,9 +97,9 @@ export function MainCatalog() {
         <div className="container">
           <h1 className="title title--h2">Каталог фото- и видеотехники</h1>
           <div className="page-content__columns">
-            {/* <CatalogFilter /> */}
+            <CatalogFilter />
             <div className="catalog__content">
-              {/* <CatalogSort /> */}
+              <CatalogSort />
               <CardsList
                 products={sortedProducts.slice(
                   (currentPage - 1) * MainCatalogSettings.CardsPerPage,
