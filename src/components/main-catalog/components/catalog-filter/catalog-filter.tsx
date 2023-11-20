@@ -28,6 +28,7 @@ export function CatalogFilter() {
   );
   const disabledVideoTypes = [FilterType.Snapshot, FilterType.Film];
   useEffect(() => {
+    queryParams.set(AppParams.Page, String(1));
     queryParams.set(AppParams.Category, categoryFilter);
     queryParams.set(AppParams.Level, levelFilter.join());
     queryParams.set(AppParams.Type, typeFilter.join());
@@ -35,28 +36,26 @@ export function CatalogFilter() {
   }, [categoryFilter, levelFilter, typeFilter, navigate, queryParams]);
 
   const resetFilters = () => {
+    queryParams.set(AppParams.Page, String(1));
     setCategoryFilter('');
     setLevelFilter([] as Array<string>);
     setTypeFilter([] as Array<string>);
   };
 
-  const handleTypeFilterChange = (type: string) => {
-    if (typeFilter.includes(type)) {
-      setTypeFilter(typeFilter.filter((item) => item !== type));
+  const handleFilterChange = (filter: string, filtersList: string[], filterSetter: (s: string[]) => void) => {
+    if (filtersList.includes(filter)) {
+      filterSetter(filtersList.filter((item) => item !== filter));
     } else {
-      const newFilter = typeFilter.slice();
-      newFilter.push(type);
-      setTypeFilter(newFilter);
+      const newFilter = filtersList.slice();
+      newFilter.push(filter);
+      filterSetter(newFilter);
     }
   };
+  const handleTypeFilterChange = (type: string) => {
+    handleFilterChange(type, typeFilter, setTypeFilter);
+  };
   const handleLevelFilterChange = (level: string) => {
-    if (levelFilter.includes(level)) {
-      setLevelFilter(levelFilter.filter((item) => item !== level));
-    } else {
-      const newFilter = levelFilter.slice();
-      newFilter.push(level);
-      setLevelFilter(newFilter);
-    }
+    handleFilterChange(level, levelFilter, setLevelFilter);
   };
   const handleCategoryFilterChange = (category: string) => {
     if (categoryFilter !== category) {

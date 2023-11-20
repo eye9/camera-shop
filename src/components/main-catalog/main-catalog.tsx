@@ -1,13 +1,13 @@
+import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { useSearchParams } from 'react-router-dom';
+import { selectProducts } from '../../store/selectors';
+import { useAppSelector } from '../../hooks/hooks';
 import { PaginatorElement } from '../paginator-element/paginator-element';
 import { CardsList } from './components/card-list/cards-list';
 import { CatalogSort } from './components/catalog-sort/catalog-sort';
 import { CatalogFilter } from './components/catalog-filter/catalog-filter';
 import { BreadcrumbsElement } from '../breadcrumbs-element/breadcrumbs-element';
-import { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { selectProducts } from '../../store/selectors';
-import { useAppSelector } from '../../hooks/hooks';
-import { Helmet } from 'react-helmet-async';
 import { MainCatalogSettings } from '../../const';
 import {
   AppParams,
@@ -21,23 +21,46 @@ import { priceSorter, popularitySorter } from '../../utils/utils';
 
 export function MainCatalog() {
   const products = useAppSelector(selectProducts);
-  const [search] = useSearchParams();
-  const [currentPage, setPage] = useState(
-    Number(search.get(AppParams.Page)) || 1
-  );
-  const sortType = search.get(AppParams.SortType);
-  const sortOrder = search.get(AppParams.SortOrder);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentPage = Number(searchParams.get(AppParams.Page)) || 1;
+  const [pagesCount, setPages] = useState(0);
+  let filteredProducts = products;
+  // console.log(currentPage, searchParams.get(AppParams.Page));
+
+  useEffect(() => {
+    const pages =
+      Math.floor(filteredProducts.length / MainCatalogSettings.CardsPerPage) +
+      (filteredProducts.length % MainCatalogSettings.CardsPerPage > 0 ? 1 : 0);
+    setPages(pages);
+  }, [filteredProducts]);
+
+  // useEffect(() => {
+  //   search.set(AppParams.Page, String(currentPage));
+  //   navigate({ search: search.toString() });
+  // }, [navigate, currentPage, search]);
+
+  const sortType = searchParams.get(AppParams.SortType);
+  const sortOrder = searchParams.get(AppParams.SortOrder);
   const isSorted =
     sortOrder === SortOrders.Asc || sortOrder === SortOrders.Desc;
 
-  let filteredProducts = products;
-  const productCategory = search.get(AppParams.Category)?.split(',');
-  const productType = search.get(AppParams.Type)?.split(',');
-  const productLevel = search.get(AppParams.Level)?.split(',');
+  const productCategory = searchParams.get(AppParams.Category)?.split(',');
+  const productType = searchParams.get(AppParams.Type)?.split(',');
+  const productLevel = searchParams.get(AppParams.Level)?.split(',');
 
-  const isFilteredCategory = productCategory && productCategory[0] !== '';
-  const isFilteredType = productType && productType[0] !== '';
-  const isFilteredLevel = productLevel && productLevel[0] !== '';
+  if (productCategory && productCategory[0] === '') {
+    productCategory?.shift();
+  }
+  if (productType && productType[0] === '') {
+    productType?.shift();
+  }
+  if (productLevel && productLevel[0] === '') {
+    productLevel?.shift();
+  }
+
+  const isFilteredCategory = productCategory && productCategory.length !== 0;
+  const isFilteredType = productType && productType.length !== 0;
+  const isFilteredLevel = productLevel && productLevel.length !== 0;
 
   if (isFilteredCategory) {
     const category = FilterCategories.filter((item) =>
@@ -75,10 +98,6 @@ export function MainCatalog() {
     }
   }
 
-  const pagesCount =
-    Math.floor(sortedProducts.length / MainCatalogSettings.CardsPerPage) +
-    (sortedProducts.length % MainCatalogSettings.CardsPerPage > 0 ? 1 : 0);
-
   return (
     <div className="page-content">
       <Helmet>
@@ -89,20 +108,16 @@ export function MainCatalog() {
         <div className="container">
           <h1 className="title title--h2">Каталог фото- и видеотехники</h1>
           <div className="page-content__columns">
-            <CatalogFilter />
+            {/* <CatalogFilter /> */}
             <div className="catalog__content">
-              <CatalogSort />
+              {/* <CatalogSort /> */}
               <CardsList
                 products={sortedProducts.slice(
                   (currentPage - 1) * MainCatalogSettings.CardsPerPage,
                   currentPage * MainCatalogSettings.CardsPerPage
                 )}
               />
-              <PaginatorElement
-                onPageChange={setPage}
-                pagesCount={pagesCount}
-                currentPage={currentPage}
-              />
+              <PaginatorElement pagesCount={pagesCount} />
             </div>
           </div>
         </div>

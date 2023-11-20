@@ -1,5 +1,4 @@
 import cn from 'classnames';
-import { Link } from 'react-router-dom';
 import { PaginatorButtonProps } from '../../types';
 
 type PageButtonProps = PaginatorButtonProps & {
@@ -10,18 +9,16 @@ export function PageButton({
   linkPage,
   onClick,
 }: PageButtonProps): JSX.Element {
-  const queryPage = linkPage === 1 ? '' : `/?page=${linkPage}`;
   return (
     <li className="pagination__item">
-      <Link
-        to={queryPage}
+      <a
         onClick={onClick()}
         className={cn('pagination__link', {
           'pagination__link--active': isActive,
         })}
       >
         {linkPage}
-      </Link>
+      </a>
     </li>
   );
 }

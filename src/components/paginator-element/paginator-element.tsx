@@ -1,27 +1,39 @@
-import { Dispatch, MouseEventHandler, SetStateAction, useState } from 'react';
-import { MainCatalogSettings } from '../../const';
+import { MouseEventHandler, useState, useEffect } from 'react';
 import { BackButton } from './components/back-button/back-button';
 import { PageButton } from './components/page-button/page-button';
 import { ForwardButton } from './components/forward-button/forward-button';
+import { useSearchParams } from 'react-router-dom';
+import { AppParams } from '../main-catalog/const';
+import { MainCatalogSettings } from '../../const';
+
+import './style.css';
 
 type PaginatorElementProps = {
   pagesCount: number;
-  currentPage: number;
-  onPageChange: Dispatch<SetStateAction<number>>;
 };
-export function PaginatorElement({
-  pagesCount,
-  currentPage,
-  onPageChange,
-}: PaginatorElementProps) {
-  const [activePage, setActivePage] = useState(currentPage);
-  const [firstPage, setFirstPage] = useState(currentPage);
+
+export function PaginatorElement({ pagesCount }: PaginatorElementProps) {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const [activePage, setActivePage] = useState(
+    Number(searchParams.get(AppParams.Page)) || 1
+  );
+  const [firstPage, setFirstPage] = useState(
+    Number(searchParams.get(AppParams.Page)) || 1
+  );
   const lastPage = Math.min(
     firstPage + MainCatalogSettings.MaxPagesVisible - 1,
     pagesCount
   );
-  const pages = Array.from({ length: pagesCount }, (_, k) => k + 1);
-  const shownPages = pages.slice(firstPage - 1, lastPage);
+  const pagesList = Array.from({ length: pagesCount }, (_, k) => k + 1);
+  const shownPages = pagesList.slice(firstPage - 1, lastPage);
+
+  useEffect(() => {
+    setSearchParams((prevParams) => {
+      prevParams.set(AppParams.Page, String(activePage));
+      return prevParams;
+    },);
+  }, [activePage, setSearchParams]);
 
   function backButtonClickHandler():
     | MouseEventHandler<HTMLAnchorElement>
@@ -29,7 +41,6 @@ export function PaginatorElement({
     return () => {
       setFirstPage(firstPage - 1);
       setActivePage(firstPage - 1);
-      onPageChange(firstPage - 1);
     };
   }
   function nextButtonClickHandler():
@@ -38,7 +49,6 @@ export function PaginatorElement({
     return () => {
       setFirstPage(firstPage + 1);
       setActivePage(lastPage + 1);
-      onPageChange(lastPage + 1);
     };
   }
   function pageButtonClickHandler(
@@ -46,16 +56,13 @@ export function PaginatorElement({
   ): MouseEventHandler<HTMLAnchorElement> | undefined {
     return () => {
       setActivePage(page);
-      onPageChange(page);
     };
   }
 
   return (
     <div className="pagination">
       <ul className="pagination__list">
-        {firstPage !== 1 && (
-          <BackButton onClick={backButtonClickHandler} linkPage={firstPage} />
-        )}
+        {firstPage !== 1 && <BackButton onClick={backButtonClickHandler} />}
         {shownPages.map((page) => {
           const key = `page-${page}`;
           return (
@@ -68,10 +75,7 @@ export function PaginatorElement({
           );
         })}
         {lastPage !== pagesCount && (
-          <ForwardButton
-            onClick={nextButtonClickHandler}
-            linkPage={firstPage + MainCatalogSettings.MaxPagesVisible}
-          />
+          <ForwardButton onClick={nextButtonClickHandler} />
         )}
       </ul>
     </div>
