@@ -20,6 +20,7 @@ export const NameSpace = {
   Review: 'REVIEW',
   Busket: 'BUSKET',
   Product: 'PRODUCT',
+  Navigation: 'NAVIGATION',
 } as const;
 
 export const ReviewFieldsLength = {

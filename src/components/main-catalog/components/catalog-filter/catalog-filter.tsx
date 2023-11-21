@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import {
   AppParams,
   FilterCategory,
@@ -11,38 +11,42 @@ import {
 } from '../../const';
 
 export function CatalogFilter() {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const queryParams = useMemo(
-    () => new URLSearchParams(location.search),
-    [location.search]
-  );
+  const [searchParams, setSearchParams] = useSearchParams();
   const [categoryFilter, setCategoryFilter] = useState(
-    queryParams.get(AppParams.Category) || ''
+    searchParams.get(AppParams.Category) || ''
   );
   const [levelFilter, setLevelFilter] = useState(
-    queryParams.get(AppParams.Level)?.split(',') || ([] as FilterLevel[])
+    searchParams.get(AppParams.Level)?.split(',') || ([] as FilterLevel[])
   );
   const [typeFilter, setTypeFilter] = useState(
-    queryParams.get(AppParams.Type)?.split(',') || ([] as FilterType[])
+    searchParams.get(AppParams.Type)?.split(',') || ([] as FilterType[])
   );
   const disabledVideoTypes = [FilterType.Snapshot, FilterType.Film];
   useEffect(() => {
-    queryParams.set(AppParams.Page, String(1));
-    queryParams.set(AppParams.Category, categoryFilter);
-    queryParams.set(AppParams.Level, levelFilter.join());
-    queryParams.set(AppParams.Type, typeFilter.join());
-    navigate({ search: queryParams.toString() });
-  }, [categoryFilter, levelFilter, typeFilter, navigate, queryParams]);
+    setSearchParams((prevParams) => {
+      prevParams.set(AppParams.Page, '1');
+      prevParams.set(AppParams.Category, categoryFilter);
+      prevParams.set(AppParams.Level, levelFilter.join());
+      prevParams.set(AppParams.Type, typeFilter.join());
+      return prevParams;
+    });
+  }, [categoryFilter, levelFilter, typeFilter, setSearchParams]);
 
   const resetFilters = () => {
-    queryParams.set(AppParams.Page, String(1));
     setCategoryFilter('');
     setLevelFilter([] as Array<string>);
     setTypeFilter([] as Array<string>);
+    setSearchParams((prevParams) => {
+      prevParams.set(AppParams.Page, '1');
+      return prevParams;
+    });
   };
 
-  const handleFilterChange = (filter: string, filtersList: string[], filterSetter: (s: string[]) => void) => {
+  const handleFilterChange = (
+    filter: string,
+    filtersList: string[],
+    filterSetter: (s: string[]) => void
+  ) => {
     if (filtersList.includes(filter)) {
       filterSetter(filtersList.filter((item) => item !== filter));
     } else {

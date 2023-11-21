@@ -1,32 +1,39 @@
-import { MouseEventHandler, useState, useEffect } from 'react';
+import { MouseEventHandler, useEffect } from 'react';
 import { BackButton } from './components/back-button/back-button';
 import { PageButton } from './components/page-button/page-button';
 import { ForwardButton } from './components/forward-button/forward-button';
+import { MainCatalogSettings } from '../../const';
 import { useSearchParams } from 'react-router-dom';
 import { AppParams } from '../main-catalog/const';
-import { MainCatalogSettings } from '../../const';
 
 import './style.css';
 
 type PaginatorElementProps = {
   pagesCount: number;
+  currentPage: number;
 };
 
-export function PaginatorElement({ pagesCount }: PaginatorElementProps) {
-  const [searchParams, setSearchParams] = useSearchParams();
+export function PaginatorElement({
+  pagesCount, currentPage
+}: PaginatorElementProps) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, setSearchParams] = useSearchParams();
 
-  const [activePage, setActivePage] = useState(
-    Number(searchParams.get(AppParams.Page)) || 1
-  );
-  const [firstPage, setFirstPage] = useState(
-    Number(searchParams.get(AppParams.Page)) || 1
-  );
+  let activePage = currentPage;
+  let firstPage = currentPage;
   const lastPage = Math.min(
     firstPage + MainCatalogSettings.MaxPagesVisible - 1,
     pagesCount
   );
-  const pagesList = Array.from({ length: pagesCount }, (_, k) => k + 1);
+  const pagesList = Array.from({ length: pagesCount }, (_p, k) => k + 1);
   const shownPages = pagesList.slice(firstPage - 1, lastPage);
+
+  function setPage() {
+    setSearchParams((prevParams) => {
+      prevParams.set(AppParams.Page, String(activePage));
+      return prevParams;
+    },);
+  }
 
   useEffect(() => {
     setSearchParams((prevParams) => {
@@ -39,23 +46,26 @@ export function PaginatorElement({ pagesCount }: PaginatorElementProps) {
     | MouseEventHandler<HTMLAnchorElement>
     | undefined {
     return () => {
-      setFirstPage(firstPage - 1);
-      setActivePage(firstPage - 1);
+      firstPage--;
+      activePage = firstPage - 1;
+      setPage();
     };
   }
   function nextButtonClickHandler():
     | MouseEventHandler<HTMLAnchorElement>
     | undefined {
     return () => {
-      setFirstPage(firstPage + 1);
-      setActivePage(lastPage + 1);
+      firstPage++;
+      activePage = lastPage + 1;
+      setPage();
     };
   }
   function pageButtonClickHandler(
     page: number
   ): MouseEventHandler<HTMLAnchorElement> | undefined {
     return () => {
-      setActivePage(page);
+      activePage = (page);
+      setPage();
     };
   }
 

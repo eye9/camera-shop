@@ -106,7 +106,7 @@ export function MainCatalog() {
                   currentPage * MainCatalogSettings.CardsPerPage
                 )}
               />
-              <PaginatorElement pagesCount={pagesCount} />
+              <PaginatorElement pagesCount={pagesCount} currentPage={currentPage}/>
             </div>
           </div>
         </div>
