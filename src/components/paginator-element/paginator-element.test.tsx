@@ -4,7 +4,7 @@ import { PaginatorElement } from './paginator-element';
 
 describe('Component: Paginator Element', () => {
   it('should render properly', () => {
-    const {withStoreComponent} = withStore(<PaginatorElement currentPage={1} pagesCount={5} onPageChange={() => undefined}/>);
+    const {withStoreComponent} = withStore(<PaginatorElement currentPage={1} pagesCount={5} />);
     const preparedComponent = withRouter(withStoreComponent);
 
     render(preparedComponent);
