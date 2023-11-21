@@ -1,6 +1,4 @@
-import {MouseEventHandler} from 'react';
-
 export type PaginatorButtonProps = {
-  onClick: () => MouseEventHandler | undefined;
+  onClick: () => void;
   linkPage: number;
 };
