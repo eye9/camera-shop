@@ -16,7 +16,11 @@ type CatalogFilterProps = {
   onPriceChange: (min: number, max: number) => void;
 };
 
-export function CatalogFilter({ minPrice, maxPrice, onPriceChange }: CatalogFilterProps) {
+export function CatalogFilter({
+  minPrice,
+  maxPrice,
+  onPriceChange,
+}: CatalogFilterProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [categoryFilter, setCategoryFilter] = useState(
     searchParams.get(AppParams.Category) || ''
@@ -28,6 +32,11 @@ export function CatalogFilter({ minPrice, maxPrice, onPriceChange }: CatalogFilt
     searchParams.get(AppParams.Type)?.split(',') || ([] as FilterType[])
   );
   const disabledVideoTypes = [FilterType.Snapshot, FilterType.Film];
+  const [minValue, setMin] = useState(0);
+  const [maxValue, setMax] = useState(0);
+  const minRef = useRef<HTMLInputElement>(null);
+  const maxRef = useRef<HTMLInputElement>(null);
+
   useEffect(() => {
     setSearchParams((prevParams) => {
       prevParams.set(AppParams.Page, '1');
@@ -39,8 +48,12 @@ export function CatalogFilter({ minPrice, maxPrice, onPriceChange }: CatalogFilt
   }, [categoryFilter, levelFilter, typeFilter, setSearchParams]);
 
   const resetFilters = () => {
-    minRef.current.value = '';
-    maxRef.current.value = '';
+    if (minRef.current) {
+      minRef.current.value = '';
+    }
+    if (maxRef.current) {
+      maxRef.current.value = '';
+    }
     setCategoryFilter('');
     setLevelFilter([] as Array<string>);
     setTypeFilter([] as Array<string>);
@@ -89,11 +102,6 @@ export function CatalogFilter({ minPrice, maxPrice, onPriceChange }: CatalogFilt
     categoryFilter === FilterCategory.Video &&
     disabledVideoTypes.includes(filterName);
 
-  const [minValue, setMin] = useState(0);
-  const [maxValue, setMax] = useState(0);
-  const minRef = useRef(null);
-  const maxRef = useRef(null);
-
   const handleMinBlur = (e: FormEvent<HTMLInputElement>) => {
     if (e.currentTarget && maxRef.current && minRef.current) {
       if (+e.currentTarget.value < 0) {
@@ -126,11 +134,15 @@ export function CatalogFilter({ minPrice, maxPrice, onPriceChange }: CatalogFilt
   };
 
   const handleMinChange = () => {
-    setMin(+minRef.current.value);
+    if (minRef.current) {
+      setMin(+minRef.current.value);
+    }
   };
 
   const handleMaxChange = () => {
-    setMax(+maxRef.current.value);
+    if (maxRef.current) {
+      setMax(+maxRef.current.value);
+    }
   };
 
   return (
