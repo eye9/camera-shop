@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, FormEvent } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import {
   AppParams,
@@ -10,7 +10,13 @@ import {
   FilterTypes,
 } from '../../const';
 
-export function CatalogFilter() {
+type CatalogFilterProps = {
+  minPrice: number;
+  maxPrice: number;
+  onPriceChange: (min: number, max: number) => void;
+};
+
+export function CatalogFilter({ minPrice, maxPrice, onPriceChange }: CatalogFilterProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [categoryFilter, setCategoryFilter] = useState(
     searchParams.get(AppParams.Category) || ''
@@ -33,6 +39,8 @@ export function CatalogFilter() {
   }, [categoryFilter, levelFilter, typeFilter, setSearchParams]);
 
   const resetFilters = () => {
+    minRef.current.value = '';
+    maxRef.current.value = '';
     setCategoryFilter('');
     setLevelFilter([] as Array<string>);
     setTypeFilter([] as Array<string>);
@@ -81,6 +89,50 @@ export function CatalogFilter() {
     categoryFilter === FilterCategory.Video &&
     disabledVideoTypes.includes(filterName);
 
+  const [minValue, setMin] = useState(0);
+  const [maxValue, setMax] = useState(0);
+  const minRef = useRef(null);
+  const maxRef = useRef(null);
+
+  const handleMinBlur = (e: FormEvent<HTMLInputElement>) => {
+    if (e.currentTarget && maxRef.current && minRef.current) {
+      if (+e.currentTarget.value < 0) {
+        e.currentTarget.value = '0';
+      }
+      if (minValue > maxValue) {
+        setMin(maxValue);
+        e.currentTarget.value = String(maxValue);
+      }
+      if (minValue < minPrice) {
+        setMin(minPrice);
+        e.currentTarget.value = String(minPrice);
+      }
+      onPriceChange(minValue, maxValue);
+    }
+  };
+  const handleMaxBlur = (e: FormEvent<HTMLInputElement>) => {
+    if (+e.currentTarget.value < 0) {
+      e.currentTarget.value = '0';
+    }
+    if (minValue > maxValue) {
+      setMax(minValue);
+      e.currentTarget.value = String(minValue);
+    }
+    if (maxValue > maxPrice) {
+      setMax(maxPrice);
+      e.currentTarget.value = String(maxPrice);
+    }
+    onPriceChange(minValue, maxValue);
+  };
+
+  const handleMinChange = () => {
+    setMin(+minRef.current.value);
+  };
+
+  const handleMaxChange = () => {
+    setMax(+maxRef.current.value);
+  };
+
   return (
     <div className="catalog__aside">
       <div className="catalog-filter">
@@ -91,12 +143,28 @@ export function CatalogFilter() {
             <div className="catalog-filter__price-range">
               <div className="custom-input">
                 <label>
-                  <input type="number" name="price" placeholder="от" />
+                  <input
+                    ref={minRef}
+                    type="number"
+                    name="price"
+                    placeholder={String(minPrice)}
+                    min={0}
+                    onBlur={handleMinBlur}
+                    onChange={handleMinChange}
+                  />
                 </label>
               </div>
               <div className="custom-input">
                 <label>
-                  <input type="number" name="priceUp" placeholder="до" />
+                  <input
+                    ref={maxRef}
+                    type="number"
+                    name="priceUp"
+                    placeholder={String(maxPrice)}
+                    min={0}
+                    onBlur={handleMaxBlur}
+                    onChange={handleMaxChange}
+                  />
                 </label>
               </div>
             </div>
