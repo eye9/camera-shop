@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { useSearchParams } from 'react-router-dom';
-import { selectProducts } from '../../store/selectors';
+import { selectDataStatus, selectProducts } from '../../store/selectors';
 import { useAppSelector } from '../../hooks/hooks';
 import { PaginatorElement } from '../paginator-element/paginator-element';
 import { CardsList } from './components/card-list/cards-list';
@@ -18,9 +18,11 @@ import {
 } from './const';
 import { priceSorter, popularitySorter } from '../../utils/utils';
 import { Products } from '../../types/product';
+import { LoadingElement } from '../loading-element/loading-element';
 
 export function MainCatalog() {
   const products = useAppSelector(selectProducts);
+  const isDataLoading = useAppSelector(selectDataStatus);
   const [searchParams] = useSearchParams();
   const currentPage = Number(searchParams.get(AppParams.Page)) || 1;
   let filteredProducts = products;
@@ -107,18 +109,17 @@ export function MainCatalog() {
         <div className="container">
           <h1 className="title title--h2">Каталог фото- и видеотехники</h1>
           <div className="page-content__columns">
-            <CatalogFilter
-              minPrice={minPrice}
-              maxPrice={maxPrice}
-            />
+            <CatalogFilter minPrice={minPrice} maxPrice={maxPrice} />
             <div className="catalog__content">
               <CatalogSort />
-              <CardsList
-                products={sortedProducts.slice(
-                  (currentPage - 1) * MainCatalogSettings.CardsPerPage,
-                  currentPage * MainCatalogSettings.CardsPerPage
-                )}
-              />
+              {isDataLoading ? <LoadingElement /> : (
+                <CardsList
+                  products={sortedProducts.slice(
+                    (currentPage - 1) * MainCatalogSettings.CardsPerPage,
+                    currentPage * MainCatalogSettings.CardsPerPage
+                  )}
+                />
+              )}
               <PaginatorElement
                 pagesCount={pagesCount}
                 currentPage={currentPage}

@@ -6,11 +6,15 @@ type CardsListProps = {
 };
 
 export function CardsList({ products }: CardsListProps) {
-  return (
-    <div className="cards catalog__cards">
-      {products.map((product) => (
-        <ProductCard product={product} key={product.id} />
-      ))}
-    </div>
-  );
+  if (products && products.length > 0) {
+    return (
+      <div className="cards catalog__cards">
+        {products.map((product) => (
+          <ProductCard product={product} key={product.id} />
+        ))}
+      </div>
+    );
+  } else {
+    return <p>по вашему запросу ничего не найдено</p>;
+  }
 }

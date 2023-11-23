@@ -62,9 +62,8 @@ export function CatalogFilter({
       prevParams.set(AppParams.Page, '1');
       return prevParams;
     });
-    dispatch(fetchProductsAction);
+    dispatch(fetchProductsAction());
   };
-
   const handleFilterChange = (
     filter: string,
     filtersList: string[],
@@ -118,6 +117,10 @@ export function CatalogFilter({
         e.currentTarget.value = String(minPrice);
       }
       if (minRef.current.value !== '' && maxRef.current.value !== '') {
+        setSearchParams((prevParams) => {
+          prevParams.set(AppParams.Page, '1');
+          return prevParams;
+        });
         dispatch(
           fetchProductsActionWithPrice({ min: minValue, max: maxValue })
         );
@@ -138,6 +141,10 @@ export function CatalogFilter({
         e.currentTarget.value = String(maxPrice);
       }
       if (minRef.current.value !== '' && maxRef.current.value !== '') {
+        setSearchParams((prevParams) => {
+          prevParams.set(AppParams.Page, '1');
+          return prevParams;
+        });
         dispatch(
           fetchProductsActionWithPrice({ min: minValue, max: maxValue })
         );
