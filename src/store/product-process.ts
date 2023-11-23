@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../const';
-import { fetchProductAction, fetchProductsAction, fetchPromoAction, fetchSimilarProductsAction } from './api-actions';
+import { fetchProductAction, fetchProductsAction, fetchProductsActionWithPrice, fetchPromoAction, fetchSimilarProductsAction } from './api-actions';
 import { Product, Products, Promos } from '../types/product';
 
 type ProductProcess = {
@@ -51,6 +51,13 @@ export const productProcess = createSlice({
       })
       .addCase(fetchProductAction.fulfilled, (state, action) => {
         state.currentProduct = action.payload;
+        state.isDataLoading = false;
+      })
+      .addCase(fetchProductsActionWithPrice.pending, (state) => {
+        state.isDataLoading = true;
+      })
+      .addCase(fetchProductsActionWithPrice.fulfilled, (state, action) => {
+        state.products = action.payload;
         state.isDataLoading = false;
       });
   },

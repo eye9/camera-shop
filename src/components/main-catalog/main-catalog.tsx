@@ -24,7 +24,6 @@ export function MainCatalog() {
   const [searchParams] = useSearchParams();
   const currentPage = Number(searchParams.get(AppParams.Page)) || 1;
   let filteredProducts = products;
-
   const sortType = searchParams.get(AppParams.SortType);
   const sortOrder = searchParams.get(AppParams.SortOrder);
   const isSorted =
@@ -97,11 +96,6 @@ export function MainCatalog() {
   }
 
   const [minPrice = 0, maxPrice = 0] = minMax(sortedProducts);
-  const handlePriceChange = (min: number, max: number) => {
-    sortedProducts = sortedProducts.filter(
-      (product) => product.price >= min && product.price <= max
-    );
-  };
 
   return (
     <div className="page-content">
@@ -116,7 +110,6 @@ export function MainCatalog() {
             <CatalogFilter
               minPrice={minPrice}
               maxPrice={maxPrice}
-              onPriceChange={handlePriceChange}
             />
             <div className="catalog__content">
               <CatalogSort />

@@ -7,6 +7,18 @@ import { AddReview, Review, Reviews } from '../types/review';
 
 export const TIMEOUT_SHOW_ERROR = 2000;
 
+export const fetchProductsActionWithPrice = createAsyncThunk<
+  Products,
+  { min: number; max: number },
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>('products/fetchWithPrice', async ({min, max}, { extra: api }) => {
+  const { data } = await api.get<Products>(`${APIRoutes.Products}/?price_gte=${min}&price_lte=${max}`);
+  return data;
+});
 export const fetchProductsAction = createAsyncThunk<
   Products,
   undefined,

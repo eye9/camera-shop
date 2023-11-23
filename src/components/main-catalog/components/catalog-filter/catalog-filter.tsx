@@ -9,18 +9,19 @@ import {
   FilterLevels,
   FilterTypes,
 } from '../../const';
+import { useAppDispatch } from '../../../../hooks/hooks';
+import { fetchProductsAction, fetchProductsActionWithPrice } from '../../../../store/api-actions';
 
 type CatalogFilterProps = {
   minPrice: number;
   maxPrice: number;
-  onPriceChange: (min: number, max: number) => void;
 };
 
 export function CatalogFilter({
   minPrice,
   maxPrice,
-  onPriceChange,
 }: CatalogFilterProps) {
+  const dispatch = useAppDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
   const [categoryFilter, setCategoryFilter] = useState(
     searchParams.get(AppParams.Category) || ''
@@ -32,8 +33,8 @@ export function CatalogFilter({
     searchParams.get(AppParams.Type)?.split(',') || ([] as FilterType[])
   );
   const disabledVideoTypes = [FilterType.Snapshot, FilterType.Film];
-  const [minValue, setMin] = useState(0);
-  const [maxValue, setMax] = useState(0);
+  const [minValue, setMin] = useState(minPrice);
+  const [maxValue, setMax] = useState(maxPrice);
   const minRef = useRef<HTMLInputElement>(null);
   const maxRef = useRef<HTMLInputElement>(null);
 
@@ -61,6 +62,7 @@ export function CatalogFilter({
       prevParams.set(AppParams.Page, '1');
       return prevParams;
     });
+    dispatch(fetchProductsAction);
   };
 
   const handleFilterChange = (
@@ -107,7 +109,7 @@ export function CatalogFilter({
       if (+e.currentTarget.value < 0) {
         e.currentTarget.value = '0';
       }
-      if (minValue > maxValue) {
+      if (maxRef.current.value !== '' && minValue > maxValue) {
         setMin(maxValue);
         e.currentTarget.value = String(maxValue);
       }
@@ -115,22 +117,32 @@ export function CatalogFilter({
         setMin(minPrice);
         e.currentTarget.value = String(minPrice);
       }
-      onPriceChange(minValue, maxValue);
+      if (minRef.current.value !== '' && maxRef.current.value !== '') {
+        dispatch(
+          fetchProductsActionWithPrice({ min: minValue, max: maxValue })
+        );
+      }
     }
   };
   const handleMaxBlur = (e: FormEvent<HTMLInputElement>) => {
-    if (+e.currentTarget.value < 0) {
-      e.currentTarget.value = '0';
+    if (e.currentTarget && maxRef.current && minRef.current) {
+      if (+e.currentTarget.value < 0) {
+        e.currentTarget.value = '0';
+      }
+      if (minRef.current.value !== '' && minValue > maxValue) {
+        setMax(minValue);
+        e.currentTarget.value = String(minValue);
+      }
+      if (maxValue > maxPrice) {
+        setMax(maxPrice);
+        e.currentTarget.value = String(maxPrice);
+      }
+      if (minRef.current.value !== '' && maxRef.current.value !== '') {
+        dispatch(
+          fetchProductsActionWithPrice({ min: minValue, max: maxValue })
+        );
+      }
     }
-    if (minValue > maxValue) {
-      setMax(minValue);
-      e.currentTarget.value = String(minValue);
-    }
-    if (maxValue > maxPrice) {
-      setMax(maxPrice);
-      e.currentTarget.value = String(maxPrice);
-    }
-    onPriceChange(minValue, maxValue);
   };
 
   const handleMinChange = () => {
