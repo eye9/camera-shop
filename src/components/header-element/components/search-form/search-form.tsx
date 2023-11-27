@@ -36,6 +36,7 @@ export function SearchForm() {
             autoComplete="off"
             placeholder="Поиск по сайту"
             value={searchText}
+            data-testid='search'
           />
         </label>
         <ul className="form-search__select-list scroller">
