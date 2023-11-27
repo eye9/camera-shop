@@ -14,12 +14,14 @@ import {
 import {
   fetchProductAction,
   fetchProductsAction,
+  fetchProductsActionWithPrice,
   fetchPromoAction,
   fetchReviewsAction,
   fetchSimilarProductsAction,
   sendReviewAction,
 } from './api-actions';
 import { APIRoutes } from '../const';
+import { Products } from '../types/product';
 
 describe('Async actions', () => {
   const axios = createApi();
@@ -36,6 +38,40 @@ describe('Async actions', () => {
     store = mockStoreCreator(makeFakeStore());
   });
 
+  describe('fetchProductsActionWithPrice', () => {
+    it('shouls dispath .pending and .fullfilled and return Products', async () => {
+      const mockProducts = new Array(3).fill(makeFakeProduct()).sort() as Products;
+      const min = mockProducts[0].price;
+      const max = mockProducts[0].price;
+      mockAxios.onGet(`${APIRoutes.Products}/?price_gte=${min}&price_lte=${max}`).reply(200, mockProducts[0]);
+
+      await store.dispatch(fetchProductsActionWithPrice({min, max}));
+
+      const actions = store.getActions();
+      const actionTypes = extractActionsTypes(actions);
+      const fetchFullfilled = actions.at(1) as ReturnType<
+        typeof fetchProductsActionWithPrice.fulfilled
+      >;
+
+      expect(actionTypes).toEqual([
+        fetchProductsActionWithPrice.pending.type,
+        fetchProductsActionWithPrice.fulfilled.type,
+      ]);
+      expect(fetchFullfilled.payload).toEqual(mockProducts[0]);
+    });
+
+    it('shouls dispath .pending and .reject on server error', async () => {
+      mockAxios.onGet(APIRoutes.Products).reply(400);
+
+      await store.dispatch(fetchProductsActionWithPrice({min: 0, max: 1000000}));
+
+      const actionTypes = extractActionsTypes(store.getActions());
+      expect(actionTypes).toEqual([
+        fetchProductsActionWithPrice.pending.type,
+        fetchProductsActionWithPrice.rejected.type,
+      ]);
+    });
+  });
   describe('fetchProductsAction', () => {
     it('shouls dispath .pending and .fullfilled and return Products', async () => {
       const mockProducts = new Array(3).fill(makeFakeProduct());
