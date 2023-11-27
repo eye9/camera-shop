@@ -41,8 +41,8 @@ export enum FilterLevel {
 export const FilterCategories: FilterItem[] = [
   {
     label: 'Фотокамера',
+    dbName: 'Фотоаппарат',
     name: FilterCategory.Photo,
-    dbName: 'Фотоаппарат'
   },
   {
     label: 'Видеокамера',

@@ -10,17 +10,17 @@ import {
   FilterTypes,
 } from '../../const';
 import { useAppDispatch } from '../../../../hooks/hooks';
-import { fetchProductsAction, fetchProductsActionWithPrice } from '../../../../store/api-actions';
+import {
+  fetchProductsAction,
+  fetchProductsActionWithPrice,
+} from '../../../../store/api-actions';
 
 type CatalogFilterProps = {
   minPrice: number;
   maxPrice: number;
 };
 
-export function CatalogFilter({
-  minPrice,
-  maxPrice,
-}: CatalogFilterProps) {
+export function CatalogFilter({ minPrice, maxPrice }: CatalogFilterProps) {
   const dispatch = useAppDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
   const [categoryFilter, setCategoryFilter] = useState(
@@ -137,8 +137,8 @@ export function CatalogFilter({
         e.currentTarget.value = String(minValue);
       }
       if (maxValue > maxPrice) {
-        setMax(maxPrice);
         e.currentTarget.value = String(maxPrice);
+        setMax(maxPrice);
       }
       if (minRef.current.value !== '' && maxRef.current.value !== '') {
         setSearchParams((prevParams) => {
@@ -148,6 +148,23 @@ export function CatalogFilter({
         dispatch(
           fetchProductsActionWithPrice({ min: minValue, max: maxValue })
         );
+      }
+    }
+  };
+
+  const handleMaxFocus = (e: FormEvent<HTMLInputElement>) => {
+    if (e.currentTarget && maxRef.current) {
+      if (maxRef.current.value === '') {
+        maxRef.current.value = String(maxPrice);
+        setMax(maxPrice);
+      }
+    }
+  };
+  const handleMinFocus = (e: FormEvent<HTMLInputElement>) => {
+    if (e.currentTarget && minRef.current) {
+      if (minRef.current.value === '') {
+        minRef.current.value = String(minPrice);
+        setMin(minPrice);
       }
     }
   };
@@ -182,6 +199,7 @@ export function CatalogFilter({
                     min={0}
                     onBlur={handleMinBlur}
                     onChange={handleMinChange}
+                    onFocus={handleMinFocus}
                   />
                 </label>
               </div>
@@ -195,6 +213,7 @@ export function CatalogFilter({
                     min={0}
                     onBlur={handleMaxBlur}
                     onChange={handleMaxChange}
+                    onFocus={handleMaxFocus}
                   />
                 </label>
               </div>
@@ -211,6 +230,7 @@ export function CatalogFilter({
                   <input
                     type="checkbox"
                     name={item.name}
+                    data-testid={item.name}
                     disabled={
                       categoryFilter !== item.name && categoryFilter !== ''
                     }
@@ -234,6 +254,7 @@ export function CatalogFilter({
                   <input
                     type="checkbox"
                     name={item.name}
+                    data-testid={item.name}
                     disabled={isFilterDisabled(item.name as FilterType)}
                     checked={typeFilter.includes(item.name)}
                     onChange={() => handleTypeFilterChange(item.name)}
@@ -255,6 +276,7 @@ export function CatalogFilter({
                   <input
                     type="checkbox"
                     name={item.name}
+                    data-testid={item.name}
                     checked={levelFilter.includes(item.name)}
                     onChange={() => handleLevelFilterChange(item.name)}
                   />
