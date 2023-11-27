@@ -25,6 +25,7 @@ export function CatalogSort() {
               <input
                 type="radio"
                 id="sortPrice"
+                data-testid="sortPrice"
                 name="sort"
                 checked={sortType === SortTypes.Price}
                 onChange={() => {
@@ -37,6 +38,7 @@ export function CatalogSort() {
               <input
                 type="radio"
                 id="sortPopular"
+                data-testid="sortPopular"
                 name="sort"
                 checked={sortType === SortTypes.Popularity}
                 onChange={() => setFilterType(SortTypes.Popularity)}
@@ -49,6 +51,7 @@ export function CatalogSort() {
               <input
                 type="radio"
                 id="up"
+                data-testid="up"
                 name="sort-icon"
                 aria-label="По возрастанию"
                 checked={sortOrder === SortOrders.Asc}
@@ -64,6 +67,7 @@ export function CatalogSort() {
               <input
                 type="radio"
                 id="down"
+                data-testid="down"
                 name="sort-icon"
                 aria-label="По убыванию"
                 checked={sortOrder === SortOrders.Desc}
