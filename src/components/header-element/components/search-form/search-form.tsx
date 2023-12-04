@@ -8,7 +8,7 @@ import { SearchItem } from './components/search-item/search-item';
 export function SearchForm() {
   const [isListOpened, setOpenedList] = useState(false);
   const [searchText, setSearchText] = useState('');
-  const searchRef = useRef(null);
+  const searchRef = useRef<HTMLInputElement>(null);
   const products = useSelector(selectProducts);
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -36,7 +36,7 @@ export function SearchForm() {
             autoComplete="off"
             placeholder="Поиск по сайту"
             value={searchText}
-            data-testid='search'
+            data-testid="search"
           />
         </label>
         <ul className="form-search__select-list scroller">
@@ -55,6 +55,9 @@ export function SearchForm() {
         onClick={() => {
           setSearchText('');
           setOpenedList(false);
+          if (searchRef) {
+            searchRef.current?.focus();
+          }
         }}
       >
         <svg width={10} height={10} aria-hidden="true">
