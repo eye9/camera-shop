@@ -5,6 +5,8 @@ import { LETTERS_TO_OPEN_SEARCH } from '../../const';
 import { selectProducts } from '../../../../store/selectors';
 import { SearchItem } from './components/search-item/search-item';
 
+import './style.css';
+
 export function SearchForm() {
   const [isListOpened, setOpenedList] = useState(false);
   const [searchText, setSearchText] = useState('');
@@ -50,7 +52,7 @@ export function SearchForm() {
         </ul>
       </form>
       <button
-        className="form-search__reset"
+        className={cn('form-search__reset', { 'visible': searchText.length > 0 })}
         type="reset"
         onClick={() => {
           setSearchText('');
