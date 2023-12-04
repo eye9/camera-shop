@@ -1,22 +1,40 @@
 import cn from 'classnames';
 import { useSelector } from 'react-redux';
-import { ChangeEvent, useState, useRef } from 'react';
+import {
+  ChangeEvent,
+  useState,
+  useRef,
+  useEffect,
+  MutableRefObject,
+} from 'react';
 import { LETTERS_TO_OPEN_SEARCH } from '../../const';
 import { selectProducts } from '../../../../store/selectors';
 import { SearchItem } from './components/search-item/search-item';
 
 import './style.css';
+import { Products } from '../../../../types/product';
 
 export function SearchForm() {
   const [isListOpened, setOpenedList] = useState(false);
   const [searchText, setSearchText] = useState('');
   const searchRef = useRef<HTMLInputElement>(null);
   const products = useSelector(selectProducts);
+  const filteredProducts: MutableRefObject<Products> = useRef([]);
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setOpenedList(e.target.value.length >= LETTERS_TO_OPEN_SEARCH);
     setSearchText(e.target.value);
   };
+
+  useEffect(() => {
+    if (searchText.length >= LETTERS_TO_OPEN_SEARCH) {
+      filteredProducts.current = products.filter((product) =>
+        product.name.match(new RegExp(`${searchText}`, 'i'))
+      );
+      setOpenedList(filteredProducts.current.length > 0);
+    } else {
+      setOpenedList(false);
+    }
+  }, [products, searchText]);
 
   return (
     <div className={cn('form-search', { 'list-opened': isListOpened })}>
@@ -44,15 +62,13 @@ export function SearchForm() {
         <ul className="form-search__select-list scroller">
           {isListOpened &&
             searchRef.current !== null &&
-            products
-              .filter((product) => product.name.match(searchText))
-              .map((product) => (
-                <SearchItem product={product} key={product.id} />
-              ))}
+            filteredProducts.current.map((product) => (
+              <SearchItem product={product} key={product.id} />
+            ))}
         </ul>
       </form>
       <button
-        className={cn('form-search__reset', { 'visible': searchText.length > 0 })}
+        className={cn('form-search__reset', { visible: searchText.length > 0 })}
         type="reset"
         onClick={() => {
           setSearchText('');
