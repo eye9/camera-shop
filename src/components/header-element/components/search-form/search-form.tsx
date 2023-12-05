@@ -6,24 +6,65 @@ import {
   useRef,
   useEffect,
   MutableRefObject,
+  useCallback,
 } from 'react';
 import { LETTERS_TO_OPEN_SEARCH } from '../../const';
 import { selectProducts } from '../../../../store/selectors';
 import { SearchItem } from './components/search-item/search-item';
+import { Products } from '../../../../types/product';
+import { useNavigate } from 'react-router-dom';
 
 import './style.css';
-import { Products } from '../../../../types/product';
+import { AppRoutes } from '../../../../const';
 
 export function SearchForm() {
-  const [isListOpened, setOpenedList] = useState(false);
+  const navigate = useNavigate();
+  const [isListOpened, setListOpened] = useState(false);
   const [searchText, setSearchText] = useState('');
   const searchRef = useRef<HTMLInputElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
   const products = useSelector(selectProducts);
   const filteredProducts: MutableRefObject<Products> = useRef([]);
+  const selectedSearchItem = useRef(0);
+
+  const setOpenedList = useCallback((isOpen: boolean) => {
+    setListOpened(isOpen);
+    selectedSearchItem.current = 0;
+  }, []);
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
   };
+
+  const handleKeydown = (e: KeyboardEvent) => {
+    if (e.code === 'ArrowDown') {
+      e.preventDefault();
+      selectedSearchItem.current = Math.min(selectedSearchItem.current + 1, filteredProducts.current.length - 1);
+      if (listRef.current?.children && listRef.current?.children.length > selectedSearchItem.current) {
+        (listRef.current?.children[selectedSearchItem.current] as HTMLLIElement).focus();
+      }
+    }
+    if (e.code === 'ArrowUp') {
+      e.preventDefault();
+      selectedSearchItem.current = Math.max(selectedSearchItem.current - 1, 0);
+      if (listRef.current?.children && listRef.current?.children.length > 0) {
+        (listRef.current?.children[selectedSearchItem.current] as HTMLLIElement).focus();
+      }
+    }
+    if (e.code === 'Enter') {
+      e.preventDefault();
+      if (listRef.current?.children && listRef.current?.children.length > 0) {
+        const id =
+          (listRef.current?.children[selectedSearchItem.current] as HTMLLIElement).dataset.id || 0;
+        navigate(`${AppRoutes.Product}/${id}`);
+      }
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeydown);
+    return () => document.removeEventListener('keydown', handleKeydown);
+  });
 
   useEffect(() => {
     if (searchText.length >= LETTERS_TO_OPEN_SEARCH) {
@@ -34,7 +75,7 @@ export function SearchForm() {
     } else {
       setOpenedList(false);
     }
-  }, [products, searchText]);
+  }, [products, searchText, setOpenedList]);
 
   return (
     <div className={cn('form-search', { 'list-opened': isListOpened })}>
@@ -59,7 +100,7 @@ export function SearchForm() {
             data-testid="search"
           />
         </label>
-        <ul className="form-search__select-list scroller">
+        <ul className="form-search__select-list scroller" ref={listRef}>
           {isListOpened &&
             searchRef.current !== null &&
             filteredProducts.current.map((product) => (

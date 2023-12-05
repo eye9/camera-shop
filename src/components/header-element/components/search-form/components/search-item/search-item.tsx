@@ -11,6 +11,7 @@ export function SearchItem({ product }: SearchItemProps) {
   return (
     <li
       data-testid="search-item"
+      data-id={product.id}
       className="form-search__select-item"
       tabIndex={0}
       onClick={() => navigate(`${AppRoutes.Product}/${product.id}`)}
