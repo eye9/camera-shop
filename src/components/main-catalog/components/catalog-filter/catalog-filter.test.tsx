@@ -19,7 +19,7 @@ import {
 describe('Component: CatalogFilter rendering', () => {
   it('should render properly', () => {
     const { withStoreComponent } = withStore(
-      <CatalogFilter minPrice={0} maxPrice={100} />,
+      <CatalogFilter minPrice={0} maxPrice={100} onPriceChange={() => undefined}/>,
       makeFakeStore()
     );
     const preparedComponent = withRouter(withStoreComponent);
@@ -42,7 +42,7 @@ describe('Component: CatalogFilter rendering', () => {
   it('should set default search params on reset button click', async () => {
     const mockHistory = createMemoryHistory();
     const { withStoreComponent } = withStore(
-      <CatalogFilter minPrice={0} maxPrice={100} />,
+      <CatalogFilter minPrice={0} maxPrice={100} onPriceChange={() => undefined}/>,
       makeFakeStore()
     );
     const preparedComponent = withHistory(withStoreComponent, mockHistory);
@@ -58,7 +58,7 @@ describe('Component: CatalogFilter rendering', () => {
   it('should set search params on category change', () => {
     const mockHistory = createMemoryHistory();
     const { withStoreComponent } = withStore(
-      <CatalogFilter minPrice={0} maxPrice={100} />,
+      <CatalogFilter minPrice={0} maxPrice={100} onPriceChange={() => undefined}/>,
       makeFakeStore()
     );
     const preparedComponent = withHistory(withStoreComponent, mockHistory);
@@ -74,7 +74,7 @@ describe('Component: CatalogFilter rendering', () => {
   it('should set search params on type select for one type selected', () => {
     const mockHistory = createMemoryHistory();
     const { withStoreComponent } = withStore(
-      <CatalogFilter minPrice={0} maxPrice={100} />,
+      <CatalogFilter minPrice={0} maxPrice={100} onPriceChange={() => undefined}/>,
       makeFakeStore()
     );
     const preparedComponent = withHistory(withStoreComponent, mockHistory);
@@ -90,7 +90,7 @@ describe('Component: CatalogFilter rendering', () => {
   it('should set search params on type select for each type selected', () => {
     const mockHistory = createMemoryHistory();
     const { withStoreComponent } = withStore(
-      <CatalogFilter minPrice={0} maxPrice={100} />,
+      <CatalogFilter minPrice={0} maxPrice={100} onPriceChange={() => undefined}/>,
       makeFakeStore()
     );
     const preparedComponent = withHistory(withStoreComponent, mockHistory);
@@ -106,7 +106,7 @@ describe('Component: CatalogFilter rendering', () => {
   it('should set search params on level select for one level selected', () => {
     const mockHistory = createMemoryHistory();
     const { withStoreComponent } = withStore(
-      <CatalogFilter minPrice={0} maxPrice={100} />,
+      <CatalogFilter minPrice={0} maxPrice={100} onPriceChange={() => undefined}/>,
       makeFakeStore()
     );
     const preparedComponent = withHistory(withStoreComponent, mockHistory);
@@ -122,7 +122,7 @@ describe('Component: CatalogFilter rendering', () => {
   it('should set search params on level select for each level selected', () => {
     const mockHistory = createMemoryHistory();
     const { withStoreComponent } = withStore(
-      <CatalogFilter minPrice={0} maxPrice={100} />,
+      <CatalogFilter minPrice={0} maxPrice={100} onPriceChange={() => undefined}/>,
       makeFakeStore()
     );
     const preparedComponent = withHistory(withStoreComponent, mockHistory);
@@ -140,7 +140,7 @@ describe('CatalogFilter interactions ', () => {
   it('should disable options on camera category selection', () => {
     const mockHistory = createMemoryHistory();
     const { withStoreComponent } = withStore(
-      <CatalogFilter minPrice={0} maxPrice={100} />,
+      <CatalogFilter minPrice={0} maxPrice={100} onPriceChange={() => undefined}/>,
       makeFakeStore()
     );
     const preparedComponent = withHistory(withStoreComponent, mockHistory);
