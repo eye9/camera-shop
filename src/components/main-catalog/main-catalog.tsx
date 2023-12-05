@@ -19,8 +19,11 @@ import {
 import { priceSorter, popularitySorter } from '../../utils/utils';
 import { Products } from '../../types/product';
 import { LoadingElement } from '../loading-element/loading-element';
+import { useState } from 'react';
 
 export function MainCatalog() {
+  const [min, setMin] = useState(0);
+  const [max, setMax] = useState(0);
   const products = useAppSelector(selectProducts);
   const isDataLoading = useAppSelector(selectDataStatus);
   const [searchParams] = useSearchParams();
@@ -76,6 +79,21 @@ export function MainCatalog() {
     );
   }
 
+  const minMax = (items: Products) =>
+    items.reduce((acc, val) => {
+      acc[0] = acc[0] === undefined || val.price < acc[0] ? val.price : acc[0];
+      acc[1] = acc[1] === undefined || val.price > acc[1] ? val.price : acc[1];
+      return acc;
+    }, [] as number[]);
+
+  const [minPrice = 0, maxPrice = 0] = minMax(filteredProducts);
+
+  if (min !== 0 && max !== 0) {
+    filteredProducts = filteredProducts.filter(
+      (product) => product.price >= min && product.price <= max
+    );
+  }
+
   let sortedProducts = filteredProducts;
   if (isSorted) {
     if (sortType === SortTypes.Price) {
@@ -89,15 +107,10 @@ export function MainCatalog() {
     Math.floor(filteredProducts.length / MainCatalogSettings.CardsPerPage) +
     (filteredProducts.length % MainCatalogSettings.CardsPerPage > 0 ? 1 : 0);
 
-  function minMax(items: Products) {
-    return items.reduce((acc, val) => {
-      acc[0] = acc[0] === undefined || val.price < acc[0] ? val.price : acc[0];
-      acc[1] = acc[1] === undefined || val.price > acc[1] ? val.price : acc[1];
-      return acc;
-    }, [] as number[]);
-  }
-
-  const [minPrice = 0, maxPrice = 0] = minMax(sortedProducts);
+  const handlePriceChange = (minFilter: number, maxFilter: number) => {
+    setMin(minFilter);
+    setMax(maxFilter);
+  };
 
   return (
     <div className="page-content">
@@ -109,10 +122,16 @@ export function MainCatalog() {
         <div className="container">
           <h1 className="title title--h2">Каталог фото- и видеотехники</h1>
           <div className="page-content__columns">
-            <CatalogFilter minPrice={minPrice} maxPrice={maxPrice} />
+            <CatalogFilter
+              minPrice={minPrice}
+              maxPrice={maxPrice}
+              onPriceChange={handlePriceChange}
+            />
             <div className="catalog__content">
               <CatalogSort />
-              {isDataLoading ? <LoadingElement /> : (
+              {isDataLoading ? (
+                <LoadingElement />
+              ) : (
                 <CardsList
                   products={sortedProducts.slice(
                     (currentPage - 1) * MainCatalogSettings.CardsPerPage,

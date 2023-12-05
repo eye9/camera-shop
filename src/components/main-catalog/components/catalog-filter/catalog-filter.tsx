@@ -12,15 +12,19 @@ import {
 import { useAppDispatch } from '../../../../hooks/hooks';
 import {
   fetchProductsAction,
-  fetchProductsActionWithPrice,
 } from '../../../../store/api-actions';
 
 type CatalogFilterProps = {
   minPrice: number;
   maxPrice: number;
+  onPriceChange: (min: number, max: number) => void;
 };
 
-export function CatalogFilter({ minPrice, maxPrice }: CatalogFilterProps) {
+export function CatalogFilter({
+  minPrice,
+  maxPrice,
+  onPriceChange,
+}: CatalogFilterProps) {
   const dispatch = useAppDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
   const [categoryFilter, setCategoryFilter] = useState(
@@ -62,6 +66,9 @@ export function CatalogFilter({ minPrice, maxPrice }: CatalogFilterProps) {
       prevParams.set(AppParams.Page, '1');
       return prevParams;
     });
+    setMin(0);
+    setMax(0);
+    onPriceChange(0, 0);
     dispatch(fetchProductsAction());
   };
   const handleFilterChange = (
@@ -110,53 +117,37 @@ export function CatalogFilter({ minPrice, maxPrice }: CatalogFilterProps) {
 
   const handleMinBlur = (e: FormEvent<HTMLInputElement>) => {
     if (e.currentTarget && maxRef.current && minRef.current) {
-      const currentMin = +minRef.current.value;
-      const tempMin = Math.min(maxPrice, Math.max(0, minPrice, currentMin));
+      if (minRef.current.value !== '') {
+        const currentMin = +minRef.current.value;
+        const tempMin = Math.min(maxPrice, Math.max(0, minPrice, currentMin));
 
-      if (currentMin !== tempMin) {
-        setMin(tempMin);
-        e.currentTarget.value = String(tempMin);
+        if (currentMin !== tempMin) {
+          setMin(tempMin);
+          e.currentTarget.value = String(tempMin);
+        }
 
-        if (maxRef.current.value !== '') {
+        if (maxRef.current.value !== '' && minRef.current.value !== '') {
           gotoFirstPage();
-          dispatch(
-            fetchProductsActionWithPrice({ min: tempMin, max: maxValue })
-          );
+          onPriceChange(tempMin, maxValue);
         }
       }
     }
   };
   const handleMaxBlur = (e: FormEvent<HTMLInputElement>) => {
     if (e.currentTarget && maxRef.current && minRef.current) {
-      const currentMax = +maxRef.current.value;
-      const tempMax = Math.max(minValue, Math.min(maxPrice, currentMax));
-      if (currentMax !== tempMax) {
-        setMax(tempMax);
-        e.currentTarget.value = String(tempMax);
+      if (maxRef.current.value !== '') {
+        const currentMax = +maxRef.current.value;
+        const tempMax = Math.max(minValue, Math.min(maxPrice, currentMax));
 
-        if (minRef.current.value !== '') {
-          gotoFirstPage();
-          dispatch(
-            fetchProductsActionWithPrice({ min: minValue, max: tempMax })
-          );
+        if (currentMax !== tempMax) {
+          setMax(tempMax);
+          e.currentTarget.value = String(tempMax);
         }
-      }
-    }
-  };
 
-  const handleMaxFocus = (e: FormEvent<HTMLInputElement>) => {
-    if (e.currentTarget && minRef.current && maxRef.current) {
-      if (maxRef.current.value === '' && minRef.current.value !== '') {
-        setMax(maxPrice);
-        maxRef.current.value = String(maxPrice);
-      }
-    }
-  };
-  const handleMinFocus = (e: FormEvent<HTMLInputElement>) => {
-    if (e.currentTarget && minRef.current && maxRef.current) {
-      if (minRef.current.value === '' && maxRef.current.value !== '') {
-        minRef.current.value = String(minPrice);
-        setMin(minPrice);
+        if (minRef.current.value !== '' && maxRef.current.value !== '') {
+          gotoFirstPage();
+          onPriceChange(minValue, tempMax);
+        }
       }
     }
   };
@@ -179,7 +170,6 @@ export function CatalogFilter({ minPrice, maxPrice }: CatalogFilterProps) {
                     min={0}
                     onBlur={handleMinBlur}
                     onChange={(e) => setMin(+e.target.value)}
-                    onFocus={handleMinFocus}
                   />
                 </label>
               </div>
@@ -193,7 +183,6 @@ export function CatalogFilter({ minPrice, maxPrice }: CatalogFilterProps) {
                     min={0}
                     onBlur={handleMaxBlur}
                     onChange={(e) => setMax(+e.target.value)}
-                    onFocus={handleMaxFocus}
                   />
                 </label>
               </div>
