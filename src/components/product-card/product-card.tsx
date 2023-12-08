@@ -4,8 +4,8 @@ import { RatingElement } from '../rating-element/rating-element';
 import { AppRoutes } from '../../const';
 import cn from 'classnames';
 import { useAppDispatch } from '../../hooks/hooks';
-import { addToBusket } from '../../store/busket-process';
 import { formatPrice } from '../../utils/utils';
+import { addingToBusket } from '../../store/busket-process';
 
 export type ProductCardProps = {
   product: Product;
@@ -44,7 +44,7 @@ export function ProductCard({ product, activeClass }: ProductCardProps) {
         </p>
       </div>
       <div className="product-card__buttons">
-        <button className="btn btn--purple product-card__btn" type="button" onClick={() => dispatch(addToBusket(product))}>
+        <button className="btn btn--purple product-card__btn" type="button" onClick={() => dispatch(addingToBusket(product))}>
           Купить
         </button>
         <Link

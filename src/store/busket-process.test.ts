@@ -1,5 +1,5 @@
 import { makeFakeProduct } from '../utils/mocks';
-import { addToBusket, busketProcess, setBusketModalVisibleStatus } from './busket-process';
+import { addingToBusket, busketProcess, setBusketModalVisibleStatus } from './busket-process';
 
 describe('Busket reducers', () => {
   const initialState = busketProcess.getInitialState();
@@ -27,7 +27,7 @@ describe('Busket reducers', () => {
       currentBusketItem: expectedProduct,
       isAddBusketVisible: true
     };
-    const result = busketProcess.reducer(initialState, addToBusket(expectedProduct));
+    const result = busketProcess.reducer(initialState, addingToBusket(expectedProduct));
     expect(result).toEqual(expectedState);
   });
 });

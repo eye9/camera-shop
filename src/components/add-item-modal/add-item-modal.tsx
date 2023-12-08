@@ -1,11 +1,17 @@
 import cn from 'classnames';
 import { useRef } from 'react';
-import { useAppDispatch, useAppSelector, useEscHandle, useFocus, useScrollDisabler } from '../../hooks/hooks';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useEscHandle,
+  useFocus,
+  useScrollDisabler,
+} from '../../hooks/hooks';
 import {
   selectAddBusketStatus,
   selectCurrentBusketItem,
 } from '../../store/selectors';
-import { setBusketModalVisibleStatus } from '../../store/busket-process';
+import { busketAdd, setBusketModalVisibleStatus } from '../../store/busket-process';
 
 export function AddItemModal() {
   const dispatch = useAppDispatch();
@@ -67,6 +73,7 @@ export function AddItemModal() {
           </div>
           <div className="modal__buttons">
             <button
+              onClick={() => dispatch(busketAdd(item))}
               ref={addButtonRef}
               className="btn btn--purple modal__btn modal__btn--fit-width"
               type="button"
