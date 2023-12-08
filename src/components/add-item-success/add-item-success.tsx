@@ -9,12 +9,13 @@ import {
 } from '../../hooks/hooks';
 import { setBusketSuccessModalVisibleStatus } from '../../store/busket-process';
 import { selectAddBusketSuccessStatus } from '../../store/selectors';
-import { Link } from 'react-router-dom';
 import { AppRoutes } from '../../const';
+import { useNavigate } from 'react-router-dom';
 
 export function AddItemSuccess() {
   const dispatch = useAppDispatch();
-  const busketButtonRef = useRef<HTMLAnchorElement>(null);
+  const navigate = useNavigate();
+  const busketButtonRef = useRef<HTMLButtonElement>(null);
 
   const isVisible = useAppSelector(selectAddBusketSuccessStatus);
 
@@ -25,7 +26,12 @@ export function AddItemSuccess() {
   return (
     <div className={cn('modal modal--narrow', { 'is-active': isVisible })}>
       <div className="modal__wrapper">
-        <div className="modal__overlay" />
+        <div
+          className="modal__overlay"
+          onClick={() => {
+            dispatch(setBusketSuccessModalVisibleStatus(false));
+          }}
+        />
         <div className="modal__content">
           <p className="title title--h4">Товар успешно добавлен в корзину</p>
           <svg
@@ -45,15 +51,21 @@ export function AddItemSuccess() {
             >
               Продолжить покупки
             </a>
-            <Link
-              to={`${AppRoutes.Busket }`}
+            <button
+              onClick={() => {
+                dispatch(setBusketSuccessModalVisibleStatus(false));
+                navigate(AppRoutes.Busket);
+              }}
               className="btn btn--purple modal__btn modal__btn--fit-width"
               ref={busketButtonRef}
             >
               Перейти в корзину
-            </Link>
+            </button>
           </div>
           <button
+            onClick={() => {
+              dispatch(setBusketSuccessModalVisibleStatus(false));
+            }}
             className="cross-btn"
             type="button"
             aria-label="Закрыть попап"
