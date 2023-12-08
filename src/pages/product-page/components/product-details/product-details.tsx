@@ -1,45 +1,14 @@
-import { useState } from 'react';
-import { useAppDispatch } from '../../../../hooks/hooks';
-import { RatingElement } from '../../../../components/rating-element/rating-element';
 import cn from 'classnames';
-import { addingToBusket } from '../../../../store/busket-process';
+import { useState } from 'react';
 import { ProductProps } from '../../product-page';
-import { Link, useSearchParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { selectBusket } from '../../../../store/selectors';
-import { AppRoutes } from '../../../../const';
+import { useSearchParams } from 'react-router-dom';
+import { RatingElement } from '../../../../components/rating-element/rating-element';
+import { AddToBusketButton } from '../add-to-busket-button/add-to-busket-button';
 
 const PageTabs = {
   Features: 'features',
   Description: 'description',
 } as const;
-
-export function InBusketButton() {
-  return (
-    <Link className="btn btn--purple-border" to={`${AppRoutes.Busket}`}>
-      <svg width={16} height={16} aria-hidden="true">
-        <use xlinkHref="#icon-basket" />
-      </svg>
-      В корзине
-    </Link>
-  );
-}
-
-export function AddToBusketButton({ product }: ProductProps) {
-  const dispatch = useAppDispatch();
-  return (
-    <button
-      className="btn btn--purple"
-      type="button"
-      onClick={() => dispatch(addingToBusket(product))}
-    >
-      <svg width={24} height={16} aria-hidden="true">
-        <use xlinkHref="#icon-add-basket" />
-      </svg>
-      Добавить в корзину
-    </button>
-  );
-}
 
 export function ProductDetails({ product }: ProductProps) {
   const [searchParams, setSearchParams] = useSearchParams({
@@ -48,8 +17,6 @@ export function ProductDetails({ product }: ProductProps) {
   const [activeTab, setActiveTab] = useState(
     searchParams.get('tab') || PageTabs.Description
   );
-  const busket = useSelector(selectBusket);
-  const isProductInBusket = busket.items.includes(product);
 
   function activateFeatureTab() {
     setActiveTab(PageTabs.Features);
@@ -90,11 +57,7 @@ export function ProductDetails({ product }: ProductProps) {
               <span className="visually-hidden">Цена:</span>
               {product.price.toLocaleString()} ₽
             </p>
-            {isProductInBusket ? (
-              <InBusketButton />
-            ) : (
-              <AddToBusketButton product={product} />
-            )}
+            <AddToBusketButton product={product} />
             <div className="tabs product__tabs">
               <div className="tabs__controls product__tabs-controls">
                 <button

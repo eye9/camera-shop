@@ -25,6 +25,7 @@ import { LoadingElement } from '../../components/loading-element/loading-element
 import { AddReviewModal } from '../../components/add-review-modal/add-review-modal';
 import { Helmet } from 'react-helmet-async';
 import ReviewSuccess from '../../components/review-success/review-success';
+import { AddItemSuccess } from '../../components/add-item-success/add-item-success';
 
 export type ProductProps = {
   product: Product;
@@ -74,6 +75,7 @@ export function ProductPage() {
           </div>
         </div>
         <AddItemModal />
+        <AddItemSuccess />
         <AddReviewModal product={product} />
         <ReviewSuccess />
       </main>

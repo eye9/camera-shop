@@ -48,8 +48,11 @@ export const busketProcess = createSlice({
     setBusketModalVisibleStatus: (state, action: PayloadAction<boolean>) => {
       state.isAddBusketVisible = action.payload;
     },
+    setBusketSuccessModalVisibleStatus: (state, action: PayloadAction<boolean>) => {
+      state.isSuccessVisible = action.payload;
+    },
   },
 });
 
-export const { addingToBusket, setBusketModalVisibleStatus, busketAdd } =
+export const { addingToBusket, setBusketModalVisibleStatus, busketAdd, setBusketSuccessModalVisibleStatus } =
   busketProcess.actions;
