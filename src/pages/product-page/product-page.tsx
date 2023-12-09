@@ -26,6 +26,7 @@ import { AddReviewModal } from '../../components/add-review-modal/add-review-mod
 import { Helmet } from 'react-helmet-async';
 import ReviewSuccess from '../../components/review-success/review-success';
 import { AddItemSuccess } from '../../components/add-item-success/add-item-success';
+import { AppRoutes } from '../../const';
 
 export type ProductProps = {
   product: Product;
@@ -75,7 +76,7 @@ export function ProductPage() {
           </div>
         </div>
         <AddItemModal />
-        <AddItemSuccess />
+        <AddItemSuccess navigateTo={`${AppRoutes.Main}`}/>
         <AddReviewModal product={product} />
         <ReviewSuccess />
       </main>

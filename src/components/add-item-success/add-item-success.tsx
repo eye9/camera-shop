@@ -12,7 +12,10 @@ import { selectAddBusketSuccessStatus } from '../../store/selectors';
 import { AppRoutes } from '../../const';
 import { useNavigate } from 'react-router-dom';
 
-export function AddItemSuccess() {
+type AddItemSuccessProps = {
+  navigateTo?: string;
+};
+export function AddItemSuccess({ navigateTo }: AddItemSuccessProps) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const busketButtonRef = useRef<HTMLButtonElement>(null);
@@ -47,6 +50,9 @@ export function AddItemSuccess() {
               className="btn btn--transparent modal__btn"
               onClick={() => {
                 dispatch(setBusketSuccessModalVisibleStatus(false));
+                if (navigateTo) {
+                  navigate(navigateTo);
+                }
               }}
             >
               Продолжить покупки
