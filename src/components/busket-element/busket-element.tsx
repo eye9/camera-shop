@@ -1,8 +1,7 @@
-import { Link } from 'react-router-dom';
-import { AppRoutes } from '../../const';
-import { Helmet } from 'react-helmet-async';
 import { useSelector } from 'react-redux';
+import { Helmet } from 'react-helmet-async';
 import { selectBusket } from '../../store/selectors';
+import { BreadcrumbsElement } from '../breadcrumbs-element/breadcrumbs-element';
 
 export function BusketElement() {
   const busket = useSelector(selectBusket);
@@ -11,33 +10,7 @@ export function BusketElement() {
       <Helmet>
         <title>Корзина - Фотошоп</title>
       </Helmet>
-      <div className="breadcrumbs">
-        <div className="container">
-          <ul className="breadcrumbs__list">
-            <li className="breadcrumbs__item">
-              <Link className="breadcrumbs__link" to={AppRoutes.Main}>
-                Главная
-                <svg width={5} height={8} aria-hidden="true">
-                  <use xlinkHref="#icon-arrow-mini" />
-                </svg>
-              </Link>
-            </li>
-            <li className="breadcrumbs__item">
-              <Link className="breadcrumbs__link" to={AppRoutes.Main}>
-                Каталог
-                <svg width={5} height={8} aria-hidden="true">
-                  <use xlinkHref="#icon-arrow-mini" />
-                </svg>
-              </Link>
-            </li>
-            <li className="breadcrumbs__item">
-              <span className="breadcrumbs__link breadcrumbs__link--active">
-                Корзина
-              </span>
-            </li>
-          </ul>
-        </div>
-      </div>
+      <BreadcrumbsElement lastElement="Корзина" />
       <section className="basket">
         <div className="container">
           <h1 className="title title--h2">Корзина</h1>
@@ -153,7 +126,11 @@ export function BusketElement() {
                 <span className="basket__summary-text">Всего:</span>
                 <span className="basket__summary-value">
                   {busket.items
-                    .reduce((prev, curr, i) => prev + curr.price * busket.itemsCount[i], 0)
+                    .reduce(
+                      (prev, curr, i) =>
+                        prev + curr.price * busket.itemsCount[i],
+                      0
+                    )
                     .toLocaleString()}{' '}
                   ₽
                 </span>
@@ -170,7 +147,11 @@ export function BusketElement() {
                 </span>
                 <span className="basket__summary-value basket__summary-value--total">
                   {busket.items
-                    .reduce((prev, curr, i) => prev + curr.price * busket.itemsCount[i], 0)
+                    .reduce(
+                      (prev, curr, i) =>
+                        prev + curr.price * busket.itemsCount[i],
+                      0
+                    )
                     .toLocaleString()}{' '}
                   ₽
                 </span>

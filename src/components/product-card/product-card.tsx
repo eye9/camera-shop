@@ -6,6 +6,9 @@ import cn from 'classnames';
 import { useAppDispatch } from '../../hooks/hooks';
 import { formatPrice } from '../../utils/utils';
 import { addingToBusket } from '../../store/busket-process';
+import { useSelector } from 'react-redux';
+import { selectBusket } from '../../store/selectors';
+import { InBusketButton } from '../in-busket-button/in-busket-button';
 
 export type ProductCardProps = {
   product: Product;
@@ -14,6 +17,8 @@ export type ProductCardProps = {
 
 export function ProductCard({ product, activeClass }: ProductCardProps) {
   const dispatch = useAppDispatch();
+  const busket = useSelector(selectBusket);
+  const isProductInBusket = busket.items.find((item) => item.id === product.id);
 
   return (
     <div className={cn('product-card', activeClass)} key={product.id}>
@@ -44,9 +49,17 @@ export function ProductCard({ product, activeClass }: ProductCardProps) {
         </p>
       </div>
       <div className="product-card__buttons">
-        <button className="btn btn--purple product-card__btn" type="button" onClick={() => dispatch(addingToBusket(product))}>
-          Купить
-        </button>
+        {!isProductInBusket ? (
+          <button
+            className="btn btn--purple product-card__btn"
+            type="button"
+            onClick={() => dispatch(addingToBusket(product))}
+          >
+            Купить
+          </button>
+        ) : (
+          <InBusketButton />
+        )}
         <Link
           className="btn btn--transparent"
           to={`${AppRoutes.Product}/${product.id}`}

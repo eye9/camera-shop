@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { AppRoutes } from '../../../../const';
+import { AppRoutes } from '../../const';
 
 export function InBusketButton() {
   return (
