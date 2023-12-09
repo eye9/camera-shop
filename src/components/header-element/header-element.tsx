@@ -1,8 +1,12 @@
 import { Link } from 'react-router-dom';
 import { AppRoutes } from '../../const';
 import { SearchForm } from './components/search-form/search-form';
+import { useSelector } from 'react-redux';
+import { selectBusket } from '../../store/selectors';
 
 export function HeaderElement() {
+  const busket = useSelector(selectBusket);
+  const busketItemsCount = busket.itemsCount.reduce((acc, curr) => acc + curr, 0);
   return (
     <header className="header" id="header">
       <div className="container">
@@ -38,6 +42,7 @@ export function HeaderElement() {
           <svg width={16} height={16} aria-hidden="true">
             <use xlinkHref="#icon-basket" />
           </svg>
+          {busketItemsCount > 0 && <span className="header__basket-count">{busketItemsCount}</span>}
         </Link>
       </div>
     </header>
