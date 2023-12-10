@@ -1,27 +1,30 @@
 import cn from 'classnames';
 import { useRef } from 'react';
 import {
+  busketRemove,
+  setRemoveBusketModalVisibleStatus,
+} from '../../store/busket-process';
+import {
+  selectCurrentBusketItem,
+  selectRemoveBusketStatus,
+} from '../../store/selectors';
+import {
   useAppDispatch,
   useAppSelector,
   useEscHandle,
   useFocus,
   useScrollDisabler,
 } from '../../hooks/hooks';
-import {
-  selectAddBusketStatus,
-  selectCurrentBusketItem,
-} from '../../store/selectors';
-import { busketAdd, setAddBusketModalVisibleStatus } from '../../store/busket-process';
 
-export function AddItemModal() {
+export function RemoveItemModal() {
   const dispatch = useAppDispatch();
-  const addButtonRef = useRef<HTMLButtonElement>(null);
+  const removeButtonRef = useRef<HTMLButtonElement>(null);
 
   const item = useAppSelector(selectCurrentBusketItem);
-  const isVisible = useAppSelector(selectAddBusketStatus);
+  const isVisible = useAppSelector(selectRemoveBusketStatus);
 
-  useFocus(addButtonRef.current);
-  useEscHandle(() => dispatch(setAddBusketModalVisibleStatus(false)));
+  useFocus(removeButtonRef.current);
+  useEscHandle(() => dispatch(setRemoveBusketModalVisibleStatus(false)));
   useScrollDisabler(isVisible);
 
   if (!item) {
@@ -34,11 +37,11 @@ export function AddItemModal() {
         <div
           className="modal__overlay"
           onClick={() => {
-            dispatch(setAddBusketModalVisibleStatus(false));
+            dispatch(setRemoveBusketModalVisibleStatus(false));
           }}
         />
         <div className="modal__content">
-          <p className="title title--h4">Добавить товар в корзину</p>
+          <p className="title title--h4">Удалить этот товар?</p>
           <div className="basket-item basket-item--short">
             <div className="basket-item__img">
               <picture>
@@ -65,32 +68,35 @@ export function AddItemModal() {
                 <li className="basket-item__list-item">{item?.type} камера</li>
                 <li className="basket-item__list-item">{item.level} уровень</li>
               </ul>
-              <p className="basket-item__price">
-                <span className="visually-hidden">Цена:</span>
-                {item.price.toLocaleString()} ₽
-              </p>
             </div>
           </div>
           <div className="modal__buttons">
             <button
-              onClick={() => dispatch(busketAdd(item))}
-              ref={addButtonRef}
-              className="btn btn--purple modal__btn modal__btn--fit-width"
+              onClick={() => {
+                dispatch(busketRemove(item));
+              }}
+              className="btn btn--purple modal__btn modal__btn--half-width"
               type="button"
             >
-              <svg width={24} height={16} aria-hidden="true">
-                <use xlinkHref="#icon-add-basket" />
-              </svg>
-              Добавить в корзину
+              Удалить
             </button>
+            <a
+              onClick={() => {
+                dispatch(setRemoveBusketModalVisibleStatus(false));
+              }}
+              className="btn btn--transparent modal__btn modal__btn--half-width"
+              href="#"
+            >
+              Продолжить покупки
+            </a>
           </div>
           <button
+            onClick={() => {
+              dispatch(setRemoveBusketModalVisibleStatus(false));
+            }}
             className="cross-btn"
             type="button"
             aria-label="Закрыть попап"
-            onClick={() => {
-              dispatch(setAddBusketModalVisibleStatus(false));
-            }}
           >
             <svg width={10} height={10} aria-hidden="true">
               <use xlinkHref="#icon-close" />

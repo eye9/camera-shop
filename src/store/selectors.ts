@@ -5,6 +5,7 @@ import { State } from '../types/state';
 import { Busket } from './busket-process';
 
 export const selectAddBusketStatus = (state: Pick<State, typeof NameSpace.Busket>): boolean => state[NameSpace.Busket].isAddBusketVisible;
+export const selectRemoveBusketStatus = (state: Pick<State, typeof NameSpace.Busket>): boolean => state[NameSpace.Busket].isRemoveBusketVisible;
 export const selectAddBusketSuccessStatus = (state: Pick<State, typeof NameSpace.Busket>): boolean => state[NameSpace.Busket].isSuccessVisible;
 export const selectCurrentBusketItem = (state: Pick<State, typeof NameSpace.Busket>): Product | null => state[NameSpace.Busket].currentBusketItem;
 export const selectBusket = (state: Pick<State, typeof NameSpace.Busket>): Busket => state[NameSpace.Busket].busket;

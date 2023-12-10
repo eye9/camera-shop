@@ -7,6 +7,7 @@ export type Busket = { items: Products; itemsCount: number[] };
 type BusketProcess = {
   currentBusketItem: Product | null;
   isAddBusketVisible: boolean;
+  isRemoveBusketVisible: boolean;
   isSuccessVisible: boolean;
   busket: Busket;
 };
@@ -14,6 +15,7 @@ type BusketProcess = {
 const initialState: BusketProcess = {
   currentBusketItem: null,
   isAddBusketVisible: false,
+  isRemoveBusketVisible: false,
   isSuccessVisible: false,
   busket: {
     items: [],
@@ -23,12 +25,24 @@ const initialState: BusketProcess = {
 
 function addToBusket(state: BusketProcess, product: Product) {
   const index = state.busket.items.findIndex((item) => item.id === product.id);
-  if (index === -1) {
+  const isInBusket = index === -1;
+  if (isInBusket) {
     state.busket.items.push(product);
     state.busket.itemsCount.push(1);
   } else {
     const count = state.busket.itemsCount[index];
     state.busket.itemsCount[index] = count + 1;
+  }
+}
+
+function removeFromBusket(state: BusketProcess, product: Product) {
+  const index = state.busket.items.findIndex((item) => item.id === product.id);
+  const isInBusket = index !== -1;
+  if (isInBusket) {
+    state.busket.items = state.busket.items.filter((_, i) => i !== index);
+    state.busket.itemsCount = state.busket.itemsCount.filter(
+      (_, i) => i !== index
+    );
   }
 }
 
@@ -41,18 +55,42 @@ export const busketProcess = createSlice({
       state.isSuccessVisible = true;
       addToBusket(state, action.payload);
     },
+    busketRemove: (state, action: PayloadAction<Product>) => {
+      state.isRemoveBusketVisible = false;
+      removeFromBusket(state, action.payload);
+    },
     addingToBusket: (state, action: PayloadAction<Product>) => {
       state.isAddBusketVisible = true;
       state.currentBusketItem = action.payload;
     },
-    setBusketModalVisibleStatus: (state, action: PayloadAction<boolean>) => {
+    removingFromBusket: (state, action: PayloadAction<Product>) => {
+      state.isRemoveBusketVisible = true;
+      state.currentBusketItem = action.payload;
+    },
+    setAddBusketModalVisibleStatus: (state, action: PayloadAction<boolean>) => {
       state.isAddBusketVisible = action.payload;
     },
-    setBusketSuccessModalVisibleStatus: (state, action: PayloadAction<boolean>) => {
+    setRemoveBusketModalVisibleStatus: (
+      state,
+      action: PayloadAction<boolean>
+    ) => {
+      state.isRemoveBusketVisible = action.payload;
+    },
+    setBusketSuccessModalVisibleStatus: (
+      state,
+      action: PayloadAction<boolean>
+    ) => {
       state.isSuccessVisible = action.payload;
     },
   },
 });
 
-export const { addingToBusket, setBusketModalVisibleStatus, busketAdd, setBusketSuccessModalVisibleStatus } =
-  busketProcess.actions;
+export const {
+  addingToBusket,
+  removingFromBusket,
+  setAddBusketModalVisibleStatus,
+  setRemoveBusketModalVisibleStatus,
+  busketAdd,
+  busketRemove,
+  setBusketSuccessModalVisibleStatus,
+} = busketProcess.actions;
