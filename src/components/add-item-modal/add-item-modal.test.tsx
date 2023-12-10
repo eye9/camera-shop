@@ -1,12 +1,14 @@
 import { render, screen } from '@testing-library/react';
 import { withStore } from '../../utils/mock-component';
 import { AddItemModal } from './add-item-modal';
-import { makeFakeProduct } from '../../utils/mocks';
+import { makeFakeProduct, makeFakeStore } from '../../utils/mocks';
 
 describe('Component: Add To Busket Modal ', () => {
   it('should render properly', () => {
     const product = makeFakeProduct();
-    const { withStoreComponent } = withStore(<AddItemModal />, {BUSKET: {currentBusketItem: product, isAddBusketVisible: true}});
+    const store = makeFakeStore();
+    store.BUSKET = {...store.BUSKET, currentBusketItem: product, isAddBusketVisible: true};
+    const { withStoreComponent } = withStore(<AddItemModal />, store);
 
     render(withStoreComponent);
 
