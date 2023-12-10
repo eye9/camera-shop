@@ -1,5 +1,9 @@
 import { useAppDispatch } from '../../../../hooks/hooks';
-import { removingFromBusket } from '../../../../store/busket-process';
+import {
+  busketAdd,
+  busketSub,
+  removingFromBusket,
+} from '../../../../store/busket-process';
 import { Product } from '../../../../types/product';
 
 type BusketItemProps = {
@@ -45,6 +49,11 @@ export function BusketItem({ item, count }: BusketItemProps) {
       </p>
       <div className="quantity">
         <button
+          onClick={() => {
+            if (count > 1) {
+              dispatch(busketSub(item));
+            }
+          }}
           className="btn-icon btn-icon--prev"
           aria-label="уменьшить количество товара"
         >
@@ -62,6 +71,11 @@ export function BusketItem({ item, count }: BusketItemProps) {
           aria-label="количество товара"
         />
         <button
+          onClick={() => {
+            if (count < 100) {
+              dispatch(busketAdd(item));
+            }
+          }}
           className="btn-icon btn-icon--next"
           aria-label="увеличить количество товара"
         >

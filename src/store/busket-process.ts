@@ -25,13 +25,21 @@ const initialState: BusketProcess = {
 
 function addToBusket(state: BusketProcess, product: Product) {
   const index = state.busket.items.findIndex((item) => item.id === product.id);
-  const isInBusket = index === -1;
-  if (isInBusket) {
+  const isNotInBusket = index === -1;
+  if (isNotInBusket) {
     state.busket.items.push(product);
     state.busket.itemsCount.push(1);
   } else {
     const count = state.busket.itemsCount[index];
     state.busket.itemsCount[index] = count + 1;
+  }
+}
+function subFromBusket(state: BusketProcess, product: Product) {
+  const index = state.busket.items.findIndex((item) => item.id === product.id);
+  const isInBusket = index !== -1;
+  if (isInBusket) {
+    const count = state.busket.itemsCount[index];
+    state.busket.itemsCount[index] = count > 1 ? count - 1 : 1;
   }
 }
 
@@ -54,6 +62,9 @@ export const busketProcess = createSlice({
       state.isAddBusketVisible = false;
       state.isSuccessVisible = true;
       addToBusket(state, action.payload);
+    },
+    busketSub: (state, action: PayloadAction<Product>) => {
+      subFromBusket(state, action.payload);
     },
     busketRemove: (state, action: PayloadAction<Product>) => {
       state.isRemoveBusketVisible = false;
@@ -91,6 +102,7 @@ export const {
   setAddBusketModalVisibleStatus,
   setRemoveBusketModalVisibleStatus,
   busketAdd,
+  busketSub,
   busketRemove,
   setBusketSuccessModalVisibleStatus,
 } = busketProcess.actions;
