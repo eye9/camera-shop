@@ -42,7 +42,16 @@ export const makeFakeProduct = (): Product => ({
 });
 
 export const makeFakeStore = (initialState?: Partial<State>): State => ({
-  BUSKET: { currentBusketItem: null, isAddBusketVisible: false },
+  BUSKET: {
+    currentBusketItem: null,
+    isAddBusketVisible: false,
+    isRemoveBusketVisible: false,
+    isSuccessVisible: false,
+    busket: {
+      items: [],
+      itemsCount: [],
+    },
+  },
   PRODUCT: {
     currentProduct: makeFakeProduct(),
     isDataLoading: false,
@@ -60,4 +69,5 @@ export const makeFakeStore = (initialState?: Partial<State>): State => ({
   ...(initialState ?? {}),
 });
 
-export const extractActionsTypes = (actions: Action<string>[]) => actions.map(({ type }) => type);
+export const extractActionsTypes = (actions: Action<string>[]) =>
+  actions.map(({ type }) => type);

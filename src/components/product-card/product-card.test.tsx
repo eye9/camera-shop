@@ -1,12 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import { withRouter, withStore } from '../../utils/mock-component';
-import { makeFakeProduct } from '../../utils/mocks';
+import { makeFakeProduct, makeFakeStore } from '../../utils/mocks';
 import { ProductCard } from './product-card';
 
 describe('Component: Product Card', () => {
   it('should render properly', () => {
     const product = makeFakeProduct();
-    const {withStoreComponent} = withStore(<ProductCard product={product} />);
+    const {withStoreComponent} = withStore(<ProductCard product={product} />, makeFakeStore());
     const preparedComponent = withRouter(withStoreComponent);
 
     render(preparedComponent);

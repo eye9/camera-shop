@@ -24,6 +24,7 @@ describe('Busket reducers', () => {
   it('should add product to busket and make busket visible', () => {
     const expectedProduct = makeFakeProduct();
     const expectedState = {
+      ...initialState,
       currentBusketItem: expectedProduct,
       isAddBusketVisible: true
     };

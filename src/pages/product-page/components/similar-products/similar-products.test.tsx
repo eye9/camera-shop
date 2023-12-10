@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { withRouter, withStore } from '../../../../utils/mock-component';
-import { makeFakeProduct } from '../../../../utils/mocks';
+import { makeFakeProduct, makeFakeStore } from '../../../../utils/mocks';
 import { SimilarProducts } from './similar-products';
 
 describe('Component: Product Card', () => {
@@ -8,7 +8,8 @@ describe('Component: Product Card', () => {
     const similarCount = 5;
     const products = new Array(similarCount).fill(makeFakeProduct());
     const { withStoreComponent } = withStore(
-      <SimilarProducts products={products} />
+      <SimilarProducts products={products} />,
+      makeFakeStore()
     );
     const preparedComponent = withRouter(withStoreComponent);
 

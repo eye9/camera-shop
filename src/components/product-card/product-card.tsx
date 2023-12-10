@@ -18,7 +18,7 @@ export type ProductCardProps = {
 export function ProductCard({ product, activeClass }: ProductCardProps) {
   const dispatch = useAppDispatch();
   const busket = useSelector(selectBusket);
-  const isProductInBusket = busket.items.find((item) => item.id === product.id);
+  const isProductInBusket = busket.items && busket.items.find((item) => item.id === product.id);
 
   return (
     <div className={cn('product-card', activeClass)} key={product.id}>

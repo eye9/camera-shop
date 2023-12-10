@@ -6,7 +6,7 @@ import { selectBusket } from '../../store/selectors';
 
 export function HeaderElement() {
   const busket = useSelector(selectBusket);
-  const busketItemsCount = busket.itemsCount.reduce((acc, curr) => acc + curr, 0);
+  const busketItemsCount = busket.itemsCount && busket.itemsCount.reduce((acc, curr) => acc + curr, 0);
   return (
     <header className="header" id="header">
       <div className="container">
