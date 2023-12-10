@@ -37,6 +37,9 @@ export function SearchForm() {
   };
 
   const handleKeydown = (e: KeyboardEvent) => {
+    if ((e.target as HTMLElement).closest('.form-search__select-list') === null) {
+      return;
+    }
     if (e.code === 'ArrowDown') {
       e.preventDefault();
       selectedSearchItem.current = Math.min(selectedSearchItem.current + 1, filteredProducts.current.length - 1);
