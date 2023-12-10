@@ -3,6 +3,10 @@ import { NameSpace } from '../const';
 import { Product, Products } from '../types/product';
 
 export type Busket = { items: Products; itemsCount: number[] };
+export type SetBusketItemPayload = {
+  item: Product;
+  count: number;
+};
 
 type BusketProcess = {
   currentBusketItem: Product | null;
@@ -42,6 +46,13 @@ function subFromBusket(state: BusketProcess, product: Product) {
     state.busket.itemsCount[index] = count > 1 ? count - 1 : 1;
   }
 }
+function setBusketItem(state: BusketProcess, product: Product, count: number) {
+  const index = state.busket.items.findIndex((item) => item.id === product.id);
+  const isInBusket = index !== -1;
+  if (isInBusket) {
+    state.busket.itemsCount[index] = count;
+  }
+}
 
 function removeFromBusket(state: BusketProcess, product: Product) {
   const index = state.busket.items.findIndex((item) => item.id === product.id);
@@ -65,6 +76,9 @@ export const busketProcess = createSlice({
     },
     busketSub: (state, action: PayloadAction<Product>) => {
       subFromBusket(state, action.payload);
+    },
+    busketSet: (state, action: PayloadAction<SetBusketItemPayload>) => {
+      setBusketItem(state, action.payload.item, action.payload.count);
     },
     busketRemove: (state, action: PayloadAction<Product>) => {
       state.isRemoveBusketVisible = false;
@@ -102,6 +116,7 @@ export const {
   setAddBusketModalVisibleStatus,
   setRemoveBusketModalVisibleStatus,
   busketAdd,
+  busketSet,
   busketSub,
   busketRemove,
   setBusketSuccessModalVisibleStatus,

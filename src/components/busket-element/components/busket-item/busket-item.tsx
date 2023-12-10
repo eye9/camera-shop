@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { useAppDispatch } from '../../../../hooks/hooks';
 import {
   busketAdd,
+  busketSet,
   busketSub,
   removingFromBusket,
 } from '../../../../store/busket-process';
@@ -10,9 +12,10 @@ type BusketItemProps = {
   item: Product;
   count: number;
 };
+
 export function BusketItem({ item, count }: BusketItemProps) {
   const dispatch = useAppDispatch();
-
+  const [itemsCount, setCount] = useState(String(count));
   return (
     <li className="basket-item" key={item.id}>
       <div className="basket-item__img">
@@ -51,6 +54,7 @@ export function BusketItem({ item, count }: BusketItemProps) {
         <button
           onClick={() => {
             if (count > 1) {
+              setCount(String(+itemsCount - 1));
               dispatch(busketSub(item));
             }
           }}
@@ -65,14 +69,29 @@ export function BusketItem({ item, count }: BusketItemProps) {
         <input
           type="number"
           id="counter1"
-          value={count}
+          value={itemsCount}
+          onChange={(e) => {
+            setCount(e.target.value);
+          }}
+          onBlur={(e) => {
+            let value = +e.target.value;
+            if (value > 99) {
+              value = 99;
+            }
+            if (value < 1) {
+              value = 1;
+            }
+            setCount(String(value));
+            dispatch(busketSet({ item, count: value }));
+          }}
           min={1}
           max={99}
           aria-label="количество товара"
         />
         <button
           onClick={() => {
-            if (count < 100) {
+            if (count < 99) {
+              setCount(String(+itemsCount + 1));
               dispatch(busketAdd(item));
             }
           }}
