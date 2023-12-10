@@ -87,6 +87,12 @@ describe('Selectors tests, busket process', () => {
     [NameSpace.Busket]: {
       currentBusketItem: busketItem,
       isAddBusketVisible: false,
+      isRemoveBusketVisible: false,
+      isSuccessVisible: false,
+      busket: {
+        items: [],
+        itemsCount: [],
+      },
     },
   };
 
