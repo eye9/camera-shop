@@ -1,6 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../const';
 import { Product, Products } from '../types/product';
+import { loadBusket, saveBusket } from '../utils/storage';
 
 export type Busket = { items: Products; itemsCount: number[] };
 export type SetBusketItemPayload = {
@@ -21,10 +22,7 @@ const initialState: BusketProcess = {
   isAddBusketVisible: false,
   isRemoveBusketVisible: false,
   isSuccessVisible: false,
-  busket: {
-    items: [],
-    itemsCount: [],
-  },
+  busket: loadBusket(),
 };
 
 function addToBusket(state: BusketProcess, product: Product) {
@@ -37,6 +35,7 @@ function addToBusket(state: BusketProcess, product: Product) {
     const count = state.busket.itemsCount[index];
     state.busket.itemsCount[index] = count + 1;
   }
+  saveBusket(state.busket);
 }
 function subFromBusket(state: BusketProcess, product: Product) {
   const index = state.busket.items.findIndex((item) => item.id === product.id);
@@ -44,6 +43,7 @@ function subFromBusket(state: BusketProcess, product: Product) {
   if (isInBusket) {
     const count = state.busket.itemsCount[index];
     state.busket.itemsCount[index] = count > 1 ? count - 1 : 1;
+    saveBusket(state.busket);
   }
 }
 function setBusketItem(state: BusketProcess, product: Product, count: number) {
@@ -51,6 +51,7 @@ function setBusketItem(state: BusketProcess, product: Product, count: number) {
   const isInBusket = index !== -1;
   if (isInBusket) {
     state.busket.itemsCount[index] = count;
+    saveBusket(state.busket);
   }
 }
 
@@ -62,6 +63,7 @@ function removeFromBusket(state: BusketProcess, product: Product) {
     state.busket.itemsCount = state.busket.itemsCount.filter(
       (_, i) => i !== index
     );
+    saveBusket(state.busket);
   }
 }
 
