@@ -1,7 +1,7 @@
 import { NameSpace } from '../const';
 import { Products, Promos } from '../types/product';
 import { Reviews } from '../types/review';
-import { makeFakeProduct, makeFakePromo, makeFakeReview } from '../utils/mocks';
+import { makeFakeProduct, makeFakePromo, makeFakeReview, makeFakeStore } from '../utils/mocks';
 import {
   selectAddBusketStatus,
   selectCurrentBusketItem,
@@ -83,18 +83,8 @@ describe('Selectors tests, review process', () => {
 
 describe('Selectors tests, busket process', () => {
   const busketItem = makeFakeProduct();
-  const state = {
-    [NameSpace.Busket]: {
-      currentBusketItem: busketItem,
-      isAddBusketVisible: false,
-      isRemoveBusketVisible: false,
-      isSuccessVisible: false,
-      busket: {
-        items: [],
-        itemsCount: [],
-      },
-    },
-  };
+  const state = makeFakeStore();
+  state.BUSKET.currentBusketItem = busketItem;
 
   it('should return current busket item', () => {
     const result = selectCurrentBusketItem(state);

@@ -47,9 +47,12 @@ export const makeFakeStore = (initialState?: Partial<State>): State => ({
     isAddBusketVisible: false,
     isRemoveBusketVisible: false,
     isSuccessVisible: false,
+    isDataLoading: false,
+    isCouponValid: undefined,
     busket: {
       items: [],
       itemsCount: [],
+      discount: 0
     },
   },
   PRODUCT: {
