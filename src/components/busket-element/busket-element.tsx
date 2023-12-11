@@ -8,6 +8,7 @@ import { RemoveItemModal } from '../remove-item-modal/remove-item-modal';
 import { FormEvent, useRef } from 'react';
 import { useAppDispatch } from '../../hooks/hooks';
 import { fetchCouponDiscount } from '../../store/api-actions';
+import { setCouponValidStatusStatus as setCouponValidStatus } from '../../store/busket-process';
 
 export function BusketElement() {
   const dispatch = useAppDispatch();
@@ -21,7 +22,7 @@ export function BusketElement() {
   );
 
   let inputClassname = isCouponValid ? 'is-valid' : 'is-invalid';
-  if (isCouponValid === undefined) {
+  if (isCouponValid === undefined || (couponRef.current && couponRef.current.value === '')) {
     inputClassname = '';
   }
 
@@ -29,8 +30,11 @@ export function BusketElement() {
     e.preventDefault();
     if (couponRef.current) {
       const coupon = String(couponRef.current.value).trim();
-      //check coupon
-      dispatch(fetchCouponDiscount(coupon));
+      if (coupon.match(/^[\w-_]+$/)) {
+        dispatch(fetchCouponDiscount(coupon));
+      } else {
+        dispatch(setCouponValidStatus(false));
+      }
     }
   };
   return (
@@ -91,7 +95,7 @@ export function BusketElement() {
                     'basket__summary-value--bonus': discount > 0,
                   })}
                 >
-                  {(total * discount / 100).toLocaleString()} ₽
+                  {((total * discount) / 100).toLocaleString()} ₽
                 </span>
               </p>
               <p className="basket__summary-item">
@@ -99,7 +103,7 @@ export function BusketElement() {
                   К оплате:
                 </span>
                 <span className="basket__summary-value basket__summary-value--total">
-                  {(total - total * discount / 100).toLocaleString()} ₽
+                  {(total - (total * discount) / 100).toLocaleString()} ₽
                 </span>
               </p>
               <button className="btn btn--purple" type="submit">

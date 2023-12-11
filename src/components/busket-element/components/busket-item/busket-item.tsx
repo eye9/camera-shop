@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useAppDispatch } from '../../../../hooks/hooks';
 import {
-  busketAdd,
   busketSet,
   busketSub,
   removingFromBusket,
@@ -92,7 +91,7 @@ export function BusketItem({ item, count }: BusketItemProps) {
           onClick={() => {
             if (count < 99) {
               setCount(String(+itemsCount + 1));
-              dispatch(busketAdd(item));
+              dispatch(busketSet({ item, count: +itemsCount + 1 }));
             }
           }}
           className="btn-icon btn-icon--next"

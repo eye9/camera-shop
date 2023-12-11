@@ -9,7 +9,6 @@ export type Busket = {
   itemsCount: number[];
   discount: number;
 };
-
 export type SetBusketItemPayload = {
   item: Product;
   count: number;
@@ -64,7 +63,6 @@ function setBusketItem(state: BusketProcess, product: Product, count: number) {
     saveBusket(state.busket);
   }
 }
-
 function removeFromBusket(state: BusketProcess, product: Product) {
   const index = state.busket.items.findIndex((item) => item.id === product.id);
   const isInBusket = index !== -1;
@@ -107,6 +105,9 @@ export const busketProcess = createSlice({
     setAddBusketModalVisibleStatus: (state, action: PayloadAction<boolean>) => {
       state.isAddBusketVisible = action.payload;
     },
+    setCouponValidStatusStatus: (state, action: PayloadAction<boolean | undefined>) => {
+      state.isCouponValid = action.payload;
+    },
     setRemoveBusketModalVisibleStatus: (
       state,
       action: PayloadAction<boolean>
@@ -148,5 +149,6 @@ export const {
   busketSet,
   busketSub,
   busketRemove,
+  setCouponValidStatusStatus,
   setBusketSuccessModalVisibleStatus,
 } = busketProcess.actions;
