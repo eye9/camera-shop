@@ -1,8 +1,9 @@
 import { Busket } from '../store/busket-process';
 
-const emptyBusket = {
+const emptyBusket: Busket = {
   items: [],
   itemsCount: [],
+  discount: 0,
 };
 
 export function loadBusket(): Busket {

@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 type DetailMessageType = {
   type: string;
   message: string;
-}
+};
 
 const BACKEND_URL = 'https://camera-shop.accelerator.pages.academy/';
 const REQUEST_TIMEOUT = 5000;
@@ -19,7 +19,6 @@ export const createApi = (): AxiosInstance => {
     (response) => response,
     (error: AxiosError<DetailMessageType>) => {
       if (error.message) {
-
         toast.error(error.message);
       }
 

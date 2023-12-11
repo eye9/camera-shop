@@ -2,8 +2,14 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../const';
 import { Product, Products } from '../types/product';
 import { loadBusket, saveBusket } from '../utils/storage';
+import { fetchCouponDiscount } from './api-actions';
 
-export type Busket = { items: Products; itemsCount: number[] };
+export type Busket = {
+  items: Products;
+  itemsCount: number[];
+  discount: number;
+};
+
 export type SetBusketItemPayload = {
   item: Product;
   count: number;
@@ -14,6 +20,8 @@ type BusketProcess = {
   isAddBusketVisible: boolean;
   isRemoveBusketVisible: boolean;
   isSuccessVisible: boolean;
+  isDataLoading: boolean;
+  isCouponValid: boolean | undefined;
   busket: Busket;
 };
 
@@ -22,6 +30,8 @@ const initialState: BusketProcess = {
   isAddBusketVisible: false,
   isRemoveBusketVisible: false,
   isSuccessVisible: false,
+  isDataLoading: false,
+  isCouponValid: undefined,
   busket: loadBusket(),
 };
 
@@ -109,6 +119,23 @@ export const busketProcess = createSlice({
     ) => {
       state.isSuccessVisible = action.payload;
     },
+  },
+  extraReducers(builder) {
+    builder
+      .addCase(fetchCouponDiscount.pending, (state) => {
+        state.isDataLoading = true;
+        state.isCouponValid = undefined;
+      })
+      .addCase(fetchCouponDiscount.fulfilled, (state, action) => {
+        state.busket.discount = action.payload;
+        state.isCouponValid = true;
+        state.isDataLoading = false;
+      })
+      .addCase(fetchCouponDiscount.rejected, (state) => {
+        state.isCouponValid = false;
+        state.busket.discount = 0;
+        state.isDataLoading = false;
+      });
   },
 });
 

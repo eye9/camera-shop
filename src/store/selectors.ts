@@ -4,6 +4,7 @@ import { Reviews } from '../types/review';
 import { State } from '../types/state';
 import { Busket } from './busket-process';
 
+export const selectCouponValidStatus = (state: Pick<State, typeof NameSpace.Busket>): boolean | undefined => state[NameSpace.Busket].isCouponValid;
 export const selectAddBusketStatus = (state: Pick<State, typeof NameSpace.Busket>): boolean => state[NameSpace.Busket].isAddBusketVisible;
 export const selectRemoveBusketStatus = (state: Pick<State, typeof NameSpace.Busket>): boolean => state[NameSpace.Busket].isRemoveBusketVisible;
 export const selectAddBusketSuccessStatus = (state: Pick<State, typeof NameSpace.Busket>): boolean => state[NameSpace.Busket].isSuccessVisible;

@@ -1,12 +1,38 @@
+import cn from 'classnames';
 import { useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
-import { selectBusket } from '../../store/selectors';
+import { selectBusket, selectCouponValidStatus } from '../../store/selectors';
 import { BreadcrumbsElement } from '../breadcrumbs-element/breadcrumbs-element';
 import { BusketItem } from './components/busket-item/busket-item';
 import { RemoveItemModal } from '../remove-item-modal/remove-item-modal';
+import { FormEvent, useRef } from 'react';
+import { useAppDispatch } from '../../hooks/hooks';
+import { fetchCouponDiscount } from '../../store/api-actions';
 
 export function BusketElement() {
+  const dispatch = useAppDispatch();
   const busket = useSelector(selectBusket);
+  const isCouponValid = useSelector(selectCouponValidStatus);
+  const couponRef = useRef<HTMLInputElement>(null);
+  const discount = busket.discount;
+  const total = busket.items.reduce(
+    (prev, curr, i) => prev + curr.price * busket.itemsCount[i],
+    0
+  );
+
+  let inputClassname = isCouponValid ? 'is-valid' : 'is-invalid';
+  if (isCouponValid === undefined) {
+    inputClassname = '';
+  }
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    if (couponRef.current) {
+      const coupon = String(couponRef.current.value).trim();
+      //check coupon
+      dispatch(fetchCouponDiscount(coupon));
+    }
+  };
   return (
     <div className="page-content">
       <Helmet>
@@ -31,11 +57,12 @@ export function BusketElement() {
                 Если у вас есть промокод на скидку, примените его в этом поле
               </p>
               <div className="basket-form">
-                <form action="#">
-                  <div className="custom-input">
+                <form action="#" onSubmit={handleSubmit}>
+                  <div className={`custom-input ${inputClassname}`}>
                     <label>
                       <span className="custom-input__label">Промокод</span>
                       <input
+                        ref={couponRef}
                         type="text"
                         name="promo"
                         placeholder="Введите промокод"
@@ -54,20 +81,17 @@ export function BusketElement() {
               <p className="basket__summary-item">
                 <span className="basket__summary-text">Всего:</span>
                 <span className="basket__summary-value">
-                  {busket.items
-                    .reduce(
-                      (prev, curr, i) =>
-                        prev + curr.price * busket.itemsCount[i],
-                      0
-                    )
-                    .toLocaleString()}{' '}
-                  ₽
+                  {total.toLocaleString()} ₽
                 </span>
               </p>
               <p className="basket__summary-item">
                 <span className="basket__summary-text">Скидка:</span>
-                <span className="basket__summary-value basket__summary-value--bonus">
-                  0 ₽
+                <span
+                  className={cn('basket__summary-value ', {
+                    'basket__summary-value--bonus': discount > 0,
+                  })}
+                >
+                  {(total * discount / 100).toLocaleString()} ₽
                 </span>
               </p>
               <p className="basket__summary-item">
@@ -75,14 +99,7 @@ export function BusketElement() {
                   К оплате:
                 </span>
                 <span className="basket__summary-value basket__summary-value--total">
-                  {busket.items
-                    .reduce(
-                      (prev, curr, i) =>
-                        prev + curr.price * busket.itemsCount[i],
-                      0
-                    )
-                    .toLocaleString()}{' '}
-                  ₽
+                  {(total - total * discount / 100).toLocaleString()} ₽
                 </span>
               </p>
               <button className="btn btn--purple" type="submit">
