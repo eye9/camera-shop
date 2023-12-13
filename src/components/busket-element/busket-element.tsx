@@ -4,7 +4,6 @@ import { FormEvent, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import {
   selectBusket,
-  selectCoupon,
   selectCouponValidStatus,
 } from '../../store/selectors';
 import { BreadcrumbsElement } from '../breadcrumbs-element/breadcrumbs-element';
@@ -17,7 +16,6 @@ import { setCouponValidStatusStatus as setCouponValidStatus } from '../../store/
 export function BusketElement() {
   const dispatch = useAppDispatch();
   const busket = useSelector(selectBusket);
-  const coupon = useSelector(selectCoupon);
   const isCouponValid = useSelector(selectCouponValidStatus);
   const couponRef = useRef<HTMLInputElement>(null);
   const discount = busket.discount;
@@ -48,6 +46,7 @@ export function BusketElement() {
 
   const handleOrderBottonClick = () => {
     const ids = busket.items.map((item) => item.id);
+    const coupon = busket.coupon;
     dispatch(sendOrder({ ids, coupon }));
   };
 

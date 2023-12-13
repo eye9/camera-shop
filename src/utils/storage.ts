@@ -4,6 +4,7 @@ export const emptyBusket: Busket = {
   items: [],
   itemsCount: [],
   discount: 0,
+  coupon: null
 };
 
 export function loadBusket(): Busket {

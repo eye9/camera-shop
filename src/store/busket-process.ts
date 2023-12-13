@@ -12,6 +12,7 @@ export type Busket = {
   items: Products;
   itemsCount: number[];
   discount: number;
+  coupon: string | null;
 };
 export type SetBusketItemPayload = {
   item: Product;
@@ -25,7 +26,6 @@ type BusketProcess = {
   isSuccessVisible: boolean;
   isDataLoading: boolean;
   orderStatus: OrderStatuses;
-  coupon: string | null;
   isCouponValid: boolean | undefined;
   busket: Busket;
 };
@@ -37,7 +37,6 @@ const initialState: BusketProcess = {
   isSuccessVisible: false,
   isDataLoading: false,
   orderStatus: OrderStatuses.Unknown,
-  coupon: null,
   isCouponValid: undefined,
   busket: loadBusket(),
 };
@@ -132,7 +131,7 @@ export const busketProcess = createSlice({
       state,
       action: PayloadAction<string>
     ) => {
-      state.coupon = action.payload;
+      state.busket.coupon = action.payload;
     },
   },
   extraReducers(builder) {
@@ -148,7 +147,7 @@ export const busketProcess = createSlice({
       })
       .addCase(fetchCouponDiscount.rejected, (state) => {
         state.isCouponValid = false;
-        state.coupon = null;
+        state.busket.coupon = null;
         state.busket.discount = 0;
         state.isDataLoading = false;
       })
@@ -159,7 +158,7 @@ export const busketProcess = createSlice({
         state.orderStatus = OrderStatuses.Success;
         state.isDataLoading = false;
         state.busket = emptyBusket;
-        state.coupon = null;
+        state.busket.coupon = null;
         resetSavedBusket();
       })
       .addCase(sendOrder.rejected, (state) => {
