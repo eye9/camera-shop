@@ -8,6 +8,7 @@ export const APIRoutes = {
   Promo: '/promo',
   Reviews: '/reviews',
   Coupones: '/coupons',
+  Order: '/orders',
 } as const;
 
 export const AppRoutes = {

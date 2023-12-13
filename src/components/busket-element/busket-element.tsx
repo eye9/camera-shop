@@ -1,18 +1,23 @@
 import cn from 'classnames';
 import { useSelector } from 'react-redux';
+import { FormEvent, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { selectBusket, selectCouponValidStatus } from '../../store/selectors';
+import {
+  selectBusket,
+  selectCoupon,
+  selectCouponValidStatus,
+} from '../../store/selectors';
 import { BreadcrumbsElement } from '../breadcrumbs-element/breadcrumbs-element';
 import { BusketItem } from './components/busket-item/busket-item';
 import { RemoveItemModal } from '../remove-item-modal/remove-item-modal';
-import { FormEvent, useRef } from 'react';
 import { useAppDispatch } from '../../hooks/hooks';
-import { fetchCouponDiscount } from '../../store/api-actions';
+import { fetchCouponDiscount, sendOrder } from '../../store/api-actions';
 import { setCouponValidStatusStatus as setCouponValidStatus } from '../../store/busket-process';
 
 export function BusketElement() {
   const dispatch = useAppDispatch();
   const busket = useSelector(selectBusket);
+  const coupon = useSelector(selectCoupon);
   const isCouponValid = useSelector(selectCouponValidStatus);
   const couponRef = useRef<HTMLInputElement>(null);
   const discount = busket.discount;
@@ -22,21 +27,30 @@ export function BusketElement() {
   );
 
   let inputClassname = isCouponValid ? 'is-valid' : 'is-invalid';
-  if (isCouponValid === undefined || (couponRef.current && couponRef.current.value === '')) {
+  if (
+    isCouponValid === undefined ||
+    (couponRef.current && couponRef.current.value === '')
+  ) {
     inputClassname = '';
   }
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmitCoupon = (e: FormEvent) => {
     e.preventDefault();
     if (couponRef.current) {
-      const coupon = String(couponRef.current.value).trim();
-      if (coupon.match(/^[\w-_]+$/)) {
-        dispatch(fetchCouponDiscount(coupon));
+      const couponValue = String(couponRef.current.value).trim();
+      if (couponValue.match(/^[\w-_]+$/)) {
+        dispatch(fetchCouponDiscount(couponValue));
       } else {
         dispatch(setCouponValidStatus(false));
       }
     }
   };
+
+  const handleOrderBottonClick = () => {
+    const ids = busket.items.map((item) => item.id);
+    dispatch(sendOrder({ ids, coupon }));
+  };
+
   return (
     <div className="page-content">
       <Helmet>
@@ -61,7 +75,7 @@ export function BusketElement() {
                 Если у вас есть промокод на скидку, примените его в этом поле
               </p>
               <div className="basket-form">
-                <form action="#" onSubmit={handleSubmit}>
+                <form action="#" onSubmit={handleSubmitCoupon}>
                   <div className={`custom-input ${inputClassname}`}>
                     <label>
                       <span className="custom-input__label">Промокод</span>
@@ -106,7 +120,12 @@ export function BusketElement() {
                   {(total - (total * discount) / 100).toLocaleString()} ₽
                 </span>
               </p>
-              <button className="btn btn--purple" type="submit">
+              <button
+                onClick={handleOrderBottonClick}
+                className="btn btn--purple"
+                type="submit"
+                disabled={busket.items.length === 0}
+              >
                 Оформить заказ
               </button>
             </div>

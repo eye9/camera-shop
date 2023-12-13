@@ -1,6 +1,6 @@
 import { Busket } from '../store/busket-process';
 
-const emptyBusket: Busket = {
+export const emptyBusket: Busket = {
   items: [],
   itemsCount: [],
   discount: 0,
@@ -13,4 +13,7 @@ export function loadBusket(): Busket {
 }
 export function saveBusket(busket: Busket) {
   localStorage.setItem('busket', JSON.stringify(busket));
+}
+export function resetBusket() {
+  localStorage.removeItem('busket');
 }

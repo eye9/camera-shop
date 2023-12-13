@@ -4,9 +4,22 @@ import { AxiosInstance } from 'axios';
 import { Product, Products, Promos } from '../types/product';
 import { APIRoutes } from '../const';
 import { AddReview, Review, Reviews } from '../types/review';
+import { setCoupon } from './busket-process';
 
 export const TIMEOUT_SHOW_ERROR = 2000;
 
+export const sendOrder = createAsyncThunk<
+  undefined,
+  { ids: number[]; coupon: string | null },
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>('busket/sendOrder', async ({ids, coupon}, { extra: api }) => {
+  await api.post(`${APIRoutes.Order}`, {camerasIds: ids, coupon});
+  return undefined;
+});
 export const fetchCouponDiscount = createAsyncThunk<
   number,
   string,
@@ -15,8 +28,9 @@ export const fetchCouponDiscount = createAsyncThunk<
     state: State;
     extra: AxiosInstance;
   }
->('products/fetchDiscount', async (coupon, { extra: api }) => {
+>('products/fetchDiscount', async (coupon, { dispatch, extra: api }) => {
   const { data } = await api.post<number>(APIRoutes.Coupones, {coupon});
+  dispatch(setCoupon(coupon));
   return data;
 });
 export const fetchProductsActionWithPrice = createAsyncThunk<

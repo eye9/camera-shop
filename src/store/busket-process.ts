@@ -1,8 +1,12 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../const';
 import { Product, Products } from '../types/product';
-import { loadBusket, saveBusket } from '../utils/storage';
-import { fetchCouponDiscount } from './api-actions';
+import { emptyBusket, loadBusket, resetBusket as resetSavedBusket, saveBusket } from '../utils/storage';
+import { fetchCouponDiscount, sendOrder } from './api-actions';
+
+enum OrderStatuses {
+'Error', 'Success', 'Unknown'
+}
 
 export type Busket = {
   items: Products;
@@ -20,6 +24,8 @@ type BusketProcess = {
   isRemoveBusketVisible: boolean;
   isSuccessVisible: boolean;
   isDataLoading: boolean;
+  orderStatus: OrderStatuses;
+  coupon: string | null;
   isCouponValid: boolean | undefined;
   busket: Busket;
 };
@@ -30,6 +36,8 @@ const initialState: BusketProcess = {
   isRemoveBusketVisible: false,
   isSuccessVisible: false,
   isDataLoading: false,
+  orderStatus: OrderStatuses.Unknown,
+  coupon: null,
   isCouponValid: undefined,
   busket: loadBusket(),
 };
@@ -120,6 +128,12 @@ export const busketProcess = createSlice({
     ) => {
       state.isSuccessVisible = action.payload;
     },
+    setCoupon: (
+      state,
+      action: PayloadAction<string>
+    ) => {
+      state.coupon = action.payload;
+    },
   },
   extraReducers(builder) {
     builder
@@ -134,7 +148,22 @@ export const busketProcess = createSlice({
       })
       .addCase(fetchCouponDiscount.rejected, (state) => {
         state.isCouponValid = false;
+        state.coupon = null;
         state.busket.discount = 0;
+        state.isDataLoading = false;
+      })
+      .addCase(sendOrder.pending, (state) => {
+        state.isDataLoading = true;
+      })
+      .addCase(sendOrder.fulfilled, (state) => {
+        state.orderStatus = OrderStatuses.Success;
+        state.isDataLoading = false;
+        state.busket = emptyBusket;
+        state.coupon = null;
+        resetSavedBusket();
+      })
+      .addCase(sendOrder.rejected, (state) => {
+        state.orderStatus = OrderStatuses.Error;
         state.isDataLoading = false;
       });
   },
@@ -149,6 +178,7 @@ export const {
   busketSet,
   busketSub,
   busketRemove,
+  setCoupon,
   setCouponValidStatusStatus,
   setBusketSuccessModalVisibleStatus,
 } = busketProcess.actions;
