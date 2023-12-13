@@ -3,6 +3,7 @@ import { system, name, datatype, lorem, commerce } from 'faker';
 import { Review } from '../types/review';
 import { State } from '../types/state';
 import { Action } from '@reduxjs/toolkit';
+import { OrderStatuses } from '../const';
 
 export const makeFakeReview = (): Review => ({
   id: datatype.string(),
@@ -49,9 +50,11 @@ export const makeFakeStore = (initialState?: Partial<State>): State => ({
     isSuccessVisible: false,
     isDataLoading: false,
     isCouponValid: undefined,
+    orderStatus: OrderStatuses.Unknown,
     busket: {
       items: [],
       itemsCount: [],
+      coupon: null,
       discount: 0
     },
   },
