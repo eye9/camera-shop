@@ -1,12 +1,9 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { NameSpace } from '../const';
+import { NameSpace, OrderStatuses } from '../const';
 import { Product, Products } from '../types/product';
 import { emptyBusket, loadBusket, resetBusket as resetSavedBusket, saveBusket } from '../utils/storage';
 import { fetchCouponDiscount, sendOrder } from './api-actions';
 
-enum OrderStatuses {
-'Error', 'Success', 'Unknown'
-}
 
 export type Busket = {
   items: Products;
@@ -133,6 +130,12 @@ export const busketProcess = createSlice({
     ) => {
       state.busket.coupon = action.payload;
     },
+    setOrderStatus: (
+      state,
+      action: PayloadAction<OrderStatuses>
+    ) => {
+      state.orderStatus = action.payload;
+    },
   },
   extraReducers(builder) {
     builder
@@ -178,6 +181,7 @@ export const {
   busketSub,
   busketRemove,
   setCoupon,
+  setOrderStatus,
   setCouponValidStatusStatus,
   setBusketSuccessModalVisibleStatus,
 } = busketProcess.actions;

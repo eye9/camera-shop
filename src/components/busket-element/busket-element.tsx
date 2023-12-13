@@ -12,6 +12,7 @@ import { RemoveItemModal } from '../remove-item-modal/remove-item-modal';
 import { useAppDispatch } from '../../hooks/hooks';
 import { fetchCouponDiscount, sendOrder } from '../../store/api-actions';
 import { setCouponValidStatusStatus as setCouponValidStatus } from '../../store/busket-process';
+import { BusketModal } from './components/busket-modal/busket-modal';
 
 export function BusketElement() {
   const dispatch = useAppDispatch();
@@ -132,6 +133,8 @@ export function BusketElement() {
         </div>
       </section>
       <RemoveItemModal />
+      <RemoveItemModal />
+      <BusketModal />
     </div>
   );
 }

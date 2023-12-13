@@ -1,6 +1,6 @@
 export const MainCatalogSettings = {
   CardsPerPage: 9,
-  MaxPagesVisible: 3
+  MaxPagesVisible: 3,
 } as const;
 
 export const APIRoutes = {
@@ -30,4 +30,16 @@ export const ReviewFieldsLength = {
   Max: 160,
 } as const;
 
-export const ReviewRateTitles = ['Ужасно', 'Плохо', 'Нормально', 'Хорошо', 'Отлично'];
+export const ReviewRateTitles = [
+  'Ужасно',
+  'Плохо',
+  'Нормально',
+  'Хорошо',
+  'Отлично',
+];
+
+export enum OrderStatuses {
+  'Error',
+  'Success',
+  'Unknown',
+}

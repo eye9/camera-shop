@@ -1,10 +1,10 @@
-import { NameSpace } from '../const';
+import { NameSpace, OrderStatuses } from '../const';
 import { Product, Products, Promos as PromoProducts } from '../types/product';
 import { Reviews } from '../types/review';
 import { State } from '../types/state';
 import { Busket } from './busket-process';
 
-export const selectCoupon = (state: Pick<State, typeof NameSpace.Busket>): string | null => state[NameSpace.Busket].coupon;
+export const selectOrderStatus = (state: Pick<State, typeof NameSpace.Busket>): OrderStatuses => state[NameSpace.Busket].orderStatus;
 export const selectCouponValidStatus = (state: Pick<State, typeof NameSpace.Busket>): boolean | undefined => state[NameSpace.Busket].isCouponValid;
 export const selectAddBusketStatus = (state: Pick<State, typeof NameSpace.Busket>): boolean => state[NameSpace.Busket].isAddBusketVisible;
 export const selectRemoveBusketStatus = (state: Pick<State, typeof NameSpace.Busket>): boolean => state[NameSpace.Busket].isRemoveBusketVisible;
