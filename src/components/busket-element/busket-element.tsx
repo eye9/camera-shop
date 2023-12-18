@@ -133,7 +133,6 @@ export function BusketElement() {
         </div>
       </section>
       <RemoveItemModal />
-      <RemoveItemModal />
       <BusketModal />
     </div>
   );

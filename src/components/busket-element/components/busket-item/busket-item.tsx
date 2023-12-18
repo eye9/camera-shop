@@ -16,7 +16,7 @@ export function BusketItem({ item, count }: BusketItemProps) {
   const dispatch = useAppDispatch();
   const [itemsCount, setCount] = useState(String(count));
   return (
-    <li className="basket-item" key={item.id}>
+    <li className="basket-item" key={item.id} data-testid={item.id}>
       <div className="basket-item__img">
         <picture>
           <source
