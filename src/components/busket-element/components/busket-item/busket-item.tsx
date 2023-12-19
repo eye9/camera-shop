@@ -6,6 +6,7 @@ import {
   removingFromBusket,
 } from '../../../../store/busket-process';
 import { Product } from '../../../../types/product';
+import { MIN_NUMBER_OF_ITEMS, MAX_NUMBER_OF_ITEMS } from './const';
 
 type BusketItemProps = {
   item: Product;
@@ -52,7 +53,7 @@ export function BusketItem({ item, count }: BusketItemProps) {
       <div className="quantity">
         <button
           onClick={() => {
-            if (count > 1) {
+            if (count > MIN_NUMBER_OF_ITEMS) {
               setCount(String(+itemsCount - 1));
               dispatch(busketSub(item));
             }
@@ -74,17 +75,17 @@ export function BusketItem({ item, count }: BusketItemProps) {
           }}
           onBlur={(e) => {
             let value = +e.target.value;
-            if (value > 99) {
-              value = 99;
+            if (value > MAX_NUMBER_OF_ITEMS) {
+              value = MAX_NUMBER_OF_ITEMS;
             }
-            if (value < 1) {
-              value = 1;
+            if (value < MIN_NUMBER_OF_ITEMS) {
+              value = MIN_NUMBER_OF_ITEMS;
             }
             setCount(String(value));
             dispatch(busketSet({ item, count: value }));
           }}
-          min={1}
-          max={99}
+          min={MIN_NUMBER_OF_ITEMS}
+          max={MAX_NUMBER_OF_ITEMS}
           aria-label="количество товара"
         />
         <button
