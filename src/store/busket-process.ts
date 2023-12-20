@@ -46,7 +46,7 @@ function addToBusket(state: BusketProcess, product: Product) {
     state.busket.itemsCount.push(1);
   } else {
     const count = state.busket.itemsCount[index];
-    state.busket.itemsCount[index] = count + 1;
+    state.busket.itemsCount[index] = Math.min(count + 1, 99);
   }
   saveBusket(state.busket);
 }
