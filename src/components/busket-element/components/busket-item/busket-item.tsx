@@ -60,6 +60,7 @@ export function BusketItem({ item, count }: BusketItemProps) {
           }}
           className="btn-icon btn-icon--prev"
           aria-label="уменьшить количество товара"
+          disabled={count <= 1}
         >
           <svg width={7} height={12} aria-hidden="true">
             <use xlinkHref="#icon-arrow" />
@@ -97,6 +98,7 @@ export function BusketItem({ item, count }: BusketItemProps) {
           }}
           className="btn-icon btn-icon--next"
           aria-label="увеличить количество товара"
+          disabled={count >= 99}
         >
           <svg width={7} height={12} aria-hidden="true">
             <use xlinkHref="#icon-arrow" />
