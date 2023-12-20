@@ -75,7 +75,7 @@ export function BusketItem({ item, count }: BusketItemProps) {
             setCount(e.target.value);
           }}
           onBlur={(e) => {
-            let value = +e.target.value;
+            let value = Math.round(+e.target.value);
             if (value > MAX_NUMBER_OF_ITEMS) {
               value = MAX_NUMBER_OF_ITEMS;
             }
