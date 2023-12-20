@@ -161,7 +161,6 @@ export const busketProcess = createSlice({
         state.orderStatus = OrderStatuses.Success;
         state.isDataLoading = false;
         state.busket = emptyBusket;
-        state.busket.coupon = null;
         resetSavedBusket();
       })
       .addCase(sendOrder.rejected, (state) => {

@@ -16,8 +16,11 @@ export const sendOrder = createAsyncThunk<
     state: State;
     extra: AxiosInstance;
   }
->('busket/sendOrder', async ({ids, coupon}, { extra: api }) => {
-  await api.post(`${APIRoutes.Order}`, {camerasIds: ids, coupon});
+>('busket/sendOrder', async ({ ids, coupon }, { extra: api }) => {
+  await api.post(`${APIRoutes.Order}`, {
+    camerasIds: ids,
+    coupon,
+  });
   return undefined;
 });
 export const fetchCouponDiscount = createAsyncThunk<
@@ -29,7 +32,7 @@ export const fetchCouponDiscount = createAsyncThunk<
     extra: AxiosInstance;
   }
 >('products/fetchDiscount', async (coupon, { dispatch, extra: api }) => {
-  const { data } = await api.post<number>(APIRoutes.Coupones, {coupon});
+  const { data } = await api.post<number>(APIRoutes.Coupones, { coupon });
   dispatch(setCoupon(coupon));
   return data;
 });
@@ -41,8 +44,10 @@ export const fetchProductsActionWithPrice = createAsyncThunk<
     state: State;
     extra: AxiosInstance;
   }
->('products/fetchWithPrice', async ({min, max}, { extra: api }) => {
-  const { data } = await api.get<Products>(`${APIRoutes.Products}/?price_gte=${min}&price_lte=${max}`);
+>('products/fetchWithPrice', async ({ min, max }, { extra: api }) => {
+  const { data } = await api.get<Products>(
+    `${APIRoutes.Products}/?price_gte=${min}&price_lte=${max}`
+  );
   return data;
 });
 export const fetchProductsAction = createAsyncThunk<
