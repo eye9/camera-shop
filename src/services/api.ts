@@ -18,6 +18,16 @@ export const createApi = (): AxiosInstance => {
   api.interceptors.response.use(
     (response) => response,
     (error: AxiosError<DetailMessageType>) => {
+      const request = error.request as XMLHttpRequest;
+      if (
+        request &&
+        request.responseURL ===
+          'https://camera-shop.accelerator.pages.academy/coupons'
+      ) {
+        if (request.status === 400) {
+          return;
+        }
+      }
       if (error.message) {
         toast.error(error.message);
       }
